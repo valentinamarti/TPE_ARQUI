@@ -1,8 +1,12 @@
 #include <time.h>
+#include <miniDriverKeyboard.h>
 #include <stdint.h>
 
 static void int_20();
 static void int_21();
+
+extern void keyboard_hanlder();
+
 
 void irqDispatcher(uint64_t irq) {
 	switch (irq) {
@@ -21,5 +25,5 @@ void int_20() {
 }
 
 void int_21(){
-	keyboard_handler();
+	keyboard_hanlder();
 }
