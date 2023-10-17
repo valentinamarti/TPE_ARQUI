@@ -116,6 +116,9 @@ int main()
 	printMessageSpecificColor(" Matu <3", 0x0F, 0X0C);
 	ncNewline();
 
+	while(1){
+		
+	}
 
 // aca falta un paso intermedio que es pasarlo de el formato raro en el que viene a decimal 
 	// ncPrintDec(getSeconds);
