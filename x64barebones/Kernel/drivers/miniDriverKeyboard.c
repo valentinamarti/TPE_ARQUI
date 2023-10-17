@@ -8,7 +8,7 @@ static char* codes[] = {
         "tab","q","w","e","r","t","y","u","i","o","p","[","]","enter",
         "L Ctrl","a","s","d","f","g","h","j","k","l",";","\'","`",
         "L Shift", "\\", "z","x","c","v","b","n","m",",",".","/","R Shift","NumPad *",
-        "L Alt", "Spacebar","CapsLock",
+        "L Alt", " ","CapsLock",
         "F1", "F2","F3","F4","F5","F6","F7","F8","F9","F10",
         "Num Lock", "ScrLk", "NumPad 7", "NumPad 8", "NumPad 9", "NumPad -", "NumPad 4"
         ,"NumPad 5","NumPad 6", "NumPad +", "NumPad 1", "NumPad 2", "NumPad 3", "NumPad 0",
@@ -25,8 +25,9 @@ static char* codes[] = {
 
 void keyboard_hanlder(){
     uint8_t key = getKeyPressed();
-    char* aux = codes[key];
-    ncPrint(aux);
+    if(key <=0x79){
+        ncPrint(codes[key]);   
+    }
 }
 
 
