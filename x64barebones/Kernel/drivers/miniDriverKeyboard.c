@@ -25,10 +25,11 @@ static char* codes[] = {
 
 void keyboard_hanlder(){
     uint8_t key = getKeyPressed();
-    if(key <=0x79){
+    if(key <= 0x79){
         ncPrint(codes[key]);   
     }
 }
+    
 
 
 
