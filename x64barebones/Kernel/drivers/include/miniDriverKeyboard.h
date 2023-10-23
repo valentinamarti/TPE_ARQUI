@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-void keyboard_hanlder();
+void keyboard_handler1();
 char* getStringFromCode(char code);
 char getPressedKeyCode();
 

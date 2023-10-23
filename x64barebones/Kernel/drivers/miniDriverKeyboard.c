@@ -23,13 +23,16 @@ static char* codes[] = {
 //     return codes[code]; //code=getPressedKeyCode();
 // }
 
-void keyboard_hanlder(){
+void keyboard_handle1r(){
     uint8_t key = getKeyPressed();
     if(key <= 0x79){
         ncPrint(codes[key]);   
+        ncPrint(" ");
+        ncPrintHex(key);
+        ncPrint(" ");
     }
-}
     
+}
 
 
 

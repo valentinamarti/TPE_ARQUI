@@ -1,11 +1,10 @@
 #include <time.h>
 #include <miniDriverKeyboard.h>
 #include <stdint.h>
+#include <keyboardDriver.h>
 
 static void int_20();
 static void int_21();
-
-extern void keyboard_hanlder();
 
 
 void irqDispatcher(uint64_t irq) {
@@ -25,5 +24,5 @@ void int_20() {
 }
 
 void int_21(){
-	keyboard_hanlder();
+	keyboard_handler();
 }

@@ -4,6 +4,7 @@
 #include <moduleLoader.h>
 #include <miniDriverVideo.h>
 #include <idtLoader.h>
+#include <videoDriver.h>
 
 
 extern uint8_t text;
@@ -16,6 +17,7 @@ extern uint8_t endOfKernel;
 extern unsigned int getSeconds();
 extern unsigned int getMinutes();
 extern unsigned int getHours();
+extern unsigned int do_sys_wrtie();
 
 static const uint64_t PageSize = 0x1000;
 
@@ -43,91 +45,95 @@ void * initializeKernelBinary()
 {
 	char buffer[10];
 
-	ncPrint("[x64BareBones]");
-	ncNewline();
+	// ncPrint("[x64BareBones]");
+	// ncNewline();
 
-	ncPrint("CPU Vendor:");
-	ncPrint(cpuVendor(buffer));
-	ncNewline();
+	// ncPrint("CPU Vendor:");
+	// ncPrint(cpuVendor(buffer));
+	// ncNewline();
 
-	ncPrint("[Loading modules]");
-	ncNewline();
+	// ncPrint("[Loading modules]");
+	// ncNewline();
 	void * moduleAddresses[] = {
 		sampleCodeModuleAddress,
 		sampleDataModuleAddress
 	};
 
 	loadModules(&endOfKernelBinary, moduleAddresses);
-	ncPrint("[Done]");
-	ncNewline();
-	ncNewline();
+	// ncPrint("[Done]");
+	// ncNewline();
+	// ncNewline();
 
-	ncPrint("[Initializing kernel's binary]");
-	ncNewline();
+	// ncPrint("[Initializing kernel's binary]");
+	// ncNewline();
 
 	clearBSS(&bss, &endOfKernel - &bss);
 
-	ncPrint("  text: 0x");
-	ncPrintHex((uint64_t)&text);
-	ncNewline();
-	ncPrint("  rodata: 0x");
-	ncPrintHex((uint64_t)&rodata);
-	ncNewline();
-	ncPrint("  data: 0x");
-	ncPrintHex((uint64_t)&data);
-	ncNewline();
-	ncPrint("  bss: 0x");
-	ncPrintHex((uint64_t)&bss);
-	ncNewline();
+	// ncPrint("  text: 0x");
+	// ncPrintHex((uint64_t)&text);
+	// ncNewline();
+	// ncPrint("  rodata: 0x");
+	// ncPrintHex((uint64_t)&rodata);
+	// ncNewline();
+	// ncPrint("  data: 0x");
+	// ncPrintHex((uint64_t)&data);
+	// ncNewline();
+	// ncPrint("  bss: 0x");
+	// ncPrintHex((uint64_t)&bss);
+	// ncNewline();
 
-	ncPrint("[Done]");
-	ncNewline();
-	ncNewline();
+	// ncPrint("[Done]");
+	// ncNewline();
+	// ncNewline();
 	return getStackBase();
 }
+
 
 int main()
 {	
 	load_idt();
 
-	ncPrint("[Kernel Main]");
-	ncNewline();
-	ncPrint("  Sample code module at 0x");
-	ncPrintHex((uint64_t)sampleCodeModuleAddress);
-	ncNewline();
-	ncPrint("  Calling the sample code module returned: ");
-	ncPrintHex(((EntryPoint)sampleCodeModuleAddress)());
-	ncNewline();
-	ncNewline();
+	// ncPrint("[Kernel Main]");
+	// ncNewline();
+	// ncPrint("  Sample code module at 0x");
+	// ncPrintHex((uint64_t)sampleCodeModuleAddress);
+	// ncNewline();
+	// ncPrint("  Calling the sample code module returned: ");
+	// ncPrintHex(((EntryPoint)sampleCodeModuleAddress)());
+	// ncNewline();
+	// ncNewline();
 
-	ncPrint("  Sample data module at 0x");
-	ncPrintHex((uint64_t)sampleDataModuleAddress);
-	ncNewline();
-	ncPrint("  Sample data module contents: ");
-	ncPrint((char*)sampleDataModuleAddress);
-	ncNewline();
+	// ncPrint("  Sample data module at 0x");
+	// ncPrintHex((uint64_t)sampleDataModuleAddress);
+	// ncNewline();
+	// ncPrint("  Sample data module contents: ");
+	// ncPrint((char*)sampleDataModuleAddress);
+	// ncNewline();
 
-	ncPrint("[Finished]");
+	// ncPrint("[Finished]");
 
-	ncNewline();
-	ncPrintSpecificColor(" Arquitectura de Computadoras", 0x0F, 0x0A);
-	ncNewline();
+	// ncNewline();
+	 ncPrintSpecificColor(" Arquitectura de Computadoras", 0x0F, 0x0A);
+	// ncNewline();
 
-	printMessageSpecificColor(" Matu <3", 0x0F, 0X0C);
-	ncNewline();
+	// printMessageSpecificColor(" Matu <3", 0x0F, 0X0C);
+	// ncNewline();
 
-	while(1){
-		
-	}
-
-// aca falta un paso intermedio que es pasarlo de el formato raro en el que viene a decimal 
 	// ncPrintDec(getSeconds);
 	// ncPrint(" ");
 	// ncPrintDec(getMinutes);
 	// ncPrint(" ");
 	// ncPrintDec(getHours);
 
-	// ncPrint(getStringFromCode(getPressedKeyCode()));
+	
+	while(1){
+			
+
+	}
+
+
+// aca falta un paso intermedio que es pasarlo de el formato raro en el que viene a decimal 
+
 	return 0;
 }
 
