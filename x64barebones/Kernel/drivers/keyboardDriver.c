@@ -1,4 +1,5 @@
 #include <miniDriverKeyboard.h>
+#include <videoDriver.h>
 
 extern char getKeyPressed();
 void getKeyValue(uint8_t key);
@@ -20,7 +21,7 @@ char getNextCharFromBuffer();
 
 static unsigned char* keyboard[] = {   
     // Para usar esto, nos falta ver de donde salio; asi ponemos la documentacion necesaria para justificar 
-        0, 27, "1", "2", "3", "4", '5', '6', '7', '8', '9', '0', '-', '=', '\b', /*del*/ 
+        0, 27, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', '\b', /*del*/ 
         '\t', /*tab*/ 'q', 'w', 'e', 'r',  't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n',    /*enter*/ 
         0,  /*29-control */ 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', '`', 
         0,  /*l shift*/ '\\', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 0,  /*r shift*/
@@ -48,7 +49,7 @@ static unsigned char* keyboard[] = {
 };
 
 static unsigned char* keyboard_shift[] = {
-        0, 27, '!', '\"', '#', 0 /*shift+4*/, '%', '&', '/', '(', ')', '=', '?', '`', '\b', /*del*/
+        0, 27, '!', '\"', '#', '$', '%', '&', '/', '(', ')', '=', '?', '`', '\b', /*del*/
         '\t', /*tab*/ 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '{', '}', '\n', /*enter*/
         0,  /*29-control*/ 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '\'', '>', 
         0, /*l shift*/ '|', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ';', ':', '_', 0, /*r shift*/
@@ -94,7 +95,11 @@ void keyboard_handler(){
         shiftFlag = 0;         
     }
 }
-
+// AUXILIARES A BORRAR
+int charToInt(char num){
+    return ('1' <= num && num <='9') ? num-'0': -1;
+}
+// FIN BORRAR
 void getKeyValue(uint8_t key){
     if(key == L_SHIFT_PUSH_KEY_VALUE || key == R_SHIFT_PUSH_KEY_VALUE){
         shiftFlag = 1; 
@@ -115,7 +120,10 @@ void getKeyValue(uint8_t key){
         c = keyboard[key];
     }
     if(c != 0){
-        // ncPrintChar(c);              // si quiero que funcione que se escriban en la pantalla, hay q descomentar esto 
+        // ncPrintChar(c);              si quiero que funcione que se escriban en la pantalla, hay q descomentar esto 
+        if(charToInt(c)!= -1){
+            printAsciiTable(charToInt(c));
+        }
         saveCharToBuffer(c);
     }
 }
