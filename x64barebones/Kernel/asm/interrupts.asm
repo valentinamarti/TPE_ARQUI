@@ -12,11 +12,13 @@ GLOBAL _irq02Handler
 GLOBAL _irq03Handler
 GLOBAL _irq04Handler
 GLOBAL _irq05Handler
+GLOBAL _int80Handler:
 
 GLOBAL _exception0Handler
 
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
+EXTERN syscallsDispatcher
 
 SECTION .text
 
@@ -70,8 +72,6 @@ SECTION .text
 	iretq
 %endmacro
 
-
-
 %macro exceptionHandler 1
 	pushState
 
@@ -81,6 +81,12 @@ SECTION .text
 	popState
 	iretq
 %endmacro
+
+_int80Handler:	; en rdi el mode, luego en el resto de los registros los parametros usuales de cada syscall
+	pushState
+	call syscallsDispatcher
+	popState
+	iretq 
 
 
 _hlt:
