@@ -4,11 +4,8 @@
 #include <stdint.h>
 #include <string.h>
 //#include <stdarg.h>
-
-#define RGB_SIZE 3
-#define MAX_RESOLUTION (64 * 128)   /* Longitud del buffer de caracteres */
-#define MSG_BUFFER_EXCEEDED "Buffer de video excedido, la pantalla ha sido limpiada\n"
-
+#include <videoDriver.h>
+int SIZE = 1;
 struct vbe_mode_info_structure {
     uint16_t attributes;        // deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.
     uint8_t window_a;           // deprecated
@@ -47,25 +44,23 @@ struct vbe_mode_info_structure {
     uint8_t reserved1[206];
 } __attribute__ ((packed));
 
-typedef struct color {
-    uint8_t red;
-    uint8_t green;
-    uint8_t blue;
-
-} color_t;
 
 
 
-uint64_t _X = 0, _Y = 0;                    // Coordenadas de escritura de caracteres
+
+uint64_t ACTUAL_X = 0, ACTUAL_Y = 0;                    // Coordenadas de escritura de caracteres
 //Color _fontColor = DEFAULT_COLOR;         // Color de fuente
-uint8_t _charWidth = DEFAULT_CHAR_WIDTH;    // Ancho en pixeles de un caracter
-uint8_t _charHeight = DEFAULT_CHAR_HEIGHT;  // Altura en pixeles de un caracter
-char _charBuffer[MAX_RESOLUTION];           // Buffer de caracteres
+//uint8_t _charWidth = DEFAULT_CHAR_WIDTH;    // Ancho en pixeles de un caracter
+//uint8_t _charHeight = DEFAULT_CHAR_HEIGHT;  // Altura en pixeles de un caracter
 uint16_t _bufferIdx = 0;                    // Posicion de indice del buffer
 
 typedef struct vbe_mode_info_structure * VBEInfoPtr;
 
 VBEInfoPtr VBE_mode_info = (VBEInfoPtr) 0x0000000000005C00;
+
+void changeSize(int num){
+    SIZE= num;
+}
 
 void putPixel(color_t color, uint64_t x, uint64_t y) {
     uint8_t * framebuffer = (uint8_t *) VBE_mode_info->framebuffer;                 // Crea un puntero al framebuffer del struct 
@@ -75,9 +70,37 @@ void putPixel(color_t color, uint64_t x, uint64_t y) {
     framebuffer[offset+2]   =  color.red;
 }
 
-
-void drawChar(color_t color, char caracter){
-
-
-    
+void drawRectangle(color_t color,int posx,int posy, int sizex, int sizey){
+    for(int i=0;i<sizey;i++){
+        for(int j=0;j<sizex;j++){
+            putPixel(color,posx+i,posy+j);
+        }
+    }
 }
+void drawChar(color_t color, char character){
+
+    char posFont= character - ' ';
+    int start= DEFAULT_CHAR_HEIGHT* DEFAULT_CHAR_WIDTH * posFont;
+
+    for(int y=0;y<DEFAULT_CHAR_HEIGHT;y++){
+        for(int x=0; x<DEFAULT_CHAR_WIDTH; x++){
+            if(font[start + x + y * DEFAULT_CHAR_WIDTH]){
+                drawRectangle(color,ACTUAL_X + x * SIZE,ACTUAL_Y + y * SIZE,SIZE,SIZE);
+            }
+        }
+    }
+
+    ACTUAL_X+= DEFAULT_CHAR_WIDTH * SIZE;
+
+}
+
+// AUXILIARES A BORRAR
+void printAsciiTable(int size){
+    changeSize(size);
+	drawChar(WHITE,'!');
+	drawChar(WHITE,'"');
+	drawChar(WHITE,'#');
+	drawChar(WHITE,'$');
+	drawChar(WHITE,'%');
+}
+// FIN BORRAR
