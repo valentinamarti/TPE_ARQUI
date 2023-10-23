@@ -2,6 +2,10 @@
 #include <miniDriverVideo.h>
 #include <naiveConsole.h>
 
+extern unsigned int getSeconds();
+extern unsigned int getMinutes();
+extern unsigned int getHours(); 
+
 static unsigned long ticks = 0;
 static uint8_t * currentVideo = (uint8_t*)0xB8000;
 static flag = 0; 
@@ -27,3 +31,16 @@ int ticks_elapsed() {
 int seconds_elapsed() {
 	return ticks / 18;
 }
+
+int hours(){
+	return getHours();
+}
+
+int minutes(){
+	return getMinutes();
+}
+
+int seconds(){
+	return getSeconds();
+}
+
