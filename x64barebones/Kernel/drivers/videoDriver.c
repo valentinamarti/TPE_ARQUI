@@ -1,11 +1,15 @@
-//#include <video.h>
 //#include <lib.h>
-#include <font.h>
+#include <font8x8_basic.h>
 #include <stdint.h>
 #include <string.h>
 //#include <stdarg.h>
 #include <videoDriver.h>
-int SIZE = 1;
+
+#define SCREEN_W VBE_mode_info->width
+#define SCREEN_H VBE_mode_info->height
+
+
+uint8_t SIZE = DEFAULT_SIZE;
 struct vbe_mode_info_structure {
     uint16_t attributes;        // deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.
     uint8_t window_a;           // deprecated
@@ -58,7 +62,11 @@ typedef struct vbe_mode_info_structure * VBEInfoPtr;
 
 VBEInfoPtr VBE_mode_info = (VBEInfoPtr) 0x0000000000005C00;
 
-void changeSize(int num){
+char inScreen(uint16_t pixelPos){
+    return pixelPos <= SCREEN_W;
+}
+
+void changeSize(uint8_t num){
     SIZE= num;
 }
 
@@ -77,17 +85,25 @@ void drawRectangle(color_t color,int posx,int posy, int sizex, int sizey){
         }
     }
 }
+
+void drawByte(color_t color,uint8_t hexa,uint64_t posx, uint64_t posy){
+    for(int i=0; i< 8;i++){ //El 8 es el tamaño del byte
+        if(hexa & 1){
+            drawRectangle(color,posx + i * SIZE,ACTUAL_Y + posy * SIZE,SIZE,SIZE);
+        }
+        hexa= hexa>>2;
+    }
+}
+
 void drawChar(color_t color, char character){
 
-    char posFont= character - ' ';
-    int start= DEFAULT_CHAR_HEIGHT* DEFAULT_CHAR_WIDTH * posFont;
-
+    char* vector= font[character];
+    if(! inScreen(ACTUAL_X + DEFAULT_CHAR_WIDTH * SIZE)){
+        ACTUAL_X=0;
+        ACTUAL_Y+= DEFAULT_CHAR_HEIGHT ;
+    }
     for(int y=0;y<DEFAULT_CHAR_HEIGHT;y++){
-        for(int x=0; x<DEFAULT_CHAR_WIDTH; x++){
-            if(font[start + x + y * DEFAULT_CHAR_WIDTH]){
-                drawRectangle(color,ACTUAL_X + x * SIZE,ACTUAL_Y + y * SIZE,SIZE,SIZE);
-            }
-        }
+        drawByte(color,vector[y],ACTUAL_X,ACTUAL_Y+y);
     }
 
     ACTUAL_X+= DEFAULT_CHAR_WIDTH * SIZE;
@@ -97,10 +113,7 @@ void drawChar(color_t color, char character){
 // AUXILIARES A BORRAR
 void printAsciiTable(int size){
     changeSize(size);
-	drawChar(WHITE,'!');
-	drawChar(WHITE,'"');
-	drawChar(WHITE,'#');
-	drawChar(WHITE,'$');
-	drawChar(WHITE,'%');
+	drawChar(WHITE,'A');
+
 }
 // FIN BORRAR

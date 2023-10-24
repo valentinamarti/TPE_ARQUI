@@ -14,7 +14,9 @@ void drawChar(color_t color, char character);
 
 void drawRectangle(color_t color,int posx,int posy, int sizex, int sizey);
 
-void changeSize(int num);
+char inScreen(uint16_t pixelPos);
+
+void changeSize(uint8_t num);
 // A BORRAR
 void printAsciiTable(int size);
 // FIN BORRAR
