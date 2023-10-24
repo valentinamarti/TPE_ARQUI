@@ -12,6 +12,7 @@ char getNextCharFromBuffer();
 #define ALT_KEY_PUSH_VALUE 0x38
 #define L_SHIFT_RELEASE_KEY_VALUE 0xAA
 #define R_SHIFT_RELEASE_KEY_VALUE 0xB6
+#define ALT_KEY_RELEASE_VALUE 0xB8
 #define CAPS_LOCK_KEY_VALUE 0x3A
 #define BUFFER_SIZE 250
 
@@ -93,13 +94,16 @@ void keyboard_handler(){
         getKeyValue(key);                       // ver si desps le cambio el nombre
     }else if(key ==  L_SHIFT_RELEASE_KEY_VALUE || key == R_SHIFT_RELEASE_KEY_VALUE){
         shiftFlag = 0;         
+    }else if(key == ALT_KEY_RELEASE_VALUE){
+        altFlag = 0; 
     }
 }
-// AUXILIARES A BORRAR
+
 int charToInt(char num){
     return ('1' <= num && num <='9') ? num-'0': -1;
 }
-// FIN BORRAR
+
+
 void getKeyValue(uint8_t key){
     if(key == L_SHIFT_PUSH_KEY_VALUE || key == R_SHIFT_PUSH_KEY_VALUE){
         shiftFlag = 1; 
@@ -115,18 +119,24 @@ void getKeyValue(uint8_t key){
     if(capsLockFlag == 1 && ((key >= 0x10 && key <= 0x19)  || (key >= 0x1E && key <= 0x26) || (key >= 0x2C && key <= 0x32))){
              c = keyboard_shift[key];
     }else if(shiftFlag == 1){
-        c = keyboard_shift[key];
+        if(altFlag == 1){       // with alt-shift-number you can change de size of the letter
+            c = keyboard[key];
+            if(c != 0){
+                int aux = charToInt(c);
+                if(aux != -1){
+                    changeSize(aux);
+                }
+            }
+            return;
+        }else{
+            c = keyboard_shift[key];
+        }
     }else{
         c = keyboard[key];
     }
     if(c != 0){
         // ncPrintChar(c);              si quiero que funcione que se escriban en la pantalla, hay q descomentar esto 
-        if(charToInt(c)!=-1){
-            changeSize(charToInt(c));
-        }
-        else{
-            drawChar(WHITE,c);
-        }
+        drawChar(WHITE, c);
         saveCharToBuffer(c);
     }
 }
