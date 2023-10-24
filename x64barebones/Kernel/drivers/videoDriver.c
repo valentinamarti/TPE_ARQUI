@@ -7,9 +7,13 @@
 
 #define SCREEN_W VBE_mode_info->width
 #define SCREEN_H VBE_mode_info->height
-
+#define SCREENBUFER_SIZE 256
 
 uint8_t SIZE = DEFAULT_SIZE;
+
+uint8_t screenbuffer[SCREENBUFER_SIZE];
+uint16_t screenbuffer_idx=0;
+
 struct vbe_mode_info_structure {
     uint16_t attributes;        // deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.
     uint8_t window_a;           // deprecated
@@ -53,23 +57,59 @@ struct vbe_mode_info_structure {
 
 
 uint64_t ACTUAL_X = 0, ACTUAL_Y = 0;                    // Coordenadas de escritura de caracteres
-//Color _fontColor = DEFAULT_COLOR;         // Color de fuente
-//uint8_t _charWidth = DEFAULT_CHAR_WIDTH;    // Ancho en pixeles de un caracter
-//uint8_t _charHeight = DEFAULT_CHAR_HEIGHT;  // Altura en pixeles de un caracter
-uint16_t _bufferIdx = 0;                    // Posicion de indice del buffer
+
 
 typedef struct vbe_mode_info_structure * VBEInfoPtr;
 
 VBEInfoPtr VBE_mode_info = (VBEInfoPtr) 0x0000000000005C00;
 
-char inScreen(uint16_t pixelPos){
+char inScreenX(uint16_t pixelPos){
     return pixelPos <= SCREEN_W;
 }
-
+char inScreenY(uint16_t pixelPos){
+    return pixelPos <= SCREEN_H;
+}
 void changeSize(uint8_t num){
     SIZE= num;
+    redrawScreenBuffer(WHITE,0);
 }
 
+void addScreenBuffer(uint8_t character){
+    if(SCREENBUFER_SIZE== screenbuffer_idx){
+        return;
+    }
+    screenbuffer[screenbuffer_idx++]= character;
+}
+
+void redrawScreenBuffer(color_t color,uint16_t offset){
+    emptyScreen();
+    int aux=screenbuffer_idx;
+    screenbuffer_idx=0;
+    for(int i=offset; i< aux;i++){
+        drawChar(color,screenbuffer[i]);
+    }
+}
+
+void emptyScreen(){
+    for(int y=0; y<SCREEN_H; y++){
+        for(int x=0; x<SCREEN_W; x++){
+            putPixel(BLACK,x,y);
+        }
+    }
+    ACTUAL_X=0;
+    ACTUAL_Y=0;
+    return;
+}
+
+void newLine(){
+    if(inScreenY(ACTUAL_Y + 2 * DEFAULT_CHAR_HEIGHT * SIZE)){
+        ACTUAL_Y+= DEFAULT_CHAR_HEIGHT* SIZE;
+    }
+    else{
+        redrawScreenBuffer(WHITE,SCREEN_W/(DEFAULT_CHAR_WIDTH * SIZE));
+    }ACTUAL_X=0;
+
+}
 void putPixel(color_t color, uint64_t x, uint64_t y) {
     uint8_t * framebuffer = (uint8_t *) VBE_mode_info->framebuffer;                 // Crea un puntero al framebuffer del struct 
     uint64_t offset = (x * ((VBE_mode_info->bpp)/8)) + (y * VBE_mode_info->pitch);
@@ -89,21 +129,23 @@ void drawRectangle(color_t color,int posx,int posy, int sizex, int sizey){
 void drawByte(color_t color,uint8_t hexa,uint64_t posx, uint64_t posy){
     for(int i=0; i< 8;i++){ //El 8 es el tamaño del byte
         if(hexa & 1){
-            drawRectangle(color,posx + i * SIZE,ACTUAL_Y + posy * SIZE,SIZE,SIZE);
+            drawRectangle(color,posx + i * SIZE,posy,SIZE,SIZE);
         }
         hexa= hexa>>2;
     }
 }
 
 void drawChar(color_t color, char character){
-
+    addScreenBuffer(character);
     char* vector= font[character];
-    if(! inScreen(ACTUAL_X + DEFAULT_CHAR_WIDTH * SIZE)){
-        ACTUAL_X=0;
-        ACTUAL_Y+= DEFAULT_CHAR_HEIGHT ;
+    if(character== '\b'){
+
+    }
+    if((! inScreenX(ACTUAL_X + DEFAULT_CHAR_WIDTH * SIZE)) || character=='\n'){
+        newLine();
     }
     for(int y=0;y<DEFAULT_CHAR_HEIGHT;y++){
-        drawByte(color,vector[y],ACTUAL_X,ACTUAL_Y+y);
+        drawByte(color,vector[y],ACTUAL_X,ACTUAL_Y+y *SIZE);
     }
 
     ACTUAL_X+= DEFAULT_CHAR_WIDTH * SIZE;

@@ -1,6 +1,10 @@
 #ifndef VIDEO_DRIVER_H
 #define VIDEO_DRIVER_H 
 
+#define RED ((color_t){255, 0, 0})
+#define WHITE ((color_t){255, 255, 255})
+#define BLACK ((color_t){0,0,0})
+
 typedef struct color {
     uint8_t red;
     uint8_t green;
@@ -20,7 +24,5 @@ void changeSize(uint8_t num);
 // A BORRAR
 void printAsciiTable(int size);
 // FIN BORRAR
-#define RED ((color_t){255, 0, 0})
-#define WHITE ((color_t){255, 255, 255})
 
 #endif
