@@ -28,7 +28,7 @@ int ticks_elapsed() {
 	return ticks;
 }
 
-void sleep(int seconds){
+void sleep(int seconds){	// falta probarla
 	ticks = 0; 
 	while(seconds_elapsed() < seconds){
 		_hlt();
