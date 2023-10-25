@@ -25,7 +25,7 @@ do_sys_write:   ; do_sys_write(char* buffer, int longitud, int fd, color_t color
     pop rbp
     ret
 
-do_sys_read:            ; do_sys_read(char* buffer, int longitud, int fd, int indicador;
+do_sys_read:       ; do_sys_read(char* buffer, int longitud, int fd);
  push rbp
     mov rbp, rsp
 
