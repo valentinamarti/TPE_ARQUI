@@ -152,6 +152,12 @@ void drawChar(color_t color, char character){
 
 }
 
+void drawString(color_t color, char* string, int len){
+    for(int i = 0; i < len; i++){
+        drawChar(color, string[i]);
+    }
+}
+
 // AUXILIARES A BORRAR
 void printAsciiTable(int size){
     changeSize(size);

@@ -1,7 +1,3 @@
-#ifndef VIDEO_DRIVER_H
-#define VIDEO_DRIVER_H 
-
-#define RED ((color_t){255, 0, 0})
 #define WHITE ((color_t){255, 255, 255})
 #define BLACK ((color_t){0,0,0})
 
@@ -11,6 +7,17 @@ typedef struct color {
     uint8_t blue;
 
 } color_t;
+
+// uint32_t colorToHexa(color_t color){
+//     uint32_t ret= color.red;
+//     ret= ret << 4;
+//     ret+= color.green;
+//     ret= ret<< 4;
+//     ret+= color.blue;
+//     return ret;
+// }
+
+
 
 void putPixel(color_t color, uint64_t x, uint64_t y);
 
