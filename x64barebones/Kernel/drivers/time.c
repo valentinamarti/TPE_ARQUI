@@ -28,6 +28,13 @@ int ticks_elapsed() {
 	return ticks;
 }
 
+void sleep(int seconds){	// falta probarla
+	ticks = 0; 
+	while(seconds_elapsed() < seconds){
+		_hlt();
+	}
+}
+
 int seconds_elapsed() {
 	return ticks / 18;
 }
@@ -43,4 +50,5 @@ int minutes(){
 int seconds(){
 	return getSeconds();
 }
+
 

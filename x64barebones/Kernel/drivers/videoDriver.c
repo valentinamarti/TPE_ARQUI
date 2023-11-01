@@ -285,23 +285,14 @@ void drawChar(container_t * c,char_t character){
         drawByte(character.color,vector[y],c->ACTUAL_X,c->ACTUAL_Y+y *SIZE);
     }
 
-    c->ACTUAL_X= c->ACTUAL_X + DEFAULT_CHAR_WIDTH * SIZE;
-}
-
-
-void newLine(container_t * c){
-    if(inContainerY(c,c->ACTUAL_Y + 2 * DEFAULT_CHAR_HEIGHT * SIZE)){
-        c->ACTUAL_Y+= DEFAULT_CHAR_HEIGHT* SIZE;
-    }
-    else{
-        redrawContainerBuffer(c,c->width/(DEFAULT_CHAR_WIDTH * SIZE));
-    }c->ACTUAL_X=c->X0;
+    ACTUAL_X+= DEFAULT_CHAR_WIDTH * SIZE;
 
 }
 
-void changeSize(int ID,uint8_t num){
-    SIZE= num;
-    redrawContainerBuffer(getContainerByID(ID),0);
+// AUXILIARES A BORRAR
+void printAsciiTable(int size){
+    changeSize(size);
+	drawChar(WHITE,'A');
+
 }
-
-
+// FIN BORRAR
