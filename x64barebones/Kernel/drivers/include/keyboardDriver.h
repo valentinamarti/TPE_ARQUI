@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 
-    void keyboard_handler();
-    void getKeyValue(uint8_t key);
+    int keyboard_handler();
+    int getKeyValue(uint8_t key);
     void saveCharToBuffer(char c);
     char getNextCharFromBuffer();
 

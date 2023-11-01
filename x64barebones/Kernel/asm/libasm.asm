@@ -7,7 +7,9 @@ GLOBAL getHours
 GLOBAL getDays
 GLOBAL getMonth
 GLOBAL getYear
-GLOBAL bcdToDecimal
+GLOBAL cpuGetTime
+GLOBAL hlt
+EXTERN getStackBase
 
 section .text
 	
@@ -67,10 +69,10 @@ getSeconds:
     push rbp
     mov rbp, rsp
 
+    xor rax, rax
     mov al, 0
     out 70h, al
-    in ax, 71h
-    call bcdToDecimal
+    in al, 71h
    
     mov rsp, rbp
     pop rbp
@@ -80,10 +82,10 @@ getMinutes:
     push rbp
     mov rbp, rsp
 
+    xor rax, rax
     mov al, 2
     out 70h, al
-    in ax, 71h
-    call bcdToDecimal
+    in al, 71h
    
     mov rsp, rbp
     pop rbp
@@ -93,32 +95,25 @@ getHours:
     push rbp
     mov rbp, rsp
 
+    xor rax, rax
     mov al, 4
     out 70h, al
-    in ax, 71h
-    call bcdToDecimal
+    in al, 71h
    
     mov rsp, rbp
     pop rbp
     ret
 
-bcdToDecimal:	; probar si funciona
-	push rbx
-
-	mov rbx, 0
-	mov bl, al
-	shr al, 4
-	mov bh, 10
-	mul bh
-	and bl, 0fh
-	add al, bl
-
-	pop rbx
-	ret    
+hlt:
+	sti
+	hlt
+	ret
 
 
 section .data 
 section .bss
+
+
 
 
 

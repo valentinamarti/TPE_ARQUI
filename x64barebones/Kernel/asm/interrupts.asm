@@ -15,10 +15,12 @@ GLOBAL _irq05Handler
 GLOBAL _int80Handler:
 
 GLOBAL _exception0Handler
+GLOBAL getRegisters
 
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
 EXTERN syscallsDispatcher
+EXTERN getStackBase
 
 SECTION .text
 
@@ -63,24 +65,77 @@ SECTION .text
 
 	mov rdi, %1 ; pasaje de parametro
 	call irqDispatcher
+	
+	cmp rax, 1		; comparo el calor que me devuelve irqDispatcher, que le devolvio keyboardHandler 
+					; que me indica si tengo que capturar los registros o no 
+	jne .continue
+	mov [registers], rax
+    mov [registers + 8], rbx
+    mov [registers + 16], rcx
+    mov [registers + 24], rdx
+    mov [registers + 32], rsi
+	mov [registers + 40], rdi
+    mov [registers + 48], rbp
+    mov [registers + 64], r8
+    mov [registers + 72], r9
+    mov [registers + 80], r10
+    mov [registers + 88], r11
+    mov [registers + 96], r12
+    mov [registers + 104], r13
+    mov [registers + 112], r14
+    mov [registers + 120], r15
 
-	; signal pic EOI (End of Interrupt)
-	mov al, 20h
+	mov rax, rsp
+	mov [registers+ 56], rax  		; rsp
+	mov rax, [rsp]
+	mov [registers + 128], rax 		; rip
+
+.continue:
+	mov al, 20h						; signal pic EOI (End of Interrupt)
 	out 20h, al
 
 	popState
 	iretq
+
 %endmacro
 
 %macro exceptionHandler 1
-	pushState
 
-	mov rdi, %1 ; pasaje de parametro
+	mov [registers], rax
+    mov [registers + 8], rbx
+    mov [registers + 16], rcx
+    mov [registers + 24], rdx
+    mov [registers + 32], rsi
+	mov [registers + 40], rdi
+    mov [registers + 48], rbp
+    mov [registers + 64], r8
+    mov [registers + 72], r9
+    mov [registers + 80], r10
+    mov [registers + 88], r11
+    mov [registers + 96], r12
+    mov [registers + 104], r13
+    mov [registers + 112], r14
+    mov [registers + 120], r15
+
+	mov rax, rsp
+	mov [registers+ 56], rax  		; rsp
+	mov rax, [rsp]
+	mov [registers + 128], rax 		; rip
+	
+	mov rdi, %1 					; pasaje de parametro
+	mov rsi, registers				; le paso el array con los registros capturados como parametro
 	call exceptionDispatcher
 
-	popState
+    mov qword[rsp], userland		; vuelvo a la direc segura 
+    call getStackBase
+	mov qword[rsp+24], rax
+
 	iretq
 %endmacro
+
+getRegisters:
+	mov rax, registers
+	ret
 
 _int80Handler:	; en rdi el mode, luego en el resto de los registros los parametros usuales de cada syscall
 	pushState
@@ -156,5 +211,9 @@ haltcpu:
 
 
 
+SECTION .data
+userland equ 0x400000
+
 SECTION .bss
 	aux resq 1
+	registers resq 17	;registrs when there is an exception

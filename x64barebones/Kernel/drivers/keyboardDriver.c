@@ -1,10 +1,8 @@
 #include <miniDriverKeyboard.h>
 #include <videoDriver.h>
+#include <keyboardDriver.h>
 
 extern char getKeyPressed();
-void getKeyValue(uint8_t key);
-void saveCharToBuffer(char c);
-char getNextCharFromBuffer();
 
 #define MAX_VALUE_FOR_KEY 0x79
 #define L_SHIFT_PUSH_KEY_VALUE 0x2A
@@ -87,16 +85,18 @@ char capsLockFlag = 0;                  // if 1 we use keyboard_shift
 char altFlag = 0; 
 
 
-void keyboard_handler(){
+int keyboard_handler(){
     uint8_t key = getKeyPressed();
-   
+    int aux = 0; 
     if(key <= MAX_VALUE_FOR_KEY){
-        getKeyValue(key);                       // ver si desps le cambio el nombre
+        aux = getKeyValue(key);                       // ver si desps le cambio el nombre
+        return aux;                // devuelve 1 si tengo que capturar los registros; 0 sino 
     }else if(key ==  L_SHIFT_RELEASE_KEY_VALUE || key == R_SHIFT_RELEASE_KEY_VALUE){
         shiftFlag = 0;         
     }else if(key == ALT_KEY_RELEASE_VALUE){
         altFlag = 0; 
     }
+    return aux; 
 }
 
 int charToInt(char num){
@@ -104,7 +104,8 @@ int charToInt(char num){
 }
 
 
-void getKeyValue(uint8_t key){
+int getKeyValue(uint8_t key){
+    int flagAux = 0; 
     if(key == L_SHIFT_PUSH_KEY_VALUE || key == R_SHIFT_PUSH_KEY_VALUE){
         shiftFlag = 1; 
         return;
@@ -119,15 +120,17 @@ void getKeyValue(uint8_t key){
     if(capsLockFlag == 1 && ((key >= 0x10 && key <= 0x19)  || (key >= 0x1E && key <= 0x26) || (key >= 0x2C && key <= 0x32))){
              c = keyboard_shift[key];
     }else if(shiftFlag == 1){
-        if(altFlag == 1){       // with alt-shift-number you can change de size of the letter
+        if(altFlag == 1){
             c = keyboard[key];
             if(c != 0){
                 int aux = charToInt(c);
                 if(aux != -1){
                     changeSize(aux);
+                }else if(c == 'r' || c == 'R'){
+                    int flagAux = 1;        // me indica si tengo que capturar los registros 
                 }
             }
-            return;
+            return flagAux;
         }else{
             c = keyboard_shift[key];
         }
@@ -135,16 +138,11 @@ void getKeyValue(uint8_t key){
         c = keyboard[key];
     }
     if(c != 0){
-        // ncPrintChar(c);              si quiero que funcione que se escriban en la pantalla, hay q descomentar esto 
-        if(charToInt(c)!=-1){
-            changeSize(1,charToInt(c));
-        }
-        else{
-            drawCharInContainer(1,(char_t){c,WHITE});
-        }
-
+        // ncPrintChar(c);             // si quiero que funcione que se escriban en la pantalla, hay q descomentar esto 
+        // drawChar(WHITE, c);
         saveCharToBuffer(c);
     }
+    return flagAux;
 }
 
 void saveCharToBuffer(char c){

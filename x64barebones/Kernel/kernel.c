@@ -17,7 +17,7 @@ extern uint8_t endOfKernel;
 extern unsigned int getSeconds();
 extern unsigned int getMinutes();
 extern unsigned int getHours();
-extern unsigned int do_sys_wrtie();
+extern unsigned int do_sys_write();
 
 static const uint64_t PageSize = 0x1000;
 
@@ -32,8 +32,7 @@ void clearBSS(void * bssAddress, uint64_t bssSize)
 	memset(bssAddress, 0, bssSize);
 }
 
-void * getStackBase()
-{
+void * getStackBase(){
 	return (void*)(
 		(uint64_t)&endOfKernel
 		+ PageSize * 8				//The size of the stack itself, 32KiB
@@ -41,37 +40,21 @@ void * getStackBase()
 	);
 }
 
-void * initializeKernelBinary()
-{
-	char buffer[10];
-
+void * initializeKernelBinary(){
 	void * moduleAddresses[] = {
 		sampleCodeModuleAddress,
 		sampleDataModuleAddress
 	};
 
 	loadModules(&endOfKernelBinary, moduleAddresses);
-	
 	clearBSS(&bss, &endOfKernel - &bss);
 	return getStackBase();
 }
 
 
-int main()
-{	
+int main(){	
 	load_idt();
-
-
-	int c1= getContainer("Hola",100,200,300,300);
-	int c2= getContainer("Chau",10,30,200,200);
-	while(1){
-			
-
-	}
-
-
-// aca falta un paso intermedio que es pasarlo de el formato raro en el que viene a decimal 
-
+	((EntryPoint)sampleCodeModuleAddress)();
 	return 0;
 }
 

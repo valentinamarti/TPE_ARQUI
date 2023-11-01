@@ -2,36 +2,29 @@
 #include <miniDriverVideo.h>
 #include <naiveConsole.h>
 
+
 extern unsigned int getSeconds();
 extern unsigned int getMinutes();
 extern unsigned int getHours(); 
 
 static unsigned long ticks = 0;
+static unsigned long millis_ellapsed = 0; 
 static uint8_t * currentVideo = (uint8_t*)0xB8000;
 static flag = 0; 
 
 void timer_handler() {
 	ticks++;
-	if(flag == 1 && ticks == 7){		// hago lo de ticks == 7 para alcanzar a leer el mnsj 
-		printMessageBackwards("            ", 0x00, 0x00);
-		flag = 0; 
-	}
-	if(seconds_elapsed() == 5){
-		printMessageSpecificColor("INTERRUPCION", 0xFF, 0xDD);
-		ticks = 0; 
-		flag = 1; 
-	}
-
+	millis_ellapsed += 55;
 }
 
 int ticks_elapsed() {
 	return ticks;
 }
 
-void sleep(int seconds){	// falta probarla
-	ticks = 0; 
-	while(seconds_elapsed() < seconds){
-		_hlt();
+void sleep(int xmillis){
+	int currentmillis = millis_ellapsed;
+	while(millis_ellapsed - currentmillis < xmillis){
+		hlt();
 	}
 }
 
@@ -40,15 +33,22 @@ int seconds_elapsed() {
 }
 
 int hours(){
-	return getHours();
+	int aux = changeFormat(getHours())-3;
 }
 
 int minutes(){
-	return getMinutes();
+	return changeFormat(getMinutes());
 }
 
 int seconds(){
-	return getSeconds();
+	return changeFormat(getSeconds());
+}
+
+int changeFormat(int num){
+	int decena = num & 240; 
+	decena = decena >> 4;
+	int unidades = num & 15; 
+	return decena*10 + unidades;
 }
 
 
