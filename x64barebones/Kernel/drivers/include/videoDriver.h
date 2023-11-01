@@ -14,6 +14,52 @@ typedef struct color {
 
 } color_t;
 
+<<<<<<< HEAD
+typedef struct character{
+    uint8_t c;
+    color_t color;
+
+} char_t;
+
+typedef struct container {
+
+    uint16_t ID;
+    uint8_t * name; 
+    uint16_t X0;
+    uint16_t Y0;
+
+    uint16_t width;
+    uint16_t height;
+
+    char_t buffer[SCREENBUFER_SIZE];
+    uint16_t buffer_idx;
+
+    uint16_t ACTUAL_X;
+    uint16_t ACTUAL_Y;
+    
+    color_t background_color;
+    color_t border_color;
+
+
+}container_t;
+
+
+typedef struct container_node{
+    container_t container;
+    struct container_node * next;
+}container_node_t;
+
+struct container_list{
+    uint16_t last_index;
+    container_node_t * first;
+    container_node_t * last;
+
+};
+
+struct container_list initialize_container_list();
+
+uint16_t getContainer(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, uint16_t height);
+
 void putPixel(color_t color, uint64_t x, uint64_t y);
 
 void drawChar(container_t * c,char_t character);
@@ -29,4 +75,3 @@ char inScreenY(uint16_t pixelPos);
 void changeSize(int ID,uint8_t num);
 
 void changeSize(int ID,uint8_t num);
-#endif
