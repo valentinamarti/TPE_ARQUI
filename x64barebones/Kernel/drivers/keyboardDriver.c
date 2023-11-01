@@ -122,10 +122,10 @@ void getKeyValue(uint8_t key){
     if(c != 0){
         // ncPrintChar(c);              si quiero que funcione que se escriban en la pantalla, hay q descomentar esto 
         if(charToInt(c)!=-1){
-            changeSize(charToInt(c));
+            changeSize(1,charToInt(c));
         }
         else{
-            drawChar(WHITE,c);
+            drawCharInContainer(1,(char_t){c,WHITE});
         }
         saveCharToBuffer(c);
     }
