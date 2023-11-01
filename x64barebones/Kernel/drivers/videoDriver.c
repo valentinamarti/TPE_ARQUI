@@ -80,6 +80,11 @@ void emptyScreen(){
     return;
 }
 
+void emptyBuffer(int container_id){
+    container_node_t * node = getContainerByID(container_id);
+    node->container.buffer_idx = 0; 
+}
+
 void putPixel(color_t color, uint64_t x, uint64_t y) {
     uint8_t * framebuffer = (uint8_t *) VBE_mode_info->framebuffer;                 // Crea un puntero al framebuffer del struct 
     uint64_t offset = (x * ((VBE_mode_info->bpp)/8)) + (y * VBE_mode_info->pitch);
@@ -288,11 +293,3 @@ void drawChar(container_t * c,char_t character){
     ACTUAL_X+= DEFAULT_CHAR_WIDTH * SIZE;
 
 }
-
-// AUXILIARES A BORRAR
-void printAsciiTable(int size){
-    changeSize(size);
-	drawChar(WHITE,'A');
-
-}
-// FIN BORRAR
