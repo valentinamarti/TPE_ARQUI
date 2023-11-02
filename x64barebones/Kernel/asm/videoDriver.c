@@ -1,5 +1,5 @@
 #include <stdlib.h>	
-#include <fonts.h>
+#include <font8x8_basic.h>
 #include <stdint.h>
 #include <string.h>
 //#include <stdarg.h>
@@ -80,10 +80,6 @@ void emptyScreen(){
     return;
 }
 
-void emptyBuffer(int container_id){
-    getContainerByID(container_id)->buffer_idx=0;
-}
-
 void putPixel(color_t color, uint64_t x, uint64_t y) {
     uint8_t * framebuffer = (uint8_t *) VBE_mode_info->framebuffer;                 // Crea un puntero al framebuffer del struct 
     uint64_t offset = (x * ((VBE_mode_info->bpp)/8)) + (y * VBE_mode_info->pitch);
@@ -95,7 +91,7 @@ void putPixel(color_t color, uint64_t x, uint64_t y) {
 void drawRectangle(color_t color,int posx,int posy, int sizex, int sizey){
     for(int i=0;i<sizey;i++){
         for(int j=0;j<sizex;j++){
-            putPixel(color,posx+j,posy+i);
+            putPixel(color,posx+i,posy+j);
         }
     }
 }
@@ -121,7 +117,7 @@ void drawVerticalLine(color_t color, int posx,int posy,int height, int size){
 }
 
 void drawByte(color_t color,uint8_t hexa,uint64_t posx, uint64_t posy){
-    for(int i=8; i>0;i--){ //El 8 es el tamaño del byte
+    for(int i=0; i< 8;i++){ //El 8 es el tamaño del byte
         if(hexa & 1){
             drawRectangle(color,posx + i * SIZE,posy,SIZE,SIZE);
         }
@@ -144,6 +140,7 @@ uint16_t getContainer(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, u
     if((X0+width> SCREEN_W) || (Y0+height)> SCREEN_H){        
         return -1;
     }
+    drawChar(NULL, (char_t){c_list.last_index + '0',WHITE});
 
     container_node_t * node= (container_node_t * ) malloc(sizeof(container_node_t));
     if(node ==-1){
@@ -160,10 +157,11 @@ uint16_t getContainer(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, u
     node->container.width= width;
     node->container.height= height;
     node->container.buffer_idx=0;
-    node->container.background_color= BLACK;
+    node->container.background_color= RED;
     node->container.border_color= RED;         //Hacer funcion color random
     
     appendContainer(node);
+    return 0;
     return node->container.ID;
 }
 
@@ -186,7 +184,7 @@ void drawContainer(container_t * c){
     if(x + BORDER_SIZE <= c->X0 + c->width){
         drawVerticalLine(c->border_color,x,c->Y0,c->height,BORDER_SIZE);
     }
-    x=c->X0 + c->width - BORDER_SIZE;
+    x=c->X0+c->height - BORDER_SIZE;
     if(x> c->X0){
         drawVerticalLine(c->border_color,x,c->Y0,c->height,BORDER_SIZE);
     }
@@ -213,15 +211,15 @@ void appendContainer(container_node_t * node){
 }
 
 struct container_list initialize_container_list(){
-    return (struct container_list) {0,NULL,NULL};
+    return (struct container_list) {1,NULL,NULL};
 }
 
-container_t* getContainerByID(int ID){
-    container_node_t* node = c_list.first;
+container_node_t * getContainerByID(int ID){
+    container_node_t * node = c_list.first;
 
     while(node != NULL){
         if(node->container.ID == ID){
-            return &(node->container);
+            return node;
         }
         node= node->next;
     }
@@ -230,7 +228,7 @@ container_t* getContainerByID(int ID){
 
 
 void drawCharInContainer(int ID,char_t character){
-    container_t * c= getContainerByID(ID);
+    container_t * c= & getContainerByID(ID)->container;
     
     drawChar(c,character);
 
@@ -273,39 +271,23 @@ void redrawContainerBuffer(container_t * c, uint16_t offset){
 
 //---------------------CHARACTER FUNCTIONS----------------------------
 
-void drawChar(container_t * c, char_t character){
+void drawChar(container_t * c,char_t character){
     
-    if(character.c == '\b'){
-        backspace(c);
-        return;
-    }
     addContainerBuffer(c,character);
     char* vector= font[character.c];
-    
+    if(character.c== '\b'){
+
+    }
     if((! inContainerX(c,c->ACTUAL_X + DEFAULT_CHAR_WIDTH * SIZE)) || character.c=='\n'){
         newLine(c);
     }
-    if(character.c != '\n'){
-        for(int y=0;y<DEFAULT_CHAR_HEIGHT;y++){
-            drawByte(character.color,vector[y],c->ACTUAL_X,c->ACTUAL_Y+y *SIZE);
-        }
-        c->ACTUAL_X+= DEFAULT_CHAR_WIDTH * SIZE;
+    for(int y=0;y<DEFAULT_CHAR_HEIGHT;y++){
+        drawByte(character.color,vector[y],c->ACTUAL_X,c->ACTUAL_Y+y *SIZE);
     }
+
+    c->ACTUAL_X= c->ACTUAL_X + DEFAULT_CHAR_WIDTH * SIZE;
 }
 
-void backspace(container_t * c){
-    if(c->buffer_idx>0){
-        c->buffer_idx-=1;
-    }
-    if(c->ACTUAL_X == c->X0){
-        c->ACTUAL_Y-= DEFAULT_CHAR_HEIGHT * SIZE;
-        int aux= (c->width - BORDER_SIZE) / (DEFAULT_CHAR_WIDTH * SIZE);  // Aca lo que hago es restar la diferencia
-        c->ACTUAL_X= c->X0 + c->width -BORDER_SIZE -((c->width - BORDER_SIZE) - aux * DEFAULT_CHAR_WIDTH * SIZE);            // Por si justo no llega a completar el char
-    }
-    c->ACTUAL_X-= DEFAULT_CHAR_WIDTH *SIZE;
-    drawRectangle(c->background_color,c->ACTUAL_X,c->ACTUAL_Y,DEFAULT_CHAR_WIDTH * SIZE,DEFAULT_CHAR_HEIGHT * SIZE);
-    return;
-}
 
 void newLine(container_t * c){
     if(inContainerY(c,c->ACTUAL_Y + 2 * DEFAULT_CHAR_HEIGHT * SIZE)){
@@ -313,8 +295,7 @@ void newLine(container_t * c){
     }
     else{
         redrawContainerBuffer(c,c->width/(DEFAULT_CHAR_WIDTH * SIZE));
-    }
-    c->ACTUAL_X=c->X0;
+    }c->ACTUAL_X=c->X0;
 
 }
 
@@ -323,11 +304,4 @@ void changeSize(int ID,uint8_t num){
     redrawContainerBuffer(getContainerByID(ID),0);
 }
 
-void drawString(int ID, uint8_t * string, uint16_t len, color_t color){
-    container_t * c = getContainerByID(ID);
-    for(int i=0; i< len; i++){
-        drawChar(c,(char_t){string[i],color});
-    }
-
-}
 
