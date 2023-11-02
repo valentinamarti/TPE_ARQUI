@@ -19,10 +19,10 @@ static void sys_sleep(uint64_t seconds);
 static void sys_exit(uint64_t container_id);
 static void sys_new_line(uint64_t container_id);
 static void sys_clear_sb(uint64_t container_id);
-static uint16_t sys_call_div(uint64_t dividendo, uint64_t divisor);
 static uint64_t sys_new_container(char * name, int X0, int Y0,int width, int height);
 
-void syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9, uint64_t aux){
+uint64_t syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9, uint64_t aux){
+	int flag; 
 	switch (rdi) {
 		case 0:		
 			sys_write(rsi, rdx, rcx, r8, r9);	// en rsi -> buffer
@@ -65,10 +65,8 @@ void syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, 
 			sys_clear_sb(rsi);
 			break;	
 		case 12:
-			sys_call_div(rsi, rdx);		
-			break;
-		case 13:
-			sys_new_container(rsi,rdx,rcx,r8,r9);
+			flag = sys_new_container(rsi,rdx,rcx,r8,r9);
+			return flag;
 			break;
 	}
 	return;
@@ -141,10 +139,6 @@ void sys_new_line(uint64_t container_id){
 
 void sys_clear_sb(uint64_t container_id){
 	emptyBuffer(container_id);
-}
-
-uint16_t sys_call_div(uint64_t dividendo, uint64_t divisor){
-	return dividendo / divisor;
 }
 
 uint64_t sys_new_container(char * name, int X0, int Y0,int width, int height){

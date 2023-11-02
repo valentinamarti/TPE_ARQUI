@@ -273,27 +273,6 @@ do_sys_clear_sb:		 ; do_sys_clear_sb(int container_id)
     pop rbp
     ret
 
-do_sys_call_div:		 ;  do_sys_call_div(int dividendo, int divisor)
-	push rbp
-    mov rbp, rsp
-
-	push rdi
-	push rsi
-	push rdx
-
-	mov rdx, rsi 		; rdx -> divisor
-	mov rsi, rdi 		; rsi -> dividendo
-	mov rdi, 12
-	int 80h
-
-	pop rdx
-	pop rsi
-	pop rdi
-
-    mov rsp, rbp
-    pop rbp
-    ret
-
 division:
 	mov rdi, 0
 	mov rax, 1
@@ -318,7 +297,7 @@ do_sys_new_container: ; sys_new_container(uint8_t * name, uint16_t X0, uint16_t 
 	mov rcx, rdx        ; rcx -> Y0
 	mov rdx, rsi        ; rdx -> X0
 	mov rsi, rdi        ; rsi -> name
-	mov rdi, 13
+	mov rdi, 12
 	int 80h
 	
 	pop r9 
