@@ -81,8 +81,7 @@ void emptyScreen(){
 }
 
 void emptyBuffer(int container_id){
-    container_node_t * node = getContainerByID(container_id);
-    node->container.buffer_idx = 0; 
+    getContainerByID(container_id)->buffer_idx=0;
 }
 
 void putPixel(color_t color, uint64_t x, uint64_t y) {
@@ -219,12 +218,12 @@ struct container_list initialize_container_list(){
     return (struct container_list) {1,NULL,NULL};
 }
 
-container_node_t * getContainerByID(int ID){
-    container_node_t * node = c_list.first;
+container_t* getContainerByID(int ID){
+    container_node_t* node = c_list.first;
 
     while(node != NULL){
         if(node->container.ID == ID){
-            return node;
+            return &(node->container);
         }
         node= node->next;
     }
@@ -233,7 +232,7 @@ container_node_t * getContainerByID(int ID){
 
 
 void drawCharInContainer(int ID,char_t character){
-    container_t * c= & getContainerByID(ID)->container;
+    container_t * c= getContainerByID(ID);
     
     drawChar(c,character);
 
