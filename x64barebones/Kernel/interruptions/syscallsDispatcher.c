@@ -20,7 +20,7 @@ static void sys_exit(uint64_t container_id);
 static void sys_new_line(uint64_t container_id);
 static void sys_clear_sb(uint64_t container_id);
 static uint16_t sys_call_div(uint64_t dividendo, uint64_t divisor);
-static uint16_t sys_new_container(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, uint16_t height);
+static uint16_t sys_new_container(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, uint16_t height, uint64_t container_id);
 
 void syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9, uint64_t aux){
 	switch (rdi) {
