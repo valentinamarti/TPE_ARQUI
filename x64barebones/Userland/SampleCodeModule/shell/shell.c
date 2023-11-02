@@ -83,7 +83,6 @@ void help(){
 void divbyzero(char* param){
     int aux = atoi(param);
     int aux2 =  division();
-    puts("no corta", WHITE);
     //falta imprimir los registros
 }
 
