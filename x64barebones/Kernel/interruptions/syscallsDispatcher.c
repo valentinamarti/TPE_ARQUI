@@ -22,7 +22,6 @@ static void sys_clear_sb(uint64_t container_id);
 static uint64_t sys_new_container(char * name, int X0, int Y0,int width, int height);
 
 uint64_t syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9, uint64_t aux){
-	int flag; 
 	switch (rdi) {
 		case 0:		
 			sys_write(rsi, rdx, rcx, r8, r9);	// en rsi -> buffer
@@ -65,8 +64,7 @@ uint64_t syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
 			sys_clear_sb(rsi);
 			break;	
 		case 12:
-			flag = sys_new_container(rsi,rdx,rcx,r8,r9);
-			return flag;
+			return sys_new_container(rsi,rdx,rcx,r8,r9);
 			break;
 	}
 	return;
@@ -142,5 +140,7 @@ void sys_clear_sb(uint64_t container_id){
 }
 
 uint64_t sys_new_container(char * name, int X0, int Y0,int width, int height){
-	return getContainer(name,X0,Y0,width,height);
+	int i=getContainer(name,X0,Y0,width,height);
+	drawCharInContainer(i,(char_t){i+'0',WHITE});
+	return i;
 }

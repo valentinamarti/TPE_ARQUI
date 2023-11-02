@@ -55,7 +55,7 @@ void load_shell(){
 
 void run_shell(){
     load_shell();
-    while(1){
+    /*while(1){
         argument[0] = 0;           // asi la puedo volver a usar
         command[0] = 0; 
         print(P_OS_ID, WHITE);      // le hize tipo bigotes de pantera
@@ -66,7 +66,7 @@ void run_shell(){
                 (*commands[i].func)(argument);       
             }
         }
-    }
+    }*/
 }
 
 
