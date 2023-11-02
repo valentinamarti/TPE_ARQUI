@@ -7,7 +7,7 @@
 #define P_OS_ID ">^< > "
 #define BUFFER_SHELL_SIZE 50
 #define NULL 0
-#define DEFAULT_FONT_SIZE 1
+#define DEFAULT_FONT_SIZE 3
 
 static char *regsName[] = {"RAX", "RBX", "RDX" "RSI", "RDI", "RBP", "RSP", "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15", "RIP"};
 
@@ -37,16 +37,15 @@ static command_t commands[] = {  {"help", help, " "},
 
 void load_shell(){
     set_container_id();
-    setFontSize(3);
-    /*newLine();
-    print("   pantherOS\n", WHITE);
+    setFontSize(4);
+    newLine();
+    puts("   pantherOS\n", WHITE);
     newLine();
     puts("     /\\_/\\", WHITE);  
     puts("    ( o.o ) ", WHITE);
     puts("     > ^ <", WHITE);
     sleep(1500);
     clear_sb();
-    */
     // aca quiero una funcion para borrar del buffer del video driver lo del pantheros
     setFontSize(DEFAULT_FONT_SIZE);
     //clear();
@@ -55,7 +54,7 @@ void load_shell(){
 
 void run_shell(){
     load_shell();
-    /*while(1){
+    while(1){
         argument[0] = 0;           // asi la puedo volver a usar
         command[0] = 0; 
         print(P_OS_ID, WHITE);      // le hize tipo bigotes de pantera
@@ -66,7 +65,7 @@ void run_shell(){
                 (*commands[i].func)(argument);       
             }
         }
-    }*/
+    }
 }
 
 

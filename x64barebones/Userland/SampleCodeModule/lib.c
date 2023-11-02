@@ -11,9 +11,9 @@
 
 // Container defines
 #define NAME "SHELL"
-#define CX0 10  //Constant X0
-#define CY0 10  //Constant Y0
-#define WIDTH 400
+#define CX0 100  //Constant X0
+#define CY0 100  //Constant Y0
+#define WIDTH 800
 #define HEIGHT 500
 
 
@@ -28,12 +28,13 @@ extern void do_sys_get_time(int* hrs, int* min, int* sec);
 extern void do_sys_read(char* buffer, int longitud, int fd);
 extern int do_sys_new_container(char * name, int X0, int Y0,int width, int height,int * container_id);
 
-int container_id=5;
+static int container_id;
 
 // ESTA FUNCION SI O SI LLAMARLA AL PRINCIPIO, PARA QUE CARGUE EL CONTAINER
 void set_container_id(){
-    do_sys_new_container(NAME,CX0,CY0,WIDTH,HEIGHT, &container_id); 
-    printChar(container_id+'0',WHITE);
+    int aux;
+    do_sys_new_container(NAME,CX0,CY0,WIDTH,HEIGHT, &aux); 
+    container_id = aux;
 }
 
 int getID(){
@@ -268,9 +269,8 @@ int scanf(char* fmt, int color, ...){
 
     while ((c = getCharFromKernel()) != '\n' && i < BUFFER_SHELL_SIZE - 1){
         if(c == '\b' && i > 0){
-            buffer[i--] = ' ';              // esto desps se pisa
-            // aca elimino la letra, todavia no se como lo hace mati
-            // a completar
+            buffer[i--] = ' ';
+            printChar(c, color);
         }else if(c != '\b' && c != 0){
             buffer[i++] = c; 
             printChar(c, color);

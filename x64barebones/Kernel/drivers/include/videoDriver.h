@@ -1,6 +1,7 @@
 #define WHITE ((color_t){255, 255, 255})
 #define BLACK ((color_t){0,0,0})
 #define RED ((color_t){255,0,0})
+#define GREEN ((color_t){0,255,0})
 
 #define SCREENBUFER_SIZE 256
 #define BORDER_SIZE 3
@@ -82,7 +83,7 @@ void changeSize(int ID,uint8_t num);
 
 void emptyBuffer(int container_id);
 
-void newLine(uint64_t container_id);
+void newLine(container_t * c);
 
 void changeSize(int ID,uint8_t num);
 
