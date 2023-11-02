@@ -292,6 +292,7 @@ do_sys_new_container: ; sys_new_container(uint8_t * name, uint16_t X0, uint16_t 
 	push r8
 	push r9
 
+	push r9
 	mov r9, r8			; r9 -> height
 	mov r8, rcx			; r8 -> width
 	mov rcx, rdx        ; rcx -> Y0
