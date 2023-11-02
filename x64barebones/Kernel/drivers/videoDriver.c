@@ -289,10 +289,3 @@ void drawChar(container_t * c,char_t character){
 
 }
 
-// AUXILIARES A BORRAR
-void printAsciiTable(int size){
-    changeSize(size);
-	drawChar(WHITE,'A');
-
-}
-// FIN BORRAR

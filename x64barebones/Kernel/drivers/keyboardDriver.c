@@ -125,7 +125,7 @@ int getKeyValue(uint8_t key){
             if(c != 0){
                 int aux = charToInt(c);
                 if(aux != -1){
-                    changeSize(aux);
+                    changeSize(1,aux);
                 }else if(c == 'r' || c == 'R'){
                     int flagAux = 1;        // me indica si tengo que capturar los registros 
                 }

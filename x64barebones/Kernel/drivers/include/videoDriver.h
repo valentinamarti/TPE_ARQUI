@@ -1,5 +1,6 @@
 #define WHITE ((color_t){255, 255, 255})
 #define BLACK ((color_t){0,0,0})
+#define RED ((color_t){255,0,0})
 
 #define SCREENBUFER_SIZE 256
 #define BORDER_SIZE 3
@@ -14,7 +15,6 @@ typedef struct color {
 
 } color_t;
 
-<<<<<<< HEAD
 typedef struct character{
     uint8_t c;
     color_t color;

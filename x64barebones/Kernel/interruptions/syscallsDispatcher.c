@@ -103,7 +103,6 @@ void sys_get_time(uint64_t hrs, uint64_t min, uint64_t sec){	//son todos puntero
 
 void sys_get_registers(uint64_t *registers) {
     uint64_t *regs = getRegisters();
-	drawChar(WHITE, 'c');
     for (int i = 0; i < 17; i++) {
         registers[i] = regs[i];
     }
@@ -112,7 +111,7 @@ void sys_get_registers(uint64_t *registers) {
 
 
 void sys_set_font_size(uint64_t size, uint64_t container_id){
-	changeSize(size);	// desps pasarle el container id
+	changeSize(container_id, size);	// desps pasarle el container id
 }
 
 
