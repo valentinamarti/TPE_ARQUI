@@ -213,7 +213,7 @@ void appendContainer(container_node_t * node){
 }
 
 struct container_list initialize_container_list(){
-    return (struct container_list) {1,NULL,NULL};
+    return (struct container_list) {0,NULL,NULL};
 }
 
 container_t* getContainerByID(int ID){
@@ -287,8 +287,7 @@ void drawChar(container_t * c, char_t character){
         drawByte(character.color,vector[y],c->ACTUAL_X,c->ACTUAL_Y+y *SIZE);
     }
 
-    ACTUAL_X+= DEFAULT_CHAR_WIDTH * SIZE;
-
+    c->ACTUAL_X+= DEFAULT_CHAR_WIDTH * SIZE;
 }
 
 
@@ -312,7 +311,6 @@ void drawString(int ID, uint8_t * string, uint16_t len, color_t color){
     container_t * c = getContainerByID(ID);
     for(int i=0; i< len; i++){
         drawChar(c,(char_t){string[i],color});
-
     }
 
 }

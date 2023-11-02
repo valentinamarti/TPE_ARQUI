@@ -28,12 +28,12 @@ extern void do_sys_get_time(int* hrs, int* min, int* sec);
 extern void do_sys_read(char* buffer, int longitud, int fd);
 extern int do_sys_new_container(char * name, int X0, int Y0,int width, int height, int *container_id);
 
-static int container_id;
+int container_id=5;
 
 // ESTA FUNCION SI O SI LLAMARLA AL PRINCIPIO, PARA QUE CARGUE EL CONTAINER
 void set_container_id(){
     do_sys_new_container(NAME,CX0,CY0,WIDTH,HEIGHT, &container_id); 
-    print("entre",WHITE);
+    print(container_id+ '0',WHITE);
 }
 
 int getID(){
