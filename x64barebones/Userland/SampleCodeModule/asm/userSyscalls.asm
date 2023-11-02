@@ -283,7 +283,7 @@ do_sys_call_div:		 ;  do_sys_call_div(int dividendo, int divisor)
 
 	mov rdx, rsi 		; rdx -> divisor
 	mov rsi, rdi 		; rsi -> dividendo
-	mov rdi, 11
+	mov rdi, 12
 	int 80h
 
 	pop rdx
@@ -302,7 +302,7 @@ division:
 	div rdi
 
 
-do_sys_new_container: ; sys_new_container(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, uint16_t height);
+do_sys_new_container: ; sys_new_container(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, uint16_t height, uint64_t container_id);
 	push rbp
     mov rbp, rsp
 
@@ -313,6 +313,7 @@ do_sys_new_container: ; sys_new_container(uint8_t * name, uint16_t X0, uint16_t 
 	push r8
 	push r9
 
+	push r9
 	mov r9, r8			; r9 -> height
 	mov r8, rcx			; r8 -> width
 	mov rcx, rdx        ; rcx -> Y0

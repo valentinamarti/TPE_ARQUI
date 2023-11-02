@@ -32,8 +32,7 @@ static int container_id;
 
 // ESTA FUNCION SI O SI LLAMARLA AL PRINCIPIO, PARA QUE CARGUE EL CONTAINER
 void set_container_id(){
-    container_id = do_sys_new_container(NAME,CX0,CY0,WIDTH,HEIGHT); 
-    
+    do_sys_new_container(NAME,CX0,CY0,WIDTH,HEIGHT, &container_id); 
     print(container_id+ '0',WHITE);
 }
 
