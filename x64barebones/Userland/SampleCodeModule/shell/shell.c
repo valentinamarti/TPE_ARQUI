@@ -36,9 +36,9 @@ static command_t commands[] = {  {"help", help, " "},
 
 
 void load_shell(){
-    set_container_id(1);
-    setFontSize(8);
-    newLine();
+    set_container_id();
+    setFontSize(3);
+    /*newLine();
     print("   pantherOS\n", WHITE);
     newLine();
     puts("     /\\_/\\", WHITE);  
@@ -46,9 +46,10 @@ void load_shell(){
     puts("     > ^ <", WHITE);
     sleep(1500);
     clear_sb();
+    */
     // aca quiero una funcion para borrar del buffer del video driver lo del pantheros
     setFontSize(DEFAULT_FONT_SIZE);
-    clear();
+    //clear();
 }
 
 

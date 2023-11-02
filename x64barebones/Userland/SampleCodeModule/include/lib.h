@@ -5,7 +5,7 @@
     void printChar(char c, int color);
     char getChar(int fd);
     void puts(char* string, int color);
-    void set_container_id(int id);
+    void set_container_id();
     int abs(int value);
     void newLine();
     void print(char* buff, int color);
@@ -24,4 +24,6 @@
     void sleep(int seconds);
     void clear();
 
+
+    int getID();
 #endif

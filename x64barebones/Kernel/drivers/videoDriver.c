@@ -144,7 +144,6 @@ uint16_t getContainer(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, u
     if((X0+width> SCREEN_W) || (Y0+height)> SCREEN_H){        
         return -1;
     }
-    drawChar(NULL, (char_t){c_list.last_index + '0',WHITE});
 
     container_node_t * node= (container_node_t * ) malloc(sizeof(container_node_t));
     if(node ==-1){
@@ -165,7 +164,6 @@ uint16_t getContainer(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, u
     node->container.border_color= RED;         //Hacer funcion color random
     
     appendContainer(node);
-    return 0;
     return node->container.ID;
 }
 
@@ -188,7 +186,7 @@ void drawContainer(container_t * c){
     if(x + BORDER_SIZE <= c->X0 + c->width){
         drawVerticalLine(c->border_color,x,c->Y0,c->height,BORDER_SIZE);
     }
-    x=c->X0+c->height - BORDER_SIZE;
+    x=c->X0 + c->width - BORDER_SIZE;
     if(x> c->X0){
         drawVerticalLine(c->border_color,x,c->Y0,c->height,BORDER_SIZE);
     }
@@ -308,5 +306,14 @@ void newLine(uint64_t container_id){
 void changeSize(int ID,uint8_t num){
     SIZE= num;
     redrawContainerBuffer(getContainerByID(ID),0);
+}
+
+void drawString(int ID, uint8_t * string, uint16_t len, color_t color){
+    container_t * c = getContainerByID(ID);
+    for(int i=0; i< len; i++){
+        drawChar(c,(char_t){string[i],color});
+
+    }
+
 }
 

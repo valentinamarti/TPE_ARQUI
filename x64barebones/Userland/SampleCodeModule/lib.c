@@ -8,6 +8,15 @@
 #define BUFFER_SHELL_SIZE 50
 #define BUFFER_KERNEL 0
 #define BUFFER_USERSPACE 1
+
+// Container defines
+#define NAME "SHELL"
+#define CX0 10  //Constant X0
+#define CY0 10  //Constant Y0
+#define WIDTH 400
+#define HEIGHT 500
+
+
 #define isupper(c) ((c >= 'A') && (c <= 'Z'))
 #define islower(c) ((c >= 'a') && (c <= 'z'))
 #define tolower(c) (c + ('a' - 'A'))
@@ -17,13 +26,19 @@ extern void do_sys_write(char* buffer, int longitud, int fd, int color, int cont
 extern void do_sys_new_line(int container_id);
 extern void do_sys_get_time(int* hrs, int* min, int* sec);
 extern void do_sys_read(char* buffer, int longitud, int fd);
-
+extern int do_sys_new_container(char * name, int X0, int Y0,int width, int height);
 
 static int container_id;
 
 // ESTA FUNCION SI O SI LLAMARLA AL PRINCIPIO, PARA QUE CARGUE EL CONTAINER
-void set_container_id(int id){
-    container_id = id; 
+void set_container_id(){
+    container_id = do_sys_new_container(NAME,CX0,CY0,WIDTH,HEIGHT); 
+    
+    print(container_id+ '0',WHITE);
+}
+
+int getID(){
+    return container_id;
 }
 
 //falta agregar float 

@@ -12,7 +12,7 @@ GLOBAL do_sys_new_line
 GLOBAL do_sys_clear_sb
 GLOBAL do_sys_call_div
 GLOBAL division
-
+GLOBAL do_sys_new_container
 section .text
 
 do_sys_write:   ; do_sys_write(char* buffer, int longitud, int fd, color_t color, int container_id);
@@ -168,7 +168,7 @@ do_sys_draw_rectangle:     ; sys_draw_rectangle(int posx, int posy, int sizex, i
 	push r9
 
 	push r9				; container_id
-	mov r9, rdx			; r9 -> color
+	mov r9, r8			; r9 -> color
 	mov r8, rcx			; r8 -> sizey
 	mov rcx, rdx        ; rcx -> sizex
 	mov rdx, rsi        ; rdx -> posy
@@ -301,3 +301,33 @@ division:
 
 	div rdi
 
+
+do_sys_new_container: ; sys_new_container(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, uint16_t height);
+	push rbp
+    mov rbp, rsp
+
+	push rdi
+	push rsi
+	push rdx
+	push rcx
+	push r8
+	push r9
+
+	mov r9, r8			; r9 -> height
+	mov r8, rcx			; r8 -> width
+	mov rcx, rdx        ; rcx -> Y0
+	mov rdx, rsi        ; rdx -> X0
+	mov rsi, rdi        ; rsi -> name
+	mov rdi, 13
+	int 80h
+	
+	pop r9 
+	pop r8
+	pop rcx
+	pop rdx
+	pop rsi
+	pop rdi
+	
+	mov rsp, rbp
+    pop rbp
+    ret

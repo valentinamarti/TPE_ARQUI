@@ -19,7 +19,8 @@ static void sys_sleep(uint64_t seconds);
 static void sys_exit(uint64_t container_id);
 static void sys_new_line(uint64_t container_id);
 static void sys_clear_sb(uint64_t container_id);
-static int sys_call_div(uint64_t dividendo, uint64_t divisor);
+static uint16_t sys_call_div(uint64_t dividendo, uint64_t divisor);
+static uint16_t sys_new_container(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, uint16_t height);
 
 void syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9, uint64_t aux){
 	switch (rdi) {
@@ -66,14 +67,19 @@ void syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, 
 		case 12:
 			sys_call_div(rsi, rdx);		
 			break;
+		case 13:
+			sys_new_container(rsi,rdx,rcx,r8,r9);
+			break;
 	}
 	return;
 }
 
 void sys_write(uint64_t buffer, uint64_t longitud, uint64_t filedescriptor, uint64_t color, uint64_t container_id){
 	char* string = (char *) buffer;
+
+
 	if(filedescriptor == STDOUT){
-		drawString(WHITE, string, longitud);
+		drawString(container_id, string, longitud,WHITE);
 	}else{
 		return;
 	}
@@ -92,7 +98,7 @@ void sys_read(uint64_t buffer, uint64_t longitud, uint64_t filedescriptor){
 }
 
 void sys_clear(uint64_t container_id){
-	emptyScreen();
+	emptyContainer(container_id);
 }
 
 void sys_get_time(uint64_t hrs, uint64_t min, uint64_t sec){	//son todos punteros a los buffers donde van
@@ -111,7 +117,7 @@ void sys_get_registers(uint64_t *registers) {
 
 
 void sys_set_font_size(uint64_t size, uint64_t container_id){
-	changeSize(size, container_id);	// desps pasarle el container id
+	changeSize(container_id,size);	// desps pasarle el container id
 }
 
 
@@ -136,11 +142,13 @@ void sys_new_line(uint64_t container_id){
 }
 
 void sys_clear_sb(uint64_t container_id){
-	emptyScreen();
 	emptyBuffer(container_id);
 }
 
-int sys_call_div(uint64_t dividendo, uint64_t divisor){
+uint16_t sys_call_div(uint64_t dividendo, uint64_t divisor){
 	return dividendo / divisor;
 }
 
+uint16_t sys_new_container(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, uint16_t height){
+	return getContainer(name,X0,Y0,width,height);
+}
