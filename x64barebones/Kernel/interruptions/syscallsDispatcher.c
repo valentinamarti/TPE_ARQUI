@@ -149,6 +149,6 @@ uint16_t sys_call_div(uint64_t dividendo, uint64_t divisor){
 	return dividendo / divisor;
 }
 
-uint16_t sys_new_container(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, uint16_t height, uint64_t container_id){
+uint16_t sys_new_container(char * name, int X0, int Y0,int width, int height, uint64_t container_id){
 	*((unsigned int *)container_id) =  getContainer(name,X0,Y0,width,height);
 }
