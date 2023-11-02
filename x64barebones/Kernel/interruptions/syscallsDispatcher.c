@@ -20,7 +20,7 @@ static void sys_exit(uint64_t container_id);
 static void sys_new_line(uint64_t container_id);
 static void sys_clear_sb(uint64_t container_id);
 static uint16_t sys_call_div(uint64_t dividendo, uint64_t divisor);
-static uint64_t sys_new_container(char * name, int X0, int Y0,int width, int height, uint64_t container_id);
+static uint64_t sys_new_container(char * name, int X0, int Y0,int width, int height);
 
 void syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9, uint64_t aux){
 	switch (rdi) {
@@ -68,7 +68,7 @@ void syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, 
 			sys_call_div(rsi, rdx);		
 			break;
 		case 13:
-			sys_new_container(rsi,rdx,rcx,r8,r9, aux);
+			sys_new_container(rsi,rdx,rcx,r8,r9);
 			break;
 	}
 	return;
@@ -76,10 +76,8 @@ void syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, 
 
 void sys_write(uint64_t buffer, uint64_t longitud, uint64_t filedescriptor, uint64_t color, uint64_t container_id){
 	char* string = (char *) buffer;
-
-
 	if(filedescriptor == STDOUT){
-		drawString(container_id, string, longitud,WHITE);
+		drawString(container_id, string, longitud, WHITE);
 	}else{
 		return;
 	}
@@ -149,6 +147,6 @@ uint16_t sys_call_div(uint64_t dividendo, uint64_t divisor){
 	return dividendo / divisor;
 }
 
-uint16_t sys_new_container(char * name, int X0, int Y0,int width, int height, uint64_t container_id){
-	*((unsigned int *)container_id) =  getContainer(name,X0,Y0,width,height);
+uint64_t sys_new_container(char * name, int X0, int Y0,int width, int height){
+	return getContainer(name,X0,Y0,width,height);
 }

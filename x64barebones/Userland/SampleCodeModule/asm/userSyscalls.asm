@@ -302,7 +302,7 @@ division:
 	div rdi
 
 
-do_sys_new_container: ; sys_new_container(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, uint16_t height, uint64_t container_id);
+do_sys_new_container: ; sys_new_container(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, uint16_t height);
 	push rbp
     mov rbp, rsp
 
@@ -313,7 +313,6 @@ do_sys_new_container: ; sys_new_container(uint8_t * name, uint16_t X0, uint16_t 
 	push r8
 	push r9
 
-	push r9				; aux -> &container_id 
 	mov r9, r8			; r9 -> height
 	mov r8, rcx			; r8 -> width
 	mov rcx, rdx        ; rcx -> Y0
