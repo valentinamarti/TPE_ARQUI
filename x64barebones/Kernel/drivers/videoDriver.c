@@ -275,7 +275,7 @@ void redrawContainerBuffer(container_t * c, uint16_t offset){
 
 //---------------------CHARACTER FUNCTIONS----------------------------
 
-void drawChar(container_t * c,char_t character){
+void drawChar(container_t * c, char_t character){
     
     addContainerBuffer(c,character);
     char* vector= font[character.c];
@@ -294,7 +294,8 @@ void drawChar(container_t * c,char_t character){
 }
 
 
-void newLine(container_t * c){
+void newLine(uint64_t container_id){
+    container_t * c = getContainerByID(container_id);
     if(inContainerY(c,c->ACTUAL_Y + 2 * DEFAULT_CHAR_HEIGHT * SIZE)){
         c->ACTUAL_Y+= DEFAULT_CHAR_HEIGHT* SIZE;
     }

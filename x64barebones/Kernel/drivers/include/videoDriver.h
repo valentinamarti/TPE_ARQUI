@@ -77,3 +77,11 @@ char inScreenY(uint16_t pixelPos);
 void changeSize(int ID,uint8_t num);
 
 void changeSize(int ID,uint8_t num);
+
+void emptyBuffer(int container_id);
+
+void newLine(uint64_t container_id);
+
+void changeSize(int ID,uint8_t num);
+
+void emptyScreen();

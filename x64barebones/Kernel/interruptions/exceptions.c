@@ -20,20 +20,9 @@ void exceptionDispatcher(int exception){
 
 
 static void zero_division() {
-	uint64_t *regs = getRegisters();
-	char aux[10] = {0};
-    for(int i = 0; i < 10; i++){
-		//itoa(regs[i], aux, 16);
-		drawStringNull(WHITE, regsName[i]);
-		drawStringNull(WHITE, " : ");
-        drawStringNull(WHITE, regs[i]);
-		newLine();
-    }
-	emptyBuffer();
 	sleep(10000);
 }
 
 static void op_code(){
 
 }
-

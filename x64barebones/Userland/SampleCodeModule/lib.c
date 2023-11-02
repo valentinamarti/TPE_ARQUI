@@ -26,7 +26,6 @@ void set_container_id(int id){
     container_id = id; 
 }
 
-
 //falta agregar float 
 void printf(char* string, int color, ...){
     va_list v;
@@ -327,6 +326,5 @@ int wordlen(char* s){
 void clear_sb(){
     do_sys_clear_sb(container_id);
 }
-
 
 

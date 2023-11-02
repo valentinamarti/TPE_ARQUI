@@ -32,7 +32,7 @@ do_sys_write:   ; do_sys_write(char* buffer, int longitud, int fd, color_t color
 	mov r9, r8 			; r9 -> container_id
     mov r8, rcx         ; r8 -> color
 	mov rcx, rdx        ; rcx -> filedescriptor
-	mov rdx, rsi        ; rdx -> longitud
+	mov rdx, rsi        ; rdx -> longitudz
 	mov rsi, rdi        ; rsi -> buffer
 	mov rdi, 0
 	int 80h

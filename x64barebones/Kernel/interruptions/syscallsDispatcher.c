@@ -111,7 +111,7 @@ void sys_get_registers(uint64_t *registers) {
 
 
 void sys_set_font_size(uint64_t size, uint64_t container_id){
-	changeSize(container_id, size);	// desps pasarle el container id
+	changeSize(size, container_id);	// desps pasarle el container id
 }
 
 
@@ -132,12 +132,12 @@ void sys_exit(uint64_t container_id){
 }
 
 void sys_new_line(uint64_t container_id){
-	newLine();		// desps agreagrle lo del container i
+	newLine(container_id);		
 }
 
 void sys_clear_sb(uint64_t container_id){
 	emptyScreen();
-	emptyBuffer();
+	emptyBuffer(container_id);
 }
 
 int sys_call_div(uint64_t dividendo, uint64_t divisor){
