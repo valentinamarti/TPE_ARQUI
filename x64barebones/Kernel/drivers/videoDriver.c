@@ -294,3 +294,19 @@ void drawChar(container_t * c,char_t character){
 
 }
 
+
+void newLine(container_t * c){
+    if(inContainerY(c,c->ACTUAL_Y + 2 * DEFAULT_CHAR_HEIGHT * SIZE)){
+        c->ACTUAL_Y+= DEFAULT_CHAR_HEIGHT* SIZE;
+    }
+    else{
+        redrawContainerBuffer(c,c->width/(DEFAULT_CHAR_WIDTH * SIZE));
+    }c->ACTUAL_X=c->X0;
+
+}
+
+void changeSize(int ID,uint8_t num){
+    SIZE= num;
+    redrawContainerBuffer(getContainerByID(ID),0);
+}
+
