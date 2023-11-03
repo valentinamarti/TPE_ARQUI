@@ -160,7 +160,7 @@ uint16_t getContainer(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, u
     node->container.width= width;
     node->container.height= height;
     node->container.buffer_idx=0;
-    node->container.background_color= BLACK;
+    node->container.background_color= SEX;
     node->container.border_color= RED;         //Hacer funcion color random
     
     appendContainer(node);
@@ -213,7 +213,7 @@ void appendContainer(container_node_t * node){
 }
 
 struct container_list initialize_container_list(){
-    return (struct container_list) {0,NULL,NULL};
+    return (struct container_list) {1,NULL,NULL};
 }
 
 container_t* getContainerByID(int ID){
@@ -239,7 +239,7 @@ void drawCharInContainer(int ID,char_t character){
 void emptyContainer(container_t * c){
     for(int y=c->Y0; y<(c->Y0+c->height)-BORDER_SIZE; y++){
         for(int x=c->X0; x<(c->X0+c->width)-BORDER_SIZE; x++){
-            putPixel(BLACK,x,y);
+            putPixel(c->background_color,x,y);
         }
     }
     c->ACTUAL_X=c->X0;

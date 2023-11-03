@@ -4,10 +4,17 @@
 #include <timeuser.h>
 
 #define WHITE 0         // es mentira, no esta definido ningun color todavia 
-#define P_OS_ID ">^< > "
+#define P_OS_ID ">^< "
 #define BUFFER_SHELL_SIZE 50
 #define NULL 0
 #define DEFAULT_FONT_SIZE 3
+
+// Container defines
+#define NAME "SHELL"
+#define CX0 100  //Constant X0
+#define CY0 100  //Constant Y0
+#define WIDTH 800
+#define HEIGHT 500
 
 static char *regsName[] = {"RAX", "RBX", "RDX" "RSI", "RDI", "RBP", "RSP", "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15", "RIP"};
 
@@ -22,6 +29,7 @@ void exit();
 
 static char command[BUFFER_SHELL_SIZE] = {0};
 static char argument[BUFFER_SHELL_SIZE] = {0};
+static int container_id; 
 
 
 static command_t commands[] = {  {"help", help, " "},
@@ -36,7 +44,10 @@ static command_t commands[] = {  {"help", help, " "},
 
 
 void load_shell(){
-    set_container_id();
+    int aux = do_sys_new_container(NAME,CX0,CY0,WIDTH,HEIGHT); 
+    container_id = aux;
+    set_container_id(container_id);
+
     setFontSize(4);
     newLine();
     puts("   pantherOS\n", WHITE);

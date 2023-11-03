@@ -15,7 +15,6 @@ GLOBAL _irq05Handler
 GLOBAL _int80Handler:
 
 GLOBAL _exception0Handler
-GLOBAL _exception6Handler
 GLOBAL getRegisters
 
 EXTERN irqDispatcher
@@ -139,9 +138,19 @@ getRegisters:
 	ret
 
 _int80Handler:	; en rdi el mode, luego en el resto de los registros los parametros usuales de cada syscall
-	pushState
+	push rbp
+	push rsp 
+	push r12
+	push r13
+	push r15
+
 	call syscallsDispatcher
-	popState
+	
+	pop r15
+	pop r13
+	pop r12
+	pop rsp 
+	pop rbp
 	iretq 
 
 
@@ -205,11 +214,6 @@ _irq05Handler:
 _exception0Handler:
 	exceptionHandler 0
 
-;Wrong Opcode Exception
-_exception6Handler:
-	exceptionHandler 6
-
-
 haltcpu:
 	cli
 	hlt
@@ -222,4 +226,4 @@ userland equ 0x400000
 
 SECTION .bss
 	aux resq 1
-	registers resq 17	;registrs when there is an exception
+	registers resq 17

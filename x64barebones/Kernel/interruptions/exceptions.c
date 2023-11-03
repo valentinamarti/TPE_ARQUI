@@ -20,7 +20,7 @@ void exceptionDispatcher(int exception){
 
 
 static void zero_division() {
-	sleep(10000);
+	
 }
 
 static void op_code(){

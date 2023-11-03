@@ -2,7 +2,7 @@
 #define BLACK ((color_t){0,0,0})
 #define RED ((color_t){255,0,0})
 #define GREEN ((color_t){0,255,0})
-
+#define SEX ((color_t){69,69,69})
 #define SCREENBUFER_SIZE 256
 #define BORDER_SIZE 3
 

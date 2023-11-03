@@ -19,10 +19,11 @@ static void sys_sleep(uint64_t seconds);
 static void sys_exit(uint64_t container_id);
 static void sys_new_line(uint64_t container_id);
 static void sys_clear_sb(uint64_t container_id);
-void sys_new_container(char * name, int X0, int Y0,int width, int height, int *container_id);
+static uint64_t sys_new_container(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, uint16_t height);
 
-void syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9, uint64_t aux){
+uint64_t syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9, uint64_t aux){
 	switch (rdi) {
+		int flag = 0; 
 		case 0:		
 			sys_write(rsi, rdx, rcx, r8, r9);	// en rsi -> buffer
 												// en rdx -> longitud
@@ -64,7 +65,8 @@ void syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, 
 			sys_clear_sb(rsi);
 			break;	
 		case 12:
-			sys_new_container(rsi,rdx,rcx,r8,r9, aux);
+			flag = sys_new_container(rsi,rdx,rcx,r8,r9);
+			return flag;
 			break;
 	}
 	return;
@@ -136,10 +138,11 @@ void sys_new_line(uint64_t container_id){
 }
 
 void sys_clear_sb(uint64_t container_id){
+	emptyContainer(container_id);
 	emptyBuffer(container_id);
 }
 
-void sys_new_container(char * name, int X0, int Y0,int width, int height, int *container_id){	
-	*container_id= getContainer(name,X0,Y0,width,height);
-	drawCharInContainer(*container_id,(char_t){*container_id+'0',WHITE});
+uint64_t sys_new_container(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, uint16_t height){	
+	int aux = getContainer(name,X0,Y0,width,height);
+	return aux; 
 }
