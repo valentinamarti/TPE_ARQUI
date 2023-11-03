@@ -15,6 +15,7 @@ GLOBAL _irq05Handler
 GLOBAL _int80Handler:
 
 GLOBAL _exception0Handler
+GLOBAL _exception6Handler
 GLOBAL getRegisters
 
 EXTERN irqDispatcher
@@ -203,6 +204,11 @@ _irq05Handler:
 ;Zero Division Exception
 _exception0Handler:
 	exceptionHandler 0
+
+;Wrong Opcode Exception
+_exception6Handler:
+	exceptionHandler 6
+
 
 haltcpu:
 	cli
