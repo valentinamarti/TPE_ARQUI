@@ -40,7 +40,6 @@ void load_shell(){
     setFontSize(4);
     newLine();
     puts("   pantherOS\n", WHITE);
-    puts("baby", WHITE);
     newLine();
     puts("     /\\_/\\", WHITE);  
     puts("    ( o.o ) ", WHITE);
