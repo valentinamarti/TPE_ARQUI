@@ -7,10 +7,11 @@
 #define P_OS_ID ">^< "
 #define BUFFER_SHELL_SIZE 50
 #define NULL 0
-#define DEFAULT_FONT_SIZE 3
 
 // Container defines
 #define NAME "SHELL"
+#define SHELL_SIZE 2
+
 #define CX0 100  //Constant X0
 #define CY0 100  //Constant Y0
 #define WIDTH 800
@@ -58,7 +59,7 @@ void load_shell(){
     sleep(1500);
     clear_sb();
     // aca quiero una funcion para borrar del buffer del video driver lo del pantheros
-    setFontSize(DEFAULT_FONT_SIZE);
+    setFontSize(SHELL_SIZE);
     //clear();
 }
 

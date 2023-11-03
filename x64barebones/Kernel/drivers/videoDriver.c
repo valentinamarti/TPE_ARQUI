@@ -8,7 +8,6 @@
 #define SCREEN_W VBE_mode_info->width
 #define SCREEN_H VBE_mode_info->height
 
-uint8_t SIZE = DEFAULT_SIZE;
 uint64_t ACTUAL_X = 0, ACTUAL_Y = 0;                    // Coordenadas de escritura de caracteres
 
 char_t screenbuffer[SCREENBUFER_SIZE];
@@ -120,7 +119,7 @@ void drawVerticalLine(color_t color, int posx,int posy,int height, int size){
     }
 }
 
-void drawByte(color_t color,uint8_t hexa,uint64_t posx, uint64_t posy){
+void drawByte(color_t color,uint16_t SIZE,uint8_t hexa,uint64_t posx, uint64_t posy){
     for(int i=8; i>0;i--){ //El 8 es el tamaño del byte
         if(hexa & 1){
             drawRectangle(color,posx + i * SIZE,posy,SIZE,SIZE);
@@ -153,6 +152,7 @@ uint16_t getContainer(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, u
     //Initialize node
     node->container.ID= c_list.last_index++;
     node->container.name= name;
+    node->container.SIZE = DEFAULT_SIZE;
     node->container.X0=X0;
     node->container.ACTUAL_X= X0;
     node->container.Y0=Y0;
@@ -210,6 +210,28 @@ void appendContainer(container_node_t * node){
 
     c_list.last->next= node;
     c_list.last= node;
+}
+
+void popContainer(container_t* c){
+
+    if(c_list.first== NULL){
+        return;
+    }
+
+    if(c_list.first->container.ID == c->ID){
+        c_list.first= c_list.first->next;
+        return;
+    }
+
+    container_node_t * node= c_list.first;
+    while(node->next != NULL){
+        if(node->next->container.ID == c->ID){
+            node->next= node->next->next;
+        }
+        node= node->next;
+    }
+    return;
+    
 }
 
 struct container_list initialize_container_list(){
@@ -271,6 +293,25 @@ void redrawContainerBuffer(container_t * c, uint16_t offset){
     }
 }
 
+void exitContainer(int ID){
+    container_t * c=getContainerByID(ID);
+    
+    popContainer(c);
+    free(c);
+    redrawCList();
+}
+
+
+void redrawCList(){
+    container_node_t * node= c_list.first;
+
+    while(node != NULL){
+        redrawContainerBuffer(&(node->container),0);
+        node= node->next;
+    }
+    return;
+}
+
 //---------------------CHARACTER FUNCTIONS----------------------------
 
 void drawChar(container_t * c, char_t character){
@@ -282,14 +323,14 @@ void drawChar(container_t * c, char_t character){
     addContainerBuffer(c,character);
     char* vector= font[character.c];
     
-    if((! inContainerX(c,c->ACTUAL_X + DEFAULT_CHAR_WIDTH * SIZE)) || character.c=='\n'){
+    if((! inContainerX(c,c->ACTUAL_X + DEFAULT_CHAR_WIDTH * c->SIZE)) || character.c=='\n'){
         newLine(c);
     }
     if(character.c != '\n'){
         for(int y=0;y<DEFAULT_CHAR_HEIGHT;y++){
-            drawByte(character.color,vector[y],c->ACTUAL_X,c->ACTUAL_Y+y *SIZE);
+            drawByte(character.color,c->SIZE,vector[y],c->ACTUAL_X,c->ACTUAL_Y+y *c->SIZE);
         }
-        c->ACTUAL_X+= DEFAULT_CHAR_WIDTH * SIZE;
+        c->ACTUAL_X+= DEFAULT_CHAR_WIDTH * c->SIZE;
     }
 }
 
@@ -298,29 +339,30 @@ void backspace(container_t * c){
         c->buffer_idx-=1;
     }
     if(c->ACTUAL_X == c->X0){
-        c->ACTUAL_Y-= DEFAULT_CHAR_HEIGHT * SIZE;
-        int aux= (c->width - BORDER_SIZE) / (DEFAULT_CHAR_WIDTH * SIZE);  // Aca lo que hago es restar la diferencia
-        c->ACTUAL_X= c->X0 + c->width -BORDER_SIZE -((c->width - BORDER_SIZE) - aux * DEFAULT_CHAR_WIDTH * SIZE);            // Por si justo no llega a completar el char
+        c->ACTUAL_Y-= DEFAULT_CHAR_HEIGHT * c->SIZE;
+        int aux= (c->width - BORDER_SIZE) / (DEFAULT_CHAR_WIDTH * c->SIZE);  // Aca lo que hago es restar la diferencia
+        c->ACTUAL_X= c->X0 + c->width -BORDER_SIZE -((c->width - BORDER_SIZE) - aux * DEFAULT_CHAR_WIDTH * c->SIZE);            // Por si justo no llega a completar el char
     }
-    c->ACTUAL_X-= DEFAULT_CHAR_WIDTH *SIZE;
-    drawRectangle(c->background_color,c->ACTUAL_X,c->ACTUAL_Y,DEFAULT_CHAR_WIDTH * SIZE,DEFAULT_CHAR_HEIGHT * SIZE);
+    c->ACTUAL_X-= DEFAULT_CHAR_WIDTH * c->SIZE;
+    drawRectangle(c->background_color,c->ACTUAL_X,c->ACTUAL_Y,DEFAULT_CHAR_WIDTH * c->SIZE,DEFAULT_CHAR_HEIGHT * c->SIZE);
     return;
 }
 
 void newLine(container_t * c){
-    if(inContainerY(c,c->ACTUAL_Y + 2 * DEFAULT_CHAR_HEIGHT * SIZE)){
-        c->ACTUAL_Y+= DEFAULT_CHAR_HEIGHT* SIZE;
+    if(inContainerY(c,c->ACTUAL_Y + 2 * DEFAULT_CHAR_HEIGHT * c->SIZE)){
+        c->ACTUAL_Y+= DEFAULT_CHAR_HEIGHT* c->SIZE;
     }
     else{
-        redrawContainerBuffer(c,c->width/(DEFAULT_CHAR_WIDTH * SIZE));
+        redrawContainerBuffer(c,c->width/(DEFAULT_CHAR_WIDTH * c->SIZE));
     }
     c->ACTUAL_X=c->X0;
 
 }
 
 void changeSize(int ID,uint8_t num){
-    SIZE= num;
-    redrawContainerBuffer(getContainerByID(ID),0);
+    container_t * c= getContainerByID(ID);
+    c->SIZE= num;
+    redrawContainerBuffer(c,0);
 }
 
 void drawString(int ID, uint8_t * string, uint16_t len, color_t color){

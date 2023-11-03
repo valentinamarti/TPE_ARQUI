@@ -4,7 +4,7 @@
 #define GREEN ((color_t){0,255,0})
 #define SEX ((color_t){69,69,69})
 #define SCREENBUFER_SIZE 256
-#define BORDER_SIZE 3
+#define BORDER_SIZE 2
 
 
 //void * malloc();
@@ -25,7 +25,10 @@ typedef struct character{
 typedef struct container {
 
     uint16_t ID;
-    uint8_t * name; 
+    uint8_t * name;
+
+    uint16_t SIZE;
+
     uint16_t X0;
     uint16_t Y0;
 

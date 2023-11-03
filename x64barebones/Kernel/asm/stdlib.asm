@@ -70,7 +70,7 @@ free:
 
 section .data
 
-chunk_size_2048 dq 256
+chunk_size_2048 dq 2048
 cant_chunks_2048 dq 10
 
 section .bss
