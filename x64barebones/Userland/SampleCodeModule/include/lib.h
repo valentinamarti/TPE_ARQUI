@@ -25,6 +25,8 @@
     void changeLettersize(int size);
     void sleep(int seconds);
     void clear();
+    void setBorder(int container_id, color_t color);
+    void setBackground(int container_id, color_t color);
 
 
     int getID();

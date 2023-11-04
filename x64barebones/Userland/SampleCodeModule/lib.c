@@ -332,4 +332,10 @@ void clear_sb(){
     do_sys_clear_sb(container_id);
 }
 
+void setBackground(int container_id, color_t color){
+    do_sys_set_background(&color, container_id);
+}
 
+void setBorder(int container_id, color_t color){
+    do_sys_set_border(&color, container_id);
+}
