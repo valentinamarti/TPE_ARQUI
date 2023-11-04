@@ -74,8 +74,9 @@ uint64_t syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
 
 void sys_write(uint64_t buffer, uint64_t longitud, uint64_t filedescriptor, uint64_t color, uint64_t container_id){
 	char* string = (char *) buffer;
+	color_t* aux = (color_t*)color;
 	if(filedescriptor == STDOUT){
-		drawString(container_id, string, longitud, WHITE);
+		drawString(container_id, string, longitud, aux);
 	}else{
 		return;
 	}
@@ -118,7 +119,8 @@ void sys_set_font_size(uint64_t size, uint64_t container_id){
 
 
 void sys_draw_rectangle(uint64_t posx, uint64_t posy, uint64_t sizex, uint64_t sizey, uint64_t color, uint64_t container_id){	
-	drawRectangle(WHITE, (int)posx, (int)posy, (int)sizex, (int)sizey);
+	color_t* aux = (color_t*)color;
+	drawRectangle(aux, (int)posx, (int)posy, (int)sizex, (int)sizey);
 }
 
 void sys_play_sound(){
