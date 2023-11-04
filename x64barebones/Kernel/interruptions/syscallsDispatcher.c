@@ -114,7 +114,7 @@ void sys_get_registers(uint64_t *registers) {
 
 
 void sys_set_font_size(uint64_t size, uint64_t container_id){
-	changeSize(container_id,size);	// desps pasarle el container id
+	changeSize(container_id, size);	
 }
 
 
@@ -136,8 +136,9 @@ void sys_exit(uint64_t container_id){
 }
 
 void sys_new_line(uint64_t container_id){
-	newLine(container_id);		
+	drawCharInContainer(container_id, (char_t){'\n', WHITE});	
 }
+
 
 void sys_clear_sb(uint64_t container_id){
 	emptyContainer(container_id);
@@ -147,4 +148,12 @@ void sys_clear_sb(uint64_t container_id){
 uint64_t sys_new_container(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, uint16_t height){	
 	int aux = getContainer(name,X0,Y0,width,height);
 	return aux; 
+}
+
+void sys_set_background(uint64_t color, uint64_t container_id){
+
+}
+
+void sys_set_border(uint64_t color, uint64_t container_id){
+
 }

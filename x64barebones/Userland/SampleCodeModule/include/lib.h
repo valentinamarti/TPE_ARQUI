@@ -1,14 +1,16 @@
 #ifndef LIB_H
    
-    int scanf(char* fmt, int color, ...);
-    void printf(char* string, int color, ...);
-    void printChar(char c, int color);
+    #include <defs.h>
+
+    int scanf(char* fmt, color_t color, ...);
+    void printf(char* string, color_t color, ...);
+    void printChar(char c, color_t color);
     char getChar(int fd);
-    void puts(char* string, int color);
+    void puts(char* string, color_t color);
     void set_container_id();
     int abs(int value);
     void newLine();
-    void print(char* buff, int color);
+    void print(char* buff, color_t color);
     void strcopy(char* destination, char* string);
     void itoa(int value, char* buff, int base);
     int strlen(char* string);

@@ -2,22 +2,21 @@
 #include <stdint.h>
 #include <lib.h>
 #include <timeuser.h>
-
-#define WHITE 0         // es mentira, no esta definido ningun color todavia 
+       
 #define P_OS_ID ">^< "
 #define BUFFER_SHELL_SIZE 50
 #define NULL 0
+#define DEFAULT_FONT_SIZE 2
 
 // Container defines
 #define NAME "SHELL"
-#define SHELL_SIZE 2
+#define CX0 10  //Constant X0
+#define CY0 10  //Constant Y0
+#define WIDTH 1005
+#define HEIGHT 700
 
-#define CX0 100  //Constant X0
-#define CY0 100  //Constant Y0
-#define WIDTH 800
-#define HEIGHT 500
+static char *regsName[] = {"RAX", "RBX", "RCX", "RDX" "RSI", "RDI", "RBP", "RSP", "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15", "RIP"};
 
-static char *regsName[] = {"RAX", "RBX", "RDX" "RSI", "RDI", "RBP", "RSP", "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15", "RIP"};
 
 void help();
 void divbyzero();
@@ -59,7 +58,7 @@ void load_shell(){
     sleep(1500);
     clear_sb();
     // aca quiero una funcion para borrar del buffer del video driver lo del pantheros
-    setFontSize(SHELL_SIZE);
+    setFontSize(DEFAULT_FONT_SIZE);
     //clear();
 }
 
@@ -105,12 +104,13 @@ void opcode(){
 void time(){
     run_timeuser();
 }
+
 // esta tambn la podria "hacer" solo que falta lo de abrirla en un container y eso 
 void registers(){
-    uint64_t registers[17];
+    uint64_t regs[17];
     do_sys_get_registers(&registers);
     for(int i = 0; i < 17; i++){
-        printf(" %s <> %s \n", WHITE, regsName[i], registers[i]);
+        printf(" %s <> %s \n", WHITE, regsName[i], regs[i]);
     }
 }
 

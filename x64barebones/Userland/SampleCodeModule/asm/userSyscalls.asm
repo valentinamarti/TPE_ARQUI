@@ -10,9 +10,11 @@ GLOBAL do_sys_sleep
 GLOBAL do_sys_exit
 GLOBAL do_sys_new_line
 GLOBAL do_sys_clear_sb
-GLOBAL do_sys_call_div
 GLOBAL division
 GLOBAL do_sys_new_container
+GLOBAL do_sys_set_background
+GLOBAL do_sys_set_border
+
 section .text
 
 do_sys_write:   ; do_sys_write(char* buffer, int longitud, int fd, color_t color, int container_id);
@@ -311,3 +313,42 @@ do_sys_new_container: ; sys_new_container(uint8_t * name, uint16_t X0, uint16_t 
 	mov rsp, rbp
     pop rbp
     ret
+
+do_sys_set_background:		 ; do_sys_set_background(color_t color, int container_id)
+	push rbp
+    mov rbp, rsp
+
+	push rdi
+	push rsi
+
+	mov rdx, rsi        ; rdx -> container_id
+	mov rsi, rdi        ; rsi -> color
+	mov rdi, 11
+	int 80h
+
+	pop rsi
+	pop rdi
+
+    mov rsp, rbp
+    pop rbp
+    ret
+
+do_sys_set_border:		 ; do_sys_set_border(color_t color, int container_id)
+	push rbp
+    mov rbp, rsp
+
+	push rdi
+	push rsi
+
+	mov rdx, rsi        ; rdx -> container_id
+	mov rsi, rdi        ; rsi -> color
+	mov rdi, 11
+	int 80h
+
+	pop rsi
+	pop rdi
+
+    mov rsp, rbp
+    pop rbp
+    ret
+

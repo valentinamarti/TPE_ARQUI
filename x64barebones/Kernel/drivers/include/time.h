@@ -4,6 +4,7 @@
 void timer_handler();
 int ticks_elapsed();
 int seconds_elapsed();
+void sleep(int xmillis);
 int seconds();
 int minutes();
 int hours();

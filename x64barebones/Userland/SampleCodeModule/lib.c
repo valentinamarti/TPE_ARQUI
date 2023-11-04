@@ -3,9 +3,8 @@
 // #include <def.h>
 
 #define STDOUT 1	// para imprimir en pantalla el fd 
-#define WHITE  0
 #define MAX_CHARS 150
-#define BUFFER_SHELL_SIZE 50
+#define BUFFER_SHELL_SIZE 150
 #define BUFFER_KERNEL 0
 #define BUFFER_USERSPACE 1
 
@@ -16,7 +15,7 @@
 #define tolower(c) (c + ('a' - 'A'))
 #define toupper(c) (c - ('a' - 'A'))
 
-extern void do_sys_write(char* buffer, int longitud, int fd, int color, int container_id);
+extern void do_sys_write(char* buffer, int longitud, int fd, color_t* color, int container_id);
 extern void do_sys_new_line(int container_id);
 extern void do_sys_get_time(int* hrs, int* min, int* sec);
 extern void do_sys_read(char* buffer, int longitud, int fd);
@@ -34,7 +33,7 @@ int getID(){
 }
 
 //falta agregar float 
-void printf(char* string, int color, ...){
+void printf(char* string, color_t color, ...){
     va_list v;
     char buffer[MAX_CHARS] = {0};
     char buffAux[25] = {0};         // buffer auxiliar para cuando transformo el arg con otra funcion que requiere de un buffer
@@ -89,12 +88,12 @@ void printf(char* string, int color, ...){
     va_end(v);
 }
 
-void printChar(char c, int color){
+void printChar(char c, color_t color){
     char buff = c; 
-    do_sys_write(&buff, 1, STDOUT, color, container_id);
+    do_sys_write(&buff, 1, STDOUT, &color, container_id);
 }
 
-void putChar(char c, int color){
+void putChar(char c, color_t color){
     printChar(c, color);
     newLine();
 }
@@ -114,7 +113,7 @@ char getCharFromUserspace(){
     return getChar(BUFFER_USERSPACE);
 }
 
-void puts(char* string, int color){
+void puts(char* string, color_t color){
     print(string, color);
     newLine();
 }
@@ -185,9 +184,9 @@ void strcopy(char* destination, char* string){
     destination[i] = '\0';
 }
 
-void print(char* buff, int color){
+void print(char* buff, color_t color){
     int len = strlen(buff);
-    do_sys_write(buff, len, STDOUT, color, container_id);
+    do_sys_write(buff, len, STDOUT, &color, container_id);
 }
 
 void newLine(){
@@ -251,7 +250,7 @@ void clear(){
     do_sys_clear(container_id);
 }
  
-int scanf(char* fmt, int color, ...){
+int scanf(char* fmt, color_t color, ...){
     va_list v;
     va_start(v, color);
 
@@ -312,7 +311,7 @@ int scanf(char* fmt, int color, ...){
         } else if (fmt[j] == buffer[i]){
             i++; 
         } else{
-            print("ERROR", WHITE);
+            print("ERROR", color);
         }
         j++;
     }
