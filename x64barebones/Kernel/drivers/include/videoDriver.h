@@ -97,3 +97,5 @@ void changeSize(int ID,uint8_t num);
 
 void emptyScreen();
 
+void drawStringNull(int ID, uint8_t * string, color_t * color);
+

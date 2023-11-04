@@ -101,37 +101,29 @@ SECTION .text
 
 %macro exceptionHandler 1
 
-	mov [registers], rax
-    mov [registers + 8], rbx
-    mov [registers + 16], rcx
-    mov [registers + 24], rdx
-    mov [registers + 32], rsi
-	mov [registers + 40], rdi
-    mov [registers + 48], rbp
-    mov [registers + 64], r8
-    mov [registers + 72], r9
-    mov [registers + 80], r10
-    mov [registers + 88], r11
-    mov [registers + 96], r12
-    mov [registers + 104], r13
-    mov [registers + 112], r14
-    mov [registers + 120], r15
+	mov [ripaux], rsp
+	push rax
+	lea rax, [rsp + 4 * 8]
+	mov [rspaux], rax
+	pop rax
 
-	mov rax, rsp
-	mov [registers+ 56], rax  		; rsp
-	mov rax, [rsp]
-	mov [registers + 128], rax 		; rip
-	
-	mov rdi, %1 					; pasaje de parametro
-	mov rsi, registers				; le paso el array con los registros capturados como parametro
+	pushState
+
+	mov rcx, rsp			; rcx -> stack
+	mov rdx, [rspaux]		; rdx -> rsp
+	mov rsi, [ripaux]		; rsi -> rip
+	mov rdi, %1
 	call exceptionDispatcher
 
+	popState
     mov qword[rsp], userland		; vuelvo a la direc segura 
     call getStackBase
 	mov qword[rsp+24], rax
 
 	iretq
 %endmacro
+
+
 
 getRegisters:
 	mov rax, registers
@@ -227,3 +219,5 @@ userland equ 0x400000
 SECTION .bss
 	aux resq 1
 	registers resq 17
+	ripaux resb 8
+	rspaux resb 8

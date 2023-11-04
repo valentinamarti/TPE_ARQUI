@@ -384,5 +384,11 @@ void drawString(int ID, uint8_t * string, uint16_t len, color_t * color){
 
 }
 
+void drawStringNull(int ID, uint8_t * string, color_t * color){
+    container_t * c = getContainerByID(ID);
+    for(int i=0; string[i] != 0; i++){
+        drawChar(c,(char_t){string[i],*color});
+    }
+}
 
 

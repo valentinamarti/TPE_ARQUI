@@ -49,4 +49,47 @@ void * memcpy(void * destination, const void * source, uint64_t length)
 	return destination;
 }
 
+void itoa(int value, char* buff, int base){
+    int i = 0;
+    int val = abs(value);       // tomo el valor absoluto para no mandarme un moco con los signos
+
+    if(val == 0){
+        buff[i++] = '0';
+    }
+
+    while(val != 0){
+        int resto = val % base; 
+        if(resto < 10){
+            buff[i++] = resto + '0';
+        }else{                          // con esto vemos si es hexa
+            buff[i++] = resto + 'A' - 10;   
+        }
+        val /= base; 
+    }
+
+    if (value < 0 && base == 10) {      // si es base 10, le pongo el signo menos 
+        buff[i++] = '-';
+    }
+    int dim = i;        // me guardo dim del numero
+    
+    int j = 0; 
+    i -= 1;  
+    char aux;
+    while(j < i){
+        aux = buff[j];
+        buff[j] = buff[i];
+        buff[i] = aux; 
+        j++;
+        i--;
+    }
+    buff[dim] = 0;
+
+}
+
+int abs(int value){
+	if(value < 0){
+        return -value;
+    }
+    return value; 
+}
 
