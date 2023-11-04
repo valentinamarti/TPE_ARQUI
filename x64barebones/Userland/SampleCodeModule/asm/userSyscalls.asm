@@ -323,7 +323,7 @@ do_sys_set_background:		 ; do_sys_set_background(color_t color, int container_id
 
 	mov rdx, rsi        ; rdx -> container_id
 	mov rsi, rdi        ; rsi -> color
-	mov rdi, 11
+	mov rdi, 13
 	int 80h
 
 	pop rsi
@@ -342,7 +342,7 @@ do_sys_set_border:		 ; do_sys_set_border(color_t color, int container_id)
 
 	mov rdx, rsi        ; rdx -> container_id
 	mov rsi, rdi        ; rsi -> color
-	mov rdi, 11
+	mov rdi, 14
 	int 80h
 
 	pop rsi

@@ -68,6 +68,12 @@ uint64_t syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
 			flag = sys_new_container(rsi,rdx,rcx,r8,r9);
 			return flag;
 			break;
+		case 13:
+			sys_set_background(rsi,rdx);
+			break;
+		case 14:
+			sys_set_border(rsi,rdx);
+			break;
 	}
 	return;
 }
@@ -151,9 +157,11 @@ uint64_t sys_new_container(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t wid
 }
 
 void sys_set_background(uint64_t color, uint64_t container_id){
-
+	color_t* aux = (color_t*)color;
+	changeBackgroundColor(container_id,aux);
 }
 
 void sys_set_border(uint64_t color, uint64_t container_id){
-
+	color_t* aux = (color_t*)color;
+	changeBorderColor(container_id,aux);
 }

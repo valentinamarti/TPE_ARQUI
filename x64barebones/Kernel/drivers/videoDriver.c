@@ -312,6 +312,17 @@ void redrawCList(){
     return;
 }
 
+void changeBackgroundColor(int ID, color_t color){
+    container_t * c= getContainerByID(ID);
+
+    c->background_color= color;
+}
+
+void changeBorderColor(int ID, color_t color){
+    container_t * c= getContainerByID(ID);
+
+    c->border_color= color;
+}
 //---------------------CHARACTER FUNCTIONS----------------------------
 
 void drawChar(container_t * c, char_t character){
