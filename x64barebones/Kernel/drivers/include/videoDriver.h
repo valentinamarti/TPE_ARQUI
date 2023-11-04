@@ -70,11 +70,11 @@ void drawChar(container_t * c,char_t character);
 
 void drawCharInContainer(int ID,char_t character);
 
-void drawString(int ID, uint8_t * string, uint16_t len, color_t color);
+void drawString(int ID, uint8_t * string, uint16_t len, color_t * color);
 
 container_t* getContainerByID(int ID);
 
-void drawRectangle(color_t color,int posx,int posy, int sizex, int sizey);
+void drawRectangle(color_t * color,int posx,int posy, int sizex, int sizey);
 
 char inScreenX(uint16_t pixelPos);
 

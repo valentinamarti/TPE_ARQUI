@@ -91,10 +91,10 @@ void putPixel(color_t color, uint64_t x, uint64_t y) {
     framebuffer[offset+2]   =  color.red;
 }
 
-void drawRectangle(color_t color,int posx,int posy, int sizex, int sizey){
+void drawRectangle(color_t * color,int posx,int posy, int sizex, int sizey){
     for(int i=0;i<sizey;i++){
         for(int j=0;j<sizex;j++){
-            putPixel(color,posx+j,posy+i);
+            putPixel(*color,posx+j,posy+i);
         }
     }
 }
@@ -105,7 +105,7 @@ void drawHorizontalLine(color_t color, int posx,int posy,int width, int size){
         return;
     }
     for(int x= posx; x + size <= posx + width;x+= size){
-        drawRectangle(color,x,posy,size,size);
+        drawRectangle(&color,x,posy,size,size);
     }
 }
 
@@ -115,14 +115,14 @@ void drawVerticalLine(color_t color, int posx,int posy,int height, int size){
         return;
     }
     for(int y= posy; y + size <= posy + height;y+= size){
-        drawRectangle(color,posx,y,size,size);
+        drawRectangle(&color,posx,y,size,size);
     }
 }
 
 void drawByte(color_t color,uint16_t SIZE,uint8_t hexa,uint64_t posx, uint64_t posy){
     for(int i=8; i>0;i--){ //El 8 es el tamaño del byte
         if(hexa & 1){
-            drawRectangle(color,posx + i * SIZE,posy,SIZE,SIZE);
+            drawRectangle(&color,posx + i * SIZE,posy,SIZE,SIZE);
         }
         hexa= hexa>>2;
     }
@@ -344,7 +344,7 @@ void backspace(container_t * c){
         c->ACTUAL_X= c->X0 + c->width -BORDER_SIZE -((c->width - BORDER_SIZE) - aux * DEFAULT_CHAR_WIDTH * c->SIZE);            // Por si justo no llega a completar el char
     }
     c->ACTUAL_X-= DEFAULT_CHAR_WIDTH * c->SIZE;
-    drawRectangle(c->background_color,c->ACTUAL_X,c->ACTUAL_Y,DEFAULT_CHAR_WIDTH * c->SIZE,DEFAULT_CHAR_HEIGHT * c->SIZE);
+    drawRectangle(&(c->background_color),c->ACTUAL_X,c->ACTUAL_Y,DEFAULT_CHAR_WIDTH * c->SIZE,DEFAULT_CHAR_HEIGHT * c->SIZE);
     return;
 }
 
@@ -365,10 +365,10 @@ void changeSize(int ID,uint8_t num){
     redrawContainerBuffer(c,0);
 }
 
-void drawString(int ID, uint8_t * string, uint16_t len, color_t color){
+void drawString(int ID, uint8_t * string, uint16_t len, color_t * color){
     container_t * c = getContainerByID(ID);
     for(int i=0; i< len; i++){
-        drawChar(c,(char_t){string[i],color});
+        drawChar(c,(char_t){string[i],*color});
     }
 
 }
