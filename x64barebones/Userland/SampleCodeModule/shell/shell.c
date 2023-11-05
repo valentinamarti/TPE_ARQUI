@@ -48,18 +48,17 @@ void load_shell(){
     container_id = aux;
     set_container_id(container_id);
 
-    setFontSize(4);
+    setBorder(container_id, SHELL_BACKGROUND);
+    setFontSize(5);
     newLine();
-    puts("   pantherOS\n", WHITE);
+    puts("       pantherOS\n", SHELL_LETTER);
     newLine();
-    puts("     /\\_/\\", WHITE);  
-    puts("    ( o.o ) ", WHITE);
-    puts("     > ^ <", WHITE);
-    sleep(1500);
+    puts("         /\\_/\\", SHELL_LETTER);  
+    puts("        ( o.o ) ", SHELL_LETTER);
+    puts("         > ^ <", SHELL_LETTER);
+    sleep(3000);
     clear_sb();
-    // aca quiero una funcion para borrar del buffer del video driver lo del pantheros
     setFontSize(DEFAULT_FONT_SIZE);
-    //clear();
 }
 
 
@@ -68,8 +67,8 @@ void run_shell(){
     while(1){
         argument[0] = 0;           // asi la puedo volver a usar
         command[0] = 0; 
-        print(P_OS_ID, WHITE);      // le hize tipo bigotes de pantera
-        scanf("%s %s", WHITE, command, argument); 
+        print(P_OS_ID, SHELL_POSID);      // le hize tipo bigotes de pantera
+        scanf("%s %s", SHELL_LETTER, command, argument); 
        
         for(int i = 0; i < commands[i].name != NULL ; i++){
             if(strcmp((commands[i].name), command) == 0){
@@ -84,7 +83,8 @@ void help(){
     newLine();
     for(int i = 0; i < commands[i].name != NULL ; i++){
         if(strcmp((commands[i].name), "help") != 0){
-            printf(">> %s <>\n   %s \n", WHITE, commands[i].name, commands[i].description);    
+            printf(">> %s : ", HELP_HEADINGS, commands[i].name);
+            printf("%s \n", SHELL_LETTER, commands[i].description);
         }   
     }
 }
@@ -103,6 +103,7 @@ void opcode(){
 // esta la podria hacer, de momento ya tengo todo solo que no me funciona :( (desps ver si lo metemos en container o no)
 void time(){
     run_timeuser();
+    set_container_id(container_id);
 }
 
 // esta tambn la podria "hacer" solo que falta lo de abrirla en un container y eso 

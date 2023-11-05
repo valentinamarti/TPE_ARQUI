@@ -15,12 +15,12 @@ GLOBAL _irq05Handler
 GLOBAL _int80Handler:
 
 GLOBAL _exception0Handler
-GLOBAL getRegisters
 
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
 EXTERN syscallsDispatcher
 EXTERN getStackBase
+EXTERN saveRegisters
 
 SECTION .text
 
@@ -62,33 +62,39 @@ SECTION .text
 
 %macro irqHandlerMaster 1
 	pushState
+	
+	mov [ripaux], rsp		; guarda el rip y el rsp antes de hacer nada
+	push rax
+	lea rax, [rsp + 4 * 8]
+	mov [rspaux], rax
+	pop rax
 
+	mov [raxaux], rax		; guarda el rax y rdi antes de usarlos
+	mov [rdiaux], rdi
+	
 	mov rdi, %1 ; pasaje de parametro
 	call irqDispatcher
 	
-	cmp rax, 1		; comparo el calor que me devuelve irqDispatcher, que le devolvio keyboardHandler 
+	cmp rax, 1		; compara el valor que me devuelve irqDispatcher, que le devolvio keyboardHandler 
 					; que me indica si tengo que capturar los registros o no 
 	jne .continue
-	mov [registers], rax
-    mov [registers + 8], rbx
-    mov [registers + 16], rcx
-    mov [registers + 24], rdx
-    mov [registers + 32], rsi
-	mov [registers + 40], rdi
-    mov [registers + 48], rbp
-    mov [registers + 64], r8
-    mov [registers + 72], r9
-    mov [registers + 80], r10
-    mov [registers + 88], r11
-    mov [registers + 96], r12
-    mov [registers + 104], r13
-    mov [registers + 112], r14
-    mov [registers + 120], r15
+	
+	mov [ripaux], rsp
+	push rax
+	lea rax, [rsp + 4 * 8]
+	mov [rspaux], rax
+	pop rax
 
-	mov rax, rsp
-	mov [registers+ 56], rax  		; rsp
-	mov rax, [rsp]
-	mov [registers + 128], rax 		; rip
+	mov rax, [raxaux]
+	mov rdi, [rdiaux]
+	pushState
+
+	mov rdx, rsp			; rdx -> stack
+	mov rsi, [rspaux]		; rsi -> rsp
+	mov rdi, [ripaux]		; rdi -> rip
+	call saveRegisters
+	
+	popState
 
 .continue:
 	mov al, 20h						; signal pic EOI (End of Interrupt)
@@ -123,11 +129,6 @@ SECTION .text
 	iretq
 %endmacro
 
-
-
-getRegisters:
-	mov rax, registers
-	ret
 
 _int80Handler:	; en rdi el mode, luego en el resto de los registros los parametros usuales de cada syscall
 	push rbp
@@ -218,6 +219,8 @@ userland equ 0x400000
 
 SECTION .bss
 	aux resq 1
-	registers resq 17
 	ripaux resb 8
 	rspaux resb 8
+	raxaux resb 8
+	rdiaux resb 8
+	registers resq 17

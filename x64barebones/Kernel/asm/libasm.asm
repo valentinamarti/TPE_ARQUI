@@ -37,23 +37,6 @@ cpuVendor:
 	pop rbp
 	ret
 
-;--------------------------------------------
-; Esta me parece que no la vamos a usar
-;--------------------------------------------
-; getKey:
-;     enter 0,0
-; .wait:
-;     xor rax,rax
-
-;     in al, 0x64
-;     test al, 1
-;     jz .wait
-
-;     in al, 0x60
-
-;     leave
-;     ret
-
 getKeyPressed:
     push rbp
     mov rbp, rsp

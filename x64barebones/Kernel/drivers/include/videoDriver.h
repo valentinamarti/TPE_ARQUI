@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 #define WHITE ((color_t){255, 255, 255})
 #define BLACK ((color_t){0,0,0})
 #define RED ((color_t){255,0,0})
@@ -74,11 +76,6 @@ void drawString(int ID, uint8_t * string, uint16_t len, color_t * color);
 
 container_t* getContainerByID(int ID);
 
-void changeBackgroundColor(int ID, color_t color);
-
-void changeBorderColor(int ID, color_t color);
-
-
 void drawRectangle(color_t * color,int posx,int posy, int sizex, int sizey);
 
 char inScreenX(uint16_t pixelPos);
@@ -99,3 +96,8 @@ void emptyScreen();
 
 void drawStringNull(int ID, uint8_t * string, color_t * color);
 
+void drawCharNC(char_t character);
+
+void changeBackgroundColor(int ID, color_t *color);
+
+void changeBorderColor(int ID, color_t *color);

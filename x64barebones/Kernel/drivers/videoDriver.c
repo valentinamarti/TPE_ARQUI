@@ -9,6 +9,7 @@
 #define SCREEN_H VBE_mode_info->height
 
 uint64_t ACTUAL_X = 0, ACTUAL_Y = 0;                    // Coordenadas de escritura de caracteres
+uint64_t SIZE = 2;
 
 char_t screenbuffer[SCREENBUFER_SIZE];
 uint16_t screenbuffer_idx=0;
@@ -295,7 +296,7 @@ void redrawContainerBuffer(container_t * c, uint16_t offset){
 
 void exitContainer(int ID){
     container_t * c=getContainerByID(ID);
-    
+    // arreglar pop container
     popContainer(c);
     free(c);
     redrawCList();
@@ -312,17 +313,16 @@ void redrawCList(){
     return;
 }
 
-void changeBackgroundColor(int ID, color_t color){
+void changeBackgroundColor(int ID, color_t* color){
     container_t * c= getContainerByID(ID);
-
-    c->background_color= color;
+    c->background_color= *color;
 }
 
-void changeBorderColor(int ID, color_t color){
+void changeBorderColor(int ID, color_t* color){
     container_t * c= getContainerByID(ID);
-
-    c->border_color= color;
+    c->border_color= *color;
 }
+
 //---------------------CHARACTER FUNCTIONS----------------------------
 
 void drawChar(container_t * c, char_t character){
@@ -391,4 +391,22 @@ void drawStringNull(int ID, uint8_t * string, color_t * color){
     }
 }
 
+//me la hago aux
+void drawCharNC(char_t character){
+    addBuffer(character);
+    char* vector= font[character.c];
+    if(character.c != '\n'){
+        for(int y=0;y<DEFAULT_CHAR_HEIGHT;y++){
+            drawByte(character.color,SIZE,vector[y],ACTUAL_X,ACTUAL_Y+y *SIZE);
+        }
+        ACTUAL_X+= DEFAULT_CHAR_WIDTH * SIZE;
+    }
+}
 
+
+void addBuffer(container_t * c, char_t character){
+    if(SCREENBUFER_SIZE== screenbuffer_idx){
+        return;
+    }
+    screenbuffer[screenbuffer_idx++]= character;
+}

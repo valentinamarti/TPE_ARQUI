@@ -89,8 +89,10 @@ int keyboard_handler(){
     uint8_t key = getKeyPressed();
     int aux = 0; 
     if(key <= MAX_VALUE_FOR_KEY){
-        aux = getKeyValue(key);                       // ver si desps le cambio el nombre
-        return aux;                // devuelve 1 si tengo que capturar los registros; 0 sino 
+        aux = getKeyValue(key);  
+        if(aux == 1){    
+        }          
+        return aux;                      // if 1 we capture the value of the registers
     }else if(key ==  L_SHIFT_RELEASE_KEY_VALUE || key == R_SHIFT_RELEASE_KEY_VALUE){
         shiftFlag = 0;         
     }else if(key == ALT_KEY_RELEASE_VALUE){
@@ -108,13 +110,13 @@ int getKeyValue(uint8_t key){
     int flagAux = 0; 
     if(key == L_SHIFT_PUSH_KEY_VALUE || key == R_SHIFT_PUSH_KEY_VALUE){
         shiftFlag = 1; 
-        return;
+        return 0;
     }else if(key == CAPS_LOCK_KEY_VALUE){
         capsLockFlag = ~(capsLockFlag | 0xFE);          // niego el caps, si estaba prendido lo apago y viceversa
-        return; 
+        return 0; 
     }else if(key == ALT_KEY_PUSH_VALUE){
         altFlag = 1; 
-        return; 
+        return 0; 
     }
     unsigned char c = 0; 
     if(capsLockFlag == 1 && ((key >= 0x10 && key <= 0x19)  || (key >= 0x1E && key <= 0x26) || (key >= 0x2C && key <= 0x32))){
@@ -127,7 +129,7 @@ int getKeyValue(uint8_t key){
                 if(aux != -1){
                     changeSize(1,aux);
                 }else if(c == 'r' || c == 'R'){
-                    int flagAux = 1;        // me indica si tengo que capturar los registros 
+                    flagAux = 1;        // me indica si tengo que capturar los registros 
                 }
             }
             return flagAux;
@@ -138,8 +140,6 @@ int getKeyValue(uint8_t key){
         c = keyboard[key];
     }
     if(c != 0){
-        // ncPrintChar(c);             // si quiero que funcione que se escriban en la pantalla, hay q descomentar esto 
-        // drawChar(WHITE, c);
         saveCharToBuffer(c);
     }
     return flagAux;

@@ -23,6 +23,7 @@ static uint64_t sys_new_container(uint8_t * name, uint16_t X0, uint16_t Y0,uint1
 static void sys_set_background(uint64_t color, uint64_t container_id);
 static void sys_set_border(uint64_t color, uint64_t container_id);
 
+
 uint64_t syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9, uint64_t aux){
 	switch (rdi) {
 		int flag = 0; 
@@ -58,7 +59,7 @@ uint64_t syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
 			sys_sleep(rsi);
 			break; 
 		case 9:
-			sys_exit(rsi);
+			sys_exit_container(rsi);
 			break;
 		case 10:
 			sys_new_line(rsi);
@@ -75,7 +76,7 @@ uint64_t syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
 			break;
 		case 14:
 			sys_set_border(rsi,rdx);
-			break;
+			break;	
 	}
 	return;
 }
@@ -112,11 +113,12 @@ void sys_get_time(uint64_t hrs, uint64_t min, uint64_t sec){	//son todos puntero
 	*((unsigned int *)sec) = seconds();
 }
 
+//eliminar 
 void sys_get_registers(uint64_t *registers) {
-    uint64_t *regs = getRegisters();
-    for (int i = 0; i < 17; i++) {
-        registers[i] = regs[i];
-    }
+    // uint64_t *regs = getRegisters();
+    // for (int i = 0; i < 17; i++) {
+    //     registers[i] = regs[i];
+    // }
 }
 
 
@@ -139,8 +141,8 @@ void sys_sleep(uint64_t seconds){
 	sleep((int) seconds);
 }
 
-void sys_exit(uint64_t container_id){			
-	//delete_container(conteiner_id);			// ver si asi estaria bien 
+void sys_exit_container(uint64_t container_id){			
+	exitContainer(container_id);
 }
 
 void sys_new_line(uint64_t container_id){
@@ -165,5 +167,6 @@ void sys_set_background(uint64_t color, uint64_t container_id){
 
 void sys_set_border(uint64_t color, uint64_t container_id){
 	color_t* aux = (color_t*)color;
-	changeBorderColor(container_id,aux);
+	changeBorderColor(container_id, aux);
 }
+

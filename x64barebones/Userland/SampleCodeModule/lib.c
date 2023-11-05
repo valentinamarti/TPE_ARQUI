@@ -131,7 +131,7 @@ void itoa(int value, char* buff, int base){
     int val = abs(value);       // tomo el valor absoluto para no mandarme un moco con los signos
 
     if(val == 0){
-        buff[i] = '0';
+        buff[i++] = '0';
     }
 
     while(val != 0){
@@ -339,3 +339,8 @@ void setBackground(int container_id, color_t color){
 void setBorder(int container_id, color_t color){
     do_sys_set_border(&color, container_id);
 }
+
+void exitContainer(int container_id){
+    do_sys_exit_container(container_id);
+}
+

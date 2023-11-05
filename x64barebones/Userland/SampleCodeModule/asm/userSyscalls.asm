@@ -7,7 +7,7 @@ GLOBAL do_sys_set_font_size
 GLOBAL do_sys_draw_rectangle
 GLOBAL do_sys_play_sound
 GLOBAL do_sys_sleep
-GLOBAL do_sys_exit
+GLOBAL do_sys_exit_container
 GLOBAL do_sys_new_line
 GLOBAL do_sys_clear_sb
 GLOBAL division
@@ -221,7 +221,7 @@ do_sys_sleep:			; do_sys_sleep(int seconds)
     mov rsp, rbp
     pop rbp
     ret  
-do_sys_exit:			; do_sys_exit(int container_id)
+do_sys_exit_container:			; do_sys_exit_container(int container_id)
  	push rbp
     mov rbp, rsp
 
@@ -313,6 +313,7 @@ do_sys_new_container: ; sys_new_container(uint8_t * name, uint16_t X0, uint16_t 
 	mov rsp, rbp
     pop rbp
     ret
+
 
 do_sys_set_background:		 ; do_sys_set_background(color_t color, int container_id)
 	push rbp
