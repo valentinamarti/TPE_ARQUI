@@ -81,11 +81,10 @@ void run_shell(){
 
 void help(){
     newLine();
-    for(int i = 0; i < commands[i].name != NULL ; i++){
-        if(strcmp((commands[i].name), "help") != 0){
-            printf(">> %s : ", HELP_HEADINGS, commands[i].name);
-            printf("%s \n", SHELL_LETTER, commands[i].description);
-        }   
+    printf(">>>> This is the %s menu", HELP_HEADINGS, commands[0].name);
+    for(int i = 1; i < commands[i].name != NULL ; i++){
+            printf(">> %s : \n", HELP_HEADINGS, commands[i].name);
+            printf("      %s \n", SHELL_LETTER, commands[i].description);
     }
 }
 
