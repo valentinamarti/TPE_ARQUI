@@ -11,6 +11,7 @@ GLOBAL do_sys_exit_container
 GLOBAL do_sys_new_line
 GLOBAL do_sys_clear_sb
 GLOBAL division
+GLOBAL wrong_opcode
 GLOBAL do_sys_new_container
 GLOBAL do_sys_set_background
 GLOBAL do_sys_set_border
@@ -282,6 +283,8 @@ division:
 
 	div rdi
 
+wrong_opcode:
+	mov cr6, rax
 
 do_sys_new_container: ; sys_new_container(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, uint16_t height);
 	push rbp

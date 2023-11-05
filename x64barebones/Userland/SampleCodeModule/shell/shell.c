@@ -97,7 +97,7 @@ void divbyzero(char* param){
 }
 
 void opcode(){
-
+    wrong_opcode();
 }
 
 // esta la podria hacer, de momento ya tengo todo solo que no me funciona :( (desps ver si lo metemos en container o no)
