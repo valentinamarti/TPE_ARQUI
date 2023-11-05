@@ -215,7 +215,7 @@ void appendContainer(container_node_t * node){
 
 void popContainer(container_t* c){
 
-    if(c_list.first== NULL){
+    if(c_list.first == NULL){
         return;
     }
 
@@ -228,6 +228,8 @@ void popContainer(container_t* c){
     while(node->next != NULL){
         if(node->next->container.ID == c->ID){
             node->next= node->next->next;
+            c_list.last= node;
+            return;
         }
         node= node->next;
     }

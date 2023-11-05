@@ -26,6 +26,6 @@ void run_timeuser(){
     newLine();
     printf(" %dhrs : %dmin : %dsec \n", HELP_HEADINGS, hrs, min, sec);
     
-    sleep(7000);
+    sleep(1000);
     exitContainer(container_id);
 }
