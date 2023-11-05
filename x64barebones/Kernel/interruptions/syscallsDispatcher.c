@@ -20,6 +20,8 @@ static void sys_exit(uint64_t container_id);
 static void sys_new_line(uint64_t container_id);
 static void sys_clear_sb(uint64_t container_id);
 static uint64_t sys_new_container(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, uint16_t height);
+static void sys_set_background(uint64_t color, uint64_t container_id);
+static void sys_set_border(uint64_t color, uint64_t container_id);
 
 uint64_t syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9, uint64_t aux){
 	switch (rdi) {
