@@ -161,7 +161,7 @@ uint16_t getContainer(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, u
     node->container.width= width;
     node->container.height= height;
     node->container.buffer_idx=0;
-    node->container.background_color= SEX;
+    node->container.background_color= SHELL_BACKGROUND;
     node->container.border_color= RED;         //Hacer funcion color random
     
     appendContainer(node);
@@ -404,7 +404,7 @@ void drawCharNC(char_t character){
 }
 
 
-void addBuffer(container_t * c, char_t character){
+void addBuffer(char_t character){
     if(SCREENBUFER_SIZE== screenbuffer_idx){
         return;
     }

@@ -32,8 +32,10 @@ void genericException(char* message, int len, uint64_t *ripaux, uint64_t *rspaux
 static void genericMemoryDump(char* message, int len){
     container_id = getContainer(NAME,CX0,CY0,WIDTH,HEIGHT); 
 	changeSize(container_id,2);
+	changeBackgroundColor(container_id, &MEMORY_DUMP_BACKGROUND);
+	changeBorderColor(container_id, &MEMORY_DUMP_BORDER);
 
-	drawString(container_id, message, len, &GREEN);
+	drawString(container_id, message, len, &MEMORY_DUMP_TITTLE);
 	printRegisters();
 	sleep(8000);
 
@@ -48,16 +50,16 @@ static void printRegisters(){
 	for (int i = 0; i < 16; i++){		
 		if(i == 7){
 			itoa(*rsp, buff, 16);
-			drawString(container_id, regsNames[i], 7, &RED);
-			drawStringNull(container_id, buff, &WHITE);
+			drawString(container_id, regsNames[i], 7, &MEMORY_DUMP_REGS);
+			drawStringNull(container_id, buff, &MEMORY_DUMP_LETTER);
 		}else if(i == 15){
 			itoa(*rip, buff, 16);
-			drawString(container_id, regsNames[i], 7, &RED);
-			drawStringNull(container_id, buff, &WHITE);
+			drawString(container_id, regsNames[i], 7, &MEMORY_DUMP_REGS);
+			drawStringNull(container_id, buff, &MEMORY_DUMP_LETTER);
 		}else{
 			itoa(regs[14 - i], buff, 16);
-			drawString(container_id, regsNames[i], 7, &RED);
-			drawStringNull(container_id, buff, &WHITE);
+			drawString(container_id, regsNames[i], 7, &MEMORY_DUMP_REGS);
+			drawStringNull(container_id, buff, &MEMORY_DUMP_LETTER);
 		}
 		drawCharInContainer(container_id, (char_t){'\n', WHITE});	
 	}
