@@ -9,23 +9,30 @@
 #define WIDTH 450
 #define HEIGHT 580
 
-static char *regsNames[] = {"RAX <> ", "RBX <> ", "RCX <> ", "RDX <> " "RSI <> ", "RDI <> ", "RBP <> ", "RSP <> ", "R8 <>  ", "R9 <>  ", "R10 <> ", "R11 <> ", "R12 <> ", "R13 <> ", "R14 <> ", "R15 <> ", "RIP <> "};
+static char *regsNames[] = {"RAX <> ", "RBX <> ", "RCX <> ", "RDX <> " "RSI <> ", "RDI <> ", "RBP <> ", "RSP <> ", "R8  <> ", "R9  <> ", "R10 <> ", "R11 <> ", "R12 <> ", "R13 <> ", "R14 <> ", "R15 <> ", "RIP <> "};
 static uint64_t *rip;
 static uint64_t *rsp;
 static uint64_t *stack;
+static uint64_t savedRegisters[17] = {0};
+
 static int container_id;
+static int saved = 0;
 
 void saveRegisters(uint64_t rsi, uint64_t rdx, uint64_t rcx){
-    rip = (uint64_t*) rsi;
+	rip = (uint64_t*) rsi;
 	rsp = (uint64_t*) rdx;
 	stack = (uint64_t*) rcx;
+	saved = 1;
+	saveRegsInfo();
     genericMemoryDump("Registers dump \n", 16);
 }
 
 void genericException(char* message, int len, uint64_t *ripaux, uint64_t *rspaux, uint64_t *stackaux){
-    rip = (uint64_t*) ripaux;
-	rsp = (uint64_t*) rspaux;
-	stack = (uint64_t*) stackaux;
+    rip =  ripaux;
+	rsp =  rspaux;
+	stack = stackaux;
+	saved = 0;
+	saveRegsInfo();
     genericMemoryDump(message, len);
 }
 
@@ -43,24 +50,25 @@ static void genericMemoryDump(char* message, int len){
 	return;
 }
 
-
-static void printRegisters(){
+static void saveRegsInfo(){
 	uint64_t *regs = stack;
-	char buff[25];
 	for (int i = 0; i < 16; i++){		
 		if(i == 7){
-			itoa(*rsp, buff, 16);
-			drawString(container_id, regsNames[i], 7, &MEMORY_DUMP_REGS);
-			drawStringNull(container_id, buff, &MEMORY_DUMP_LETTER);
+			savedRegisters[i] = rsp;
 		}else if(i == 15){
-			itoa(*rip, buff, 16);
-			drawString(container_id, regsNames[i], 7, &MEMORY_DUMP_REGS);
-			drawStringNull(container_id, buff, &MEMORY_DUMP_LETTER);
+			savedRegisters[i] = rip;
 		}else{
-			itoa(regs[14 - i], buff, 16);
-			drawString(container_id, regsNames[i], 7, &MEMORY_DUMP_REGS);
-			drawStringNull(container_id, buff, &MEMORY_DUMP_LETTER);
+			savedRegisters[i] = regs[14 - i];
 		}
+	}
+}
+
+static void printRegisters(){
+	char buff[25];
+	for (int i = 0; i < 16; i++){		
+		itoa(savedRegisters[i], buff, 16);
+		drawString(container_id, regsNames[i], 7, &MEMORY_DUMP_REGS);
+		drawStringNull(container_id, buff, &MEMORY_DUMP_LETTER);
 		drawCharInContainer(container_id, (char_t){'\n', WHITE});	
 	}
 }
