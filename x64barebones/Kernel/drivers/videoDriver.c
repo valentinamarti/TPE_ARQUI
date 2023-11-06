@@ -290,10 +290,14 @@ void redrawContainerBuffer(container_t * c, uint16_t offset){
     }
 }
 
+
 void exitContainer(int ID){
     container_t * c=getContainerByID(ID);
     // arreglar pop container
     popContainer(c);
+
+    drawRectangle(&BLACK,c->X0 - BORDER_SIZE,c->Y0 - BORDER_SIZE, c->width + 2 * BORDER_SIZE,c->height + 2 * BORDER_SIZE);
+
     free(c);
     redrawCList();
 }

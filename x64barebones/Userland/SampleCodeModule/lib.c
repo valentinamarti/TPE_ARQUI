@@ -20,7 +20,7 @@ extern void do_sys_new_line(int container_id);
 extern void do_sys_get_time(int* hrs, int* min, int* sec);
 extern void do_sys_read(char* buffer, int longitud, int fd);
 extern int do_sys_new_container(char * name, int X0, int Y0,int width, int height);
-
+extern void do_sys_draw_rectangle(int posx, int posy, int sizex, int sizey, color_t * color, int container_id);
 static int container_id;
 
 // ESTA FUNCION SI O SI LLAMARLA AL PRINCIPIO, PARA QUE CARGUE EL CONTAINER
@@ -344,3 +344,6 @@ void exitContainer(int container_id){
     do_sys_exit_container(container_id);
 }
 
+void printRectangle(int posx, int posy, int sizex, int sizey, color_t color){
+    do_sys_draw_rectangle(posx,posy,sizex,sizey,&color,container_id);
+}

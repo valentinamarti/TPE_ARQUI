@@ -29,5 +29,6 @@
     void setBorder(int container_id, color_t color);
     void exitContainer(int container_id);
     int getID();
+    void printRectangle(int posx, int posy, int sizex, int sizey, color_t color);
 
 #endif

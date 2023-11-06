@@ -1,7 +1,6 @@
 
-
-GLOBAL malloc
-GLOBAL free
+GLOBAL smalloc
+GLOBAL sfree
 section .text
 
 ;=========================================================
@@ -10,16 +9,16 @@ section .text
 ;=========================================================
 
 
-malloc:
+smalloc:
     push rbp
 	mov rbp, rsp
 
     push rbx
     push rcx
     push rdx
-    mov rbx, chunk_size_2048
-    mov rcx, cant_chunks_2048
-    mov rdx,chunk2048
+    mov rbx, chunk_size_100
+    mov rcx, cant_chunks_100
+    mov rdx,chunk100
 
 
 .loop: cmp rcx, 0
@@ -56,7 +55,7 @@ malloc:
 ;=========================================================
 
 
-free:
+sfree:
     push rbp
 	mov rbp, rsp
 
@@ -70,10 +69,10 @@ free:
 
 section .data
 
-chunk_size_2048 dq 2048
-cant_chunks_2048 dq 10
+chunk_size_100 dq 100
+cant_chunks_100 dq 100
 
 section .bss
 
-chunk2048 resb 20480
-; Puede guardar 10 chunks de 2048 bytes
+chunk100 resb 10000
+; Puede guardar 100 chunks de 100 bytes

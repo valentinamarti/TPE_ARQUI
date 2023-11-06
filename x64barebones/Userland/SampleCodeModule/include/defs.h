@@ -1,6 +1,8 @@
 #ifndef DEFS_H
 
 #include <stdint.h>
+
+#define NULL 0
 #define WHITE ((color_t){255, 255, 255})
 #define BLACK ((color_t){0,0,0})
 #define RED ((color_t){255,0,0})
@@ -13,6 +15,9 @@
 #define TIME_BORDER ((color_t){61, 35, 82})
 #define SHELL_BACKGROUND ((color_t){69,69,69})
 #define SHELL_BACKGROUND ((color_t){69,69,69})
+#define SNAKE_LIGHT_COLOR ((color_t){255, 194, 179})
+#define SNAKE_DARK_COLOR ((color_t){230, 46, 0})
+#define SNAKE_COLOR_1 GREEN
 
 
 typedef struct color {
