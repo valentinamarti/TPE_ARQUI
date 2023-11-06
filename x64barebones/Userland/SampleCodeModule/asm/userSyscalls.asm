@@ -124,6 +124,7 @@ do_sys_get_registers:
 	push rdi
 	push rsi
 
+	mov rsi, rdi        ; rsi -> puntero a array registers
 	mov rdi, 4
 	int 80h
 
@@ -132,9 +133,7 @@ do_sys_get_registers:
 
     mov rsp, rbp
     pop rbp
-    ret    
-
-
+    ret   
 
 do_sys_set_font_size:		; do_sys_set_font_size(int size)
 	push rbp
@@ -277,7 +276,7 @@ do_sys_clear_sb:		 ; do_sys_clear_sb(int container_id)
 
 division:
 	mov rdi, 0
-	mov rax, 1
+	mov rax, 7
 	mov rdx, 0
 
 	div rdi

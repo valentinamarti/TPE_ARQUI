@@ -7,12 +7,13 @@
 #define BUFFER_KERNEL 0
 #define BUFFER_USERSPACE 1
 
+
 #define STDOUT 1	// para imprimir en pantalla el fd 
 
 static void sys_write(uint64_t buffer, uint64_t longitud, uint64_t filedescriptor, uint64_t color, uint64_t container_id);
 static void sys_read(uint64_t buffer, uint64_t longitud, uint64_t filedescriptor);
 static void sys_get_time(uint64_t hours, uint64_t minutes, uint64_t seconds);
-static void sys_get_registers();
+static uint64_t sys_get_registers();
 static void sys_set_font_size(uint64_t size, uint64_t container_id);
 static void sys_draw_rectangle(uint64_t posx, uint64_t posy, uint64_t sizex, uint64_t sizey, uint64_t color, uint64_t container_id);
 static void sys_play_sound();
@@ -45,7 +46,7 @@ uint64_t syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
 			sys_get_time(rsi, rdx, rcx);
 			break;
 		case 4:
-			sys_get_registers();
+			sys_get_registers(rsi);
 			break;
 		case 5:
 			sys_set_font_size(rsi, rdx);
@@ -115,8 +116,17 @@ void sys_get_time(uint64_t hrs, uint64_t min, uint64_t sec){	//son todos puntero
 }
 
 
-void sys_get_registers() {
-    getRegisters();
+uint64_t sys_get_registers(uint64_t *registers) {
+	int flag = 0; 
+	uint64_t *regs = getRegisters(&flag);
+	if(flag == 1){
+		for (int i = 0; i < 16; i++){		
+			registers[i] = regs[i];
+		}
+		return flag;
+	}else{
+		return flag;
+	}
 }
 
 

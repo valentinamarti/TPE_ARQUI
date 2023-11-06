@@ -8,6 +8,6 @@ void genericException(char* message, int len, uint64_t *ripaux, uint64_t *rspaux
 static void genericMemoryDump(char* message, int len);
 static void saveRegsInfo();
 static void printRegisters();
-void getRegisters();
+uint64_t* getRegisters();
 
 #endif

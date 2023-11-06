@@ -25,8 +25,8 @@
     void changeLettersize(int size);
     void sleep(int seconds);
     void clear();
-    void setBackground(int container_id, color_t color);
-    void setBorder(int container_id, color_t color);
+    void setBackground(color_t color);
+    void setBorder(color_t color);
     void exitContainer(int container_id);
     int getID();
     void printRectangle(int posx, int posy, int sizex, int sizey, color_t color);

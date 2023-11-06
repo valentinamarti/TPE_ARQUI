@@ -18,8 +18,8 @@ void run_timeuser(){
     container_id = do_sys_new_container(NAME,CX0,CY0,WIDTH,HEIGHT); 
     set_container_id(container_id);
 
-    setBorder(container_id, TIME_BORDER);
-    setBackground(container_id, TIME_BACKGROUND);
+    setBorder(TIME_BORDER);
+    setBackground(TIME_BACKGROUND);
 
     int hrs, min, sec; 
     do_sys_get_time(&hrs, &min, &sec);

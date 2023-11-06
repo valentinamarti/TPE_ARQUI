@@ -62,7 +62,7 @@ SECTION .text
 
 %macro irqHandlerMaster 1
 	pushState
-	
+
 	mov [ripaux], rsp		; guarda el rip y el rsp antes de hacer nada
 	push rax
 	lea rax, [rsp + 4 * 8]
@@ -79,12 +79,6 @@ SECTION .text
 					; que me indica si tengo que capturar los registros o no 
 	jne .continue
 	
-	mov [ripaux], rsp
-	push rax
-	lea rax, [rsp + 4 * 8]
-	mov [rspaux], rax
-	pop rax
-
 	mov rax, [raxaux]
 	mov rdi, [rdiaux]
 	pushState

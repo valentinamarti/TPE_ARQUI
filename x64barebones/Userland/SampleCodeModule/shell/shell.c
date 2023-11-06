@@ -31,7 +31,7 @@ static int container_id;
 
 
 static command_t commands[] = {  {"help", help, " "},
-                            {"divbyzero", divbyzero, "does the nubmer passed as a parameter dividied by zero"},
+                            {"divbyzero", divbyzero, "does 7 dividied by zero"},
                             {"opcode", opcode, "simulates a wrong opcode exception"}, 
                             {"time", time, "displays the hour (time ARG)"},
                             {"registers", registers, "prints the registers that were captures by the shift+alt+R hot key; if no registeres were captured it prints an error message"},
@@ -46,7 +46,7 @@ void load_shell(){
     container_id = aux;
     set_container_id(container_id);
 
-    setBorder(container_id, SHELL_BACKGROUND);
+    setBorder(SHELL_BACKGROUND);
     setFontSize(5);
     newLine();
     puts("       pantherOS\n", SHELL_LETTER);
@@ -78,19 +78,16 @@ void run_shell(){
 
 
 void help(){
-    newLine();
-    printf(">>>> This is the %s menu \n", HELP_HEADINGS, commands[0].name);
-    for(int i = 1; i < commands[i].name != NULL ; i++){
-            printf(">> %s : \n", HELP_HEADINGS, commands[i].name);
-            printf("      %s \n", SHELL_LETTER, commands[i].description);
+    newLine(container_id);
+    printf(">>>> This is the %s menu\n", HELP_HEADINGS, commands[0].name);
+    for(int i = 1; i < 8 ; i++){
+            printf("   >> %s : ", HELP_HEADINGS, commands[i].name);
+            printf(" %s \n", SHELL_LETTER, commands[i].description);
     }
 }
 
-// no se xq no funciona como yo quiero :(
-void divbyzero(char* param){
-    int aux = atoi(param);
-    int aux2 =  division();
-    //falta imprimir los registros
+void divbyzero(){
+    division();
 }
 
 void opcode(){
@@ -105,7 +102,8 @@ void time(){
 
 // esta tambn la podria "hacer" solo que falta lo de abrirla en un container y eso 
 void registers(){
-    do_sys_get_registers();
+    run_regsuser();
+    set_container_id(container_id);
 }
 
 void snake(){
@@ -124,4 +122,3 @@ void lettersize(char* param){       // falta que cuando reescriba mantenga los e
 void exit(){
     
 }
-

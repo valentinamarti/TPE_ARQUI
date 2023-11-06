@@ -22,7 +22,7 @@ void load_snake(){
     set_container_id(container_id);
     char players=load_snake_menu();
     sleep(1000);
-    setBackground(container_id,BLACK);
+    setBackground(BLACK);
     drawBoard();
     start_snake(players);
     exitContainer(container_id);
