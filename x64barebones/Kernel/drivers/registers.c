@@ -9,6 +9,13 @@
 #define WIDTH 450
 #define HEIGHT 580
 
+// Container defines
+#define NAMEE "ERROR_CONTAINER"
+#define CX0E 275 //Constant X0
+#define CY0E 200 //Constant Y0
+#define WIDTHE 500
+#define HEIGHTE 100
+
 static char *regsNames[] = {"RAX <> ", "RBX <> ", "RCX <> ", "RDX <> " "RSI <> ", "RDI <> ", "RBP <> ", "RSP <> ", "R8  <> ", "R9  <> ", "R10 <> ", "R11 <> ", "R12 <> ", "R13 <> ", "R14 <> ", "R15 <> ", "RIP <> "};
 static uint64_t *rip;
 static uint64_t *rsp;
@@ -44,7 +51,7 @@ static void genericMemoryDump(char* message, int len){
 
 	drawString(container_id, message, len, &MEMORY_DUMP_TITTLE);
 	printRegisters();
-	sleep(8000);
+	sleep(5000);
 
 	exitContainer(container_id);
 	return;
@@ -70,5 +77,21 @@ static void printRegisters(){
 		drawString(container_id, regsNames[i], 7, &MEMORY_DUMP_REGS);
 		drawStringNull(container_id, buff, &MEMORY_DUMP_LETTER);
 		drawCharInContainer(container_id, (char_t){'\n', WHITE});	
+	}
+}
+
+void getRegisters(){
+	if(saved == 0){
+		container_id = getContainer(NAMEE,CX0E,CY0E,WIDTHE,HEIGHTE); 
+		changeSize(container_id,2);
+		changeBackgroundColor(container_id, &MEMORY_DUMP_BACKGROUND);
+		changeBorderColor(container_id, &MEMORY_DUMP_BORDER);
+
+		drawString(container_id, "\n", 1, &ERROR_REGISTERS_DUMP);
+		drawString(container_id, "Error, no registers were saved \n", 32, &ERROR_REGISTERS_DUMP);
+		sleep(5000);
+		exitContainer(container_id);
+	}else{
+		genericMemoryDump("Registers dump \n", 16);
 	}
 }

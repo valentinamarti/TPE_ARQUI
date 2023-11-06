@@ -15,8 +15,6 @@
 #define WIDTH 1005
 #define HEIGHT 700
 
-static char *regsName[] = {"RAX", "RBX", "RCX", "RDX" "RSI", "RDI", "RBP", "RSP", "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15", "RIP"};
-
 
 void help();
 void divbyzero();
@@ -33,13 +31,13 @@ static int container_id;
 
 
 static command_t commands[] = {  {"help", help, " "},
-                            {"divbyzero", divbyzero, "divide el numero que recibe como argumento por cero"},
-                            {"opcode", opcode, "ni idea que hace este"}, 
-                            {"time", time, "deslpiega la hora del sistema (zona horaria ARG)"},
-                            {"registers", registers, "imprime los valores de los registros capturados al hacer shift+alt+R"},
-                            {"snake",snake, "juego snake el cual como argumento recibe la cantidad de jugadores; por default un jugador"}, 
-                            {"lettersize", lettersize, "cambia la dimension de las letras con el numero que recibe como argumento"},    // esta recibe un cahr* que tiene q 
-                            {"exit", exit, "sale del programa"}  
+                            {"divbyzero", divbyzero, "does the nubmer passed as a parameter dividied by zero"},
+                            {"opcode", opcode, "simulates a wrong opcode exception"}, 
+                            {"time", time, "displays the hour (time ARG)"},
+                            {"registers", registers, "prints the registers that were captures by the shift+alt+R hot key; if no registeres were captured it prints an error message"},
+                            {"snake",snake, "play the snake game"}, 
+                            {"lettersize", lettersize, "it changes the size of the letter to the number passed as a paramter (it is advised numbers between 1 and 5)"},    // esta recibe un cahr* que tiene q 
+                            {"exit", exit, "it exits the shell"}  
                               };                               // psar a int para invocar a la fun changeLettersize
 
 
@@ -107,11 +105,7 @@ void time(){
 
 // esta tambn la podria "hacer" solo que falta lo de abrirla en un container y eso 
 void registers(){
-    uint64_t regs[17];
-    do_sys_get_registers(&registers);
-    for(int i = 0; i < 17; i++){
-        printf(" %s <> %s \n", WHITE, regsName[i], regs[i]);
-    }
+    do_sys_get_registers();
 }
 
 void snake(){
