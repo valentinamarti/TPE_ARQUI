@@ -29,15 +29,15 @@ static unsigned char* keyboard[] = {
         0,    /* 69 - Num lock*/
         0,    /* Scroll Lock */
         0,    /* Home key */
-        0,    /* Up Arrow */
+        1,    /* Up Arrow */
         0,    /* Page Up */
         '-',
-        0,    /* Left Arrow */
+        2,    /* Left Arrow */
         0,
-        0,    /* Right Arrow */
+        3,    /* Right Arrow */
         '+',
         0,    /* 79 - End key*/
-        0,    /* Down Arrow */
+        4,    /* Down Arrow */
         0,    /* Page Down */
         0,    /* Insert Key */
         0,    /* Delete Key */
@@ -57,15 +57,15 @@ static unsigned char* keyboard_shift[] = {
         0,    /* 69 - Num lock*/
         0,    /* Scroll Lock */
         0,    /* Home key */
-        0,    /* Up Arrow */
+        1,    /* Up Arrow */
         0,    /* Page Up */
         '-',  /*numpad -*/
-        0,    /* Left Arrow */
+        2,    /* Left Arrow */
         0,
-        0,    /* Right Arrow */
+        3,    /* Right Arrow */
         '+',  /*numpad +*/
         0,    /* 79 - End key*/
-        0,    /* Down Arrow */
+        4,    /* Down Arrow */
         0,    /* Page Down */
         0,    /* Insert Key */
         0,    /* Delete Key */
