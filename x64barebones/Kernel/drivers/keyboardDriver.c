@@ -89,15 +89,14 @@ int keyboard_handler(){
     uint8_t key = getKeyPressed();
     int aux = 0; 
     if(key <= MAX_VALUE_FOR_KEY){
-        aux = getKeyValue(key);  
-        if(aux == 1){    
-        }          
-        return aux;                      // if 1 we capture the value of the registers
+        aux = getKeyValue(key);            
+        return aux;
     }else if(key ==  L_SHIFT_RELEASE_KEY_VALUE || key == R_SHIFT_RELEASE_KEY_VALUE){
         shiftFlag = 0;         
     }else if(key == ALT_KEY_RELEASE_VALUE){
         altFlag = 0; 
     }
+    
     return aux; 
 }
 

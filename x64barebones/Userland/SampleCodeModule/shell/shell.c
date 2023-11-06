@@ -116,6 +116,8 @@ void registers(){
 }
 
 void snake(){
+    load_snake();
+    set_container_id(container_id);
 
 }
 
