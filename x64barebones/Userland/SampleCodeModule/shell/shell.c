@@ -79,7 +79,7 @@ void run_shell(){
 
 void help(){
     newLine();
-    printf(">>>> This is the %s menu", HELP_HEADINGS, commands[0].name);
+    printf(">>>> This is the %s menu \n", HELP_HEADINGS, commands[0].name);
     for(int i = 1; i < commands[i].name != NULL ; i++){
             printf(">> %s : \n", HELP_HEADINGS, commands[i].name);
             printf("      %s \n", SHELL_LETTER, commands[i].description);
