@@ -124,7 +124,6 @@ do_sys_get_registers:
 	push rdi
 	push rsi
 
-	mov rsi, rdi        ; rsi -> puntero al vector de registros
 	mov rdi, 4
 	int 80h
 
