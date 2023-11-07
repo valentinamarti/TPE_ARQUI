@@ -38,15 +38,15 @@ int load_snake_menu(){
     setBackground(WHITE);
     setFontSize(3);
     int current_player= 1;
-    char c= UP_ARROW;
+    char c= UP_1;
     
 
     while(c != '\n'){
         
-        if(c==UP_ARROW || c== DOWN_ARROw){
+        if(c==UP_1 || c== DOWN_1){
             clear_sb();
             clear();
-            if(c== UP_ARROW){
+            if(c== UP_1){
                 current_player=1;
             }
             else{
@@ -84,35 +84,40 @@ void printInMatriz(int x, int y, color_t color){
 
 
 void start_snake(char players){
-    char cant_players = players;
-    player1= (snake_t) {1,NULL,0,0};
-    if(players==2){
-        player2= (snake_t) {2,NULL,0,0};
-    }
-
+    cant_players = players;
+    player1= (snake_t) {1,NULL,0,0,SNAKE_COLOR_1};
     getBody(&player1,STARTX,STARTY);
     printInMatriz(STARTX,STARTY,SNAKE_COLOR_1);
-    char c;
+
+    if(players==2){
+        player2= (snake_t) {2,NULL,0,0,SNAKE_COLOR_2};
+        getBody(&player2,STARTX2,STARTY2);
+        printInMatriz(STARTX2,STARTY2,SNAKE_COLOR_2);
+    }
+
+    
     char lost_flag=1;
+    char direc1[]= {0,0};
+    char direc2[]= {0,0};
+
     putPrize();
     while(lost_flag){
-        c= getKeyMove();
-
-        if(c== UP_1){
-            lost_flag = move(&player1, 0, -1);
-        }
-        else if(c==DOWN_1){
-            lost_flag = move(&player1, 0,1);
-        }
-        else if(c== LEFT_1){
-            lost_flag = move(&player1,-1,0);
-        }
-        else if(c== RIGHT_1){
-            lost_flag = move(&player1,1,0);
-        }
+        sleep(TICK);
+        putDirections(direc1,direc2);
+        lost_flag = move(&player1, direc1[0],direc1[1]);
+        
         if(gotPrize(&player1)){
             player1.size+=1;
             putPrize();
+        }
+
+        if(lost_flag && cant_players==2){
+            lost_flag = move(&player2, direc2[0],direc2[1]);
+            
+            if(gotPrize(&player2)){
+                player2.size+=1;
+                putPrize();
+            }
         }
     }
 }
@@ -132,6 +137,33 @@ void getBody(snake_t * player,int posx, int posy){
     player->head->next= aux;
 }
 
+void putDirections_aux(char * direc,char c,char up,char down,char left,char right){
+    if(c== up){
+        direc[0]= 0;
+        direc[1]= -1;
+    }
+    else if(c==down){
+        direc[0]= 0;
+        direc[1]= 1;
+    }
+    else if(c== left){
+        direc[0]= -1;
+        direc[1]= 0;
+    }
+    else if(c== right){
+        direc[0]= 1;
+        direc[1]= 0;
+    }
+}
+void putDirections(char * direc1,char * direc2){
+    char c1, c2;
+    getKeyMove(&c1,&c2);
+
+    putDirections_aux(direc1,c1,UP_1,DOWN_1,LEFT_1,RIGHT_1);
+    putDirections_aux(direc2,c2,UP_2,DOWN_2,LEFT_2,RIGHT_2);
+}
+
+
 char move(snake_t * player,int direcX,int direcY){
     body_t * aux= player->head;
     if(aux == NULL){
@@ -146,7 +178,7 @@ char move(snake_t * player,int direcX,int direcY){
 
         aux->posx += direcX;
         aux->posy += direcY;
-        printInMatriz(aux->posx,aux->posy,SNAKE_COLOR_1);
+        printInMatriz(aux->posx,aux->posy,player->color);
         player->prize_flag=0;
         return 1;
     }
@@ -160,12 +192,12 @@ char move(snake_t * player,int direcX,int direcY){
             direcX = aux->posx - aux->next->posx - direcX;
             direcY = aux->posy - aux->next->posy - direcY;
         }
-        printInMatriz(aux->posx,aux->posy,SNAKE_COLOR_1);
+        printInMatriz(aux->posx,aux->posy,player->color);
         aux= aux->next;
     }
 
     
-    return getsHit();
+    return getsHit(player);
 }
 
 char in_board(int posx,int posy){
@@ -188,37 +220,40 @@ char getsHit_aux(body_t * aux,int posx, int posy){
     return 1;
 }
 
-char getsHit(){
+char getsHit(snake_t * player){
+    int posx= player->head->posx;
+    int posy= player->head->posy;
+    
     body_t * aux= player1.head;
     if(aux== NULL){
         return 1;
     }
 
-    char ret = getsHit_aux(aux->next,aux->posx,aux->posy);
+    char ret = getsHit_aux(aux->next,posx,posy);
     if(! ret){
         return 0;
     }
 
-    if(cant_players== 2){
-        if(aux== NULL){
+    if(cant_players == 2 ){
+        aux= player2.head;
+        if(aux == NULL){
             return 1;
         }
-        aux= player2.head;
-        ret= getsHit_aux(aux->next,aux->posx,aux->posy);
+        ret= getsHit_aux(aux->next,posx,posy);
     }
     return ret;
 }
 
-char getKeyMove(){
-    char move_flag=0;
-    while(! move_flag){
+void getKeyMove(char * c1, char * c2){
+    for(int i=0; i<TICK; i++){
         char c= getCharFromKernel();
-        if(c == UP_1 || c== DOWN_1 || c== LEFT_1 || c==RIGHT_1){
-            return c;
-            move_flag=1;
+        if(c == UP_1 || c== DOWN_1 || c== LEFT_1 || c==RIGHT_1){ 
+            *c1=c;
+        }
+        if(c == UP_2 || c== DOWN_2 || c== LEFT_2 || c==RIGHT_2){
+            *c2=c;
         }
     }
-    return 0;
 }
 
 void putPrize(){
@@ -241,3 +276,4 @@ char gotPrize(snake_t * player){
     }
     return 0;
 }
+

@@ -18,6 +18,7 @@
 #define SNAKE_LIGHT_COLOR ((color_t){255, 194, 179})
 #define SNAKE_DARK_COLOR ((color_t){230, 46, 0})
 #define SNAKE_COLOR_1 GREEN
+#define SNAKE_COLOR_2 BLACK
 
 #define REGISTERS_DUMP_BACKGROUND ((color_t){33, 7, 54})
 #define REGISTERS_DUMP_LETTER ((color_t){221, 204, 235})
