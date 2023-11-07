@@ -3,12 +3,23 @@
 #include <snake.h>
 
 // Container defines
-#define NAME "SNAKE"
+#define S_NAME "SNAKE"
 #define S_CX0 100     //Constant X0
 #define S_CY0 100     //Constant Y0
 #define S_WIDTH (MATRIZ_WIDTH * BLOCK_SIZE + 2* OWN_BORDER)
 #define S_HEIGHT (MATRIZ_WIDTH * BLOCK_SIZE +2 * OWN_BORDER)
+
+// Container Points Board defines
+
+#define P_NAME "POINTS BOARD"
+#define P_CX0 S_CX0 + S_WIDTH       //Constant X0
+#define P_CY0 S_CY0                 //Constant Y0
+#define P_WIDTH 250
+#define P_HEIGHT 300
+
+
 static int container_id;
+static int container_id_points;
 
 static char matriz[S_HEIGHT][S_WIDTH];
 
@@ -22,14 +33,15 @@ snake_t player2;
 //--------------------------------------------------------------------
 
 void load_snake(){
-    container_id = do_sys_new_container(NAME,S_CX0,S_CY0,S_WIDTH,S_HEIGHT); 
+    container_id = do_sys_new_container(S_NAME,S_CX0,S_CY0,S_WIDTH,S_HEIGHT); 
+    container_id_points = do_sys_new_container(P_NAME,P_CX0,P_CY0,P_WIDTH,P_HEIGHT);
     set_container_id(container_id);
     char players=load_snake_menu();
     sleep(1000);
     setBackground(BLACK);
     drawBoard();
     start_snake(players);
-    exitContainer(container_id);
+    exitSnake();
 }
 
 
@@ -58,7 +70,7 @@ int load_snake_menu(){
         }
         c = getCharFromKernel();
     }
-    clear();
+    clear_sb();
     return current_player;
 }
 
@@ -110,16 +122,18 @@ void start_snake(char players){
         lost_flag = move(&player1, direc1[0],direc1[1]);
         
         if(gotPrize(&player1)){
-            player1.size+=1;
+            player1.size++;
             putPrize();
+            printPoints();
         }
 
         if(lost_flag && cant_players==2){
             lost_flag = move(&player2, direc2[0],direc2[1]);
             
             if(gotPrize(&player2)){
-                player2.size+=1;
+                player2.size++;
                 putPrize();
+                printPoints();
             }
         }
     }
@@ -130,9 +144,8 @@ void getBody(snake_t * player,int posx, int posy){
     aux->posx= posx;
     aux->posy= posy;
     aux->next= NULL;
-    player->size++;
 
-    if(player->size==1){
+    if(player->size==0){
         player->head= aux;
         return;
     }
@@ -310,6 +323,8 @@ void exitSnake(){
     if(cant_players == 2){
         exitSnake_aux(player2.head);
     }
+    exitContainer(container_id_points);
+    exitContainer(container_id);
 }
 
 void redrawSnake(){
@@ -317,4 +332,18 @@ void redrawSnake(){
     drawPrize();
     drawSnake(&player1);
     drawSnake(&player2);
+}
+
+void printPoints(){
+    set_container_id(container_id_points);
+    clear_sb();
+    clear();
+
+    puts("Puntajes:",WHITE);
+    printf("P1: %d\n",WHITE,(int) player1.size);
+
+    if(cant_players==2){
+        printf("P2: %d\n",WHITE,(int) player2.size);
+    }
+    set_container_id(container_id);
 }

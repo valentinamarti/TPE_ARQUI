@@ -90,6 +90,10 @@ void changeSize(int ID,uint8_t num);
 
 void emptyScreen();
 
+void emptyContainer(container_t * c);
+
+void emptyContainerByID(int ID);
+
 void drawStringNull(int ID, uint8_t * string, color_t * color);
 
 void drawCharNC(char_t character);

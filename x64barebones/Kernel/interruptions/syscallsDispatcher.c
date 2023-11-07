@@ -110,7 +110,7 @@ void sys_read(uint64_t buffer, uint64_t longitud, uint64_t filedescriptor){
 }
 
 void sys_clear(uint64_t container_id){
-	emptyContainer(container_id);
+	emptyContainerByID(container_id);
 }
 
 void sys_get_time(uint64_t hrs, uint64_t min, uint64_t sec){	//son todos punteros a los buffers donde van

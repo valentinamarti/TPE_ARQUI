@@ -197,6 +197,10 @@ void drawContainerBorder(container_t * c){
     }
 
 }
+void emptyContainerByID(int ID){
+    emptyContainer(getContainerByID(ID));
+}
+
 void emptyContainer(container_t * c){
     drawRectangle(&(c->background_color),c->X0,c->Y0,c->width,c->height);
     c->ACTUAL_X=c->X0;
