@@ -1,10 +1,11 @@
 #include <shell.h>
 #include <stdint.h>
 #include <lib.h>
+#include <sounds.h>
 #include <timeuser.h>
        
 #define P_OS_ID ">^< "
-#define BUFFER_SHELL_SIZE 50
+#define BUFFER_SHELL_SIZE 150
 #define NULL 0
 #define DEFAULT_FONT_SIZE 2
 
@@ -23,7 +24,7 @@ void time();
 void snake();
 void lettersize();
 void registers();
-void exit();
+void clear_shell();
 
 static char command[BUFFER_SHELL_SIZE] = {0};
 static char argument[BUFFER_SHELL_SIZE] = {0};
@@ -37,7 +38,7 @@ static command_t commands[] = {  {"help", help, " "},
                             {"registers", registers, "prints the registers that were captures by the shift+alt+R hot key; if no registeres were captured it prints an error message"},
                             {"snake",snake, "play the snake game"}, 
                             {"lettersize", lettersize, "it changes the size of the letter to the number passed as a paramter (it is advised numbers between 1 and 5)"},    // esta recibe un cahr* que tiene q 
-                            {"exit", exit, "it exits the shell"}  
+                            {"clear", clear_shell, "clear the shell"}  
                               };                               // psar a int para invocar a la fun changeLettersize
 
 
@@ -94,13 +95,11 @@ void opcode(){
     wrong_opcode();
 }
 
-// esta la podria hacer, de momento ya tengo todo solo que no me funciona :( (desps ver si lo metemos en container o no)
 void time(){
     run_timeuser();
     set_container_id(container_id);
 }
 
-// esta tambn la podria "hacer" solo que falta lo de abrirla en un container y eso 
 void registers(){
     run_regsuser();
     set_container_id(container_id);
@@ -112,13 +111,15 @@ void snake(){
 
 }
 
-void lettersize(char* param){       // falta que cuando reescriba mantenga los enter; no se porq no lo hace
+void lettersize(char* param){     
     int aux = atoi(param);
     if(aux != 0){
         setFontSize(aux);
     }
 }
 
-void exit(){
-    
+void clear_shell(){
+    clear_sb();
+    setFontSize(DEFAULT_FONT_SIZE);
 }
+

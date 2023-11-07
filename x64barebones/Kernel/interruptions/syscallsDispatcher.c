@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <naiveConsole.h>
 #include <videoDriver.h>
+#include <soundDriver.h>
 #include <registers.h>
 #include <time.h>
 
@@ -16,7 +17,7 @@ static void sys_get_time(uint64_t hours, uint64_t minutes, uint64_t seconds);
 static uint64_t sys_get_registers();
 static void sys_set_font_size(uint64_t size, uint64_t container_id);
 static void sys_draw_rectangle(uint64_t posx, uint64_t posy, uint64_t sizex, uint64_t sizey, uint64_t color, uint64_t container_id);
-static void sys_play_sound();
+void sys_play_beep(uint64_t frec, uint64_t millisec);
 static void sys_sleep(uint64_t seconds);
 static void sys_exit(uint64_t container_id);
 static void sys_new_line(uint64_t container_id);
@@ -24,7 +25,7 @@ static void sys_clear_sb(uint64_t container_id);
 static uint64_t sys_new_container(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, uint16_t height);
 static void sys_set_background(uint64_t color, uint64_t container_id);
 static void sys_set_border(uint64_t color, uint64_t container_id);
-
+static uint64_t sys_was_redrawed(uint64_t container_id);
 
 uint64_t syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9, uint64_t aux){
 	switch (rdi) {
@@ -55,7 +56,7 @@ uint64_t syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
 			sys_draw_rectangle(rsi, rdx, rcx, r8, r9, aux);
 			break;
 		case 7:
-			sys_play_sound();
+			sys_play_beep(rsi, rdx);
 			break;
 		case 8:
 			sys_sleep(rsi);
@@ -78,6 +79,9 @@ uint64_t syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
 			break;
 		case 14:
 			sys_set_border(rsi,rdx);
+			break;	
+		case 15:
+			return sys_was_redrawed(uint64_t rsi);
 			break;	
 	}
 	return;
@@ -129,8 +133,6 @@ uint64_t sys_get_registers(uint64_t *registers) {
 	}
 }
 
-
-
 void sys_set_font_size(uint64_t size, uint64_t container_id){
 	changeSize(container_id, size);	
 }
@@ -141,8 +143,8 @@ void sys_draw_rectangle(uint64_t posx, uint64_t posy, uint64_t sizex, uint64_t s
 	drawRectangle(aux, (int)posx, (int)posy, (int)sizex, (int)sizey);
 }
 
-void sys_play_sound(){
-	// a completar
+void sys_play_beep(uint64_t frec, uint64_t millisec){
+	beep(frec, millisec);
 }
 
 void sys_sleep(uint64_t seconds){
@@ -178,3 +180,6 @@ void sys_set_border(uint64_t color, uint64_t container_id){
 	changeBorderColor(container_id, aux);
 }
 
+uint64_t sys_was_redrawed(uint64_t container_id){
+
+}
