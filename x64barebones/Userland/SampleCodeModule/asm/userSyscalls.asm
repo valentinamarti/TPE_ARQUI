@@ -15,6 +15,7 @@ GLOBAL wrong_opcode
 GLOBAL do_sys_new_container
 GLOBAL do_sys_set_background
 GLOBAL do_sys_set_border
+GLOBAL do_sys_set_border
 
 section .text
 
@@ -349,7 +350,7 @@ do_sys_set_border:		 ; do_sys_set_border(color_t color, int container_id)
 
 	mov rdx, rsi        ; rdx -> container_id
 	mov rsi, rdi        ; rsi -> color
-	mov rdi, 14
+	mov rdi, 15
 	int 80h
 
 	pop rsi
