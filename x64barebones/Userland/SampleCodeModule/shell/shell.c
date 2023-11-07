@@ -77,7 +77,7 @@ void run_shell(){
             }
         }
         if(found == 0){
-            printf("    Error command %s not found\n", SHELL_LETTER, command);
+            printf("Error command %s not found\n", SHELL_LETTER, command);
         }
     }
 }
