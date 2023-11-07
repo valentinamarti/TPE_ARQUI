@@ -277,3 +277,19 @@ char gotPrize(snake_t * player){
     return 0;
 }
 
+void exitSnake_aux(body_t * body){
+    body_t * aux;
+    while(body != NULL){
+        aux= body;
+        body= body->next;
+        sfree(aux);
+    }
+}
+
+void exitSnake(){
+    exitSnake_aux(player1.head);
+    if(cant_players == 2){
+        exitSnake_aux(player2.head);
+    }
+}
+

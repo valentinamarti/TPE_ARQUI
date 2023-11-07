@@ -26,7 +26,7 @@ typedef struct container {
     uint8_t * name;
 
     uint16_t SIZE;
-
+    uint8_t redraw_flag;
     uint16_t X0;
     uint16_t Y0;
 
@@ -97,3 +97,6 @@ void drawCharNC(char_t character);
 void changeBackgroundColor(int ID, color_t *color);
 
 void changeBorderColor(int ID, color_t *color);
+
+char wasRedraw(int ID);
+
