@@ -31,8 +31,8 @@ typedef struct body_struct{     //One body by block
 typedef struct snake_struct{
     uint8_t player;
     body_t * head;
-    body_t * tail;
     uint16_t size;
+    uint8_t prize_flag;
 }snake_t;
 
 extern void * smalloc();
@@ -50,6 +50,14 @@ void getBody(snake_t * player,int posx, int posy);
 
 void printInMatriz(int x, int y, color_t color);
 
-void start_snake(int players);
+void start_snake(char players);
 
 char getKeyMove();
+
+char gotPrize(snake_t * player);
+
+void drawPrize();
+
+void putPrize();
+
+char getsHit();

@@ -22,6 +22,7 @@ extern void do_sys_read(char* buffer, int longitud, int fd);
 extern int do_sys_new_container(char * name, int X0, int Y0,int width, int height);
 extern void do_sys_draw_rectangle(int posx, int posy, int sizex, int sizey, color_t * color, int container_id);
 static int container_id;
+unsigned int seed = 1234; // Initial seed value
 
 // ESTA FUNCION SI O SI LLAMARLA AL PRINCIPIO, PARA QUE CARGUE EL CONTAINER
 void set_container_id(int id){
@@ -30,6 +31,12 @@ void set_container_id(int id){
 
 int getID(){
     return container_id;
+}
+
+
+unsigned int rand(){
+    seed = (1103515245 * seed + 12345) & 0x7FFFFFFF; // LCG formula
+    return seed;
 }
 
 //falta agregar float 

@@ -30,5 +30,5 @@
     void exitContainer(int container_id);
     int getID();
     void printRectangle(int posx, int posy, int sizex, int sizey, color_t color);
-
+    unsigned int rand();
 #endif

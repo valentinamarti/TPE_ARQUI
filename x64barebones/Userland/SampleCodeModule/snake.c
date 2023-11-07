@@ -10,8 +10,12 @@
 #define S_HEIGHT (MATRIZ_WIDTH * BLOCK_SIZE +2 * OWN_BORDER)
 static int container_id;
 
+static char matriz[S_HEIGHT][S_WIDTH];
 
+int prizex=-1;
+int prizey=-1;
 
+char cant_players;
 snake_t player1;
 snake_t player2;
 
@@ -31,7 +35,7 @@ void load_snake(){
 
 
 int load_snake_menu(){
-    setBackground(container_id,WHITE);
+    setBackground(WHITE);
     setFontSize(3);
     int current_player= 1;
     char c= UP_ARROW;
@@ -66,6 +70,7 @@ void drawBoard(){
         color_flag= start_flag;
         for(int x=0; x< MATRIZ_WIDTH; x++){
             aux= color_flag ? SNAKE_DARK_COLOR : SNAKE_LIGHT_COLOR;
+            matriz[y][x]= color_flag;
             printInMatriz(x,y,aux);
             color_flag= !color_flag;
         }
@@ -78,16 +83,18 @@ void printInMatriz(int x, int y, color_t color){
 }
 
 
-void start_snake(int players){
-    player1= (snake_t) {1,NULL,NULL,0};
+void start_snake(char players){
+    char cant_players = players;
+    player1= (snake_t) {1,NULL,0,0};
     if(players==2){
-        player2= (snake_t) {2,NULL,NULL,0};
+        player2= (snake_t) {2,NULL,0,0};
     }
 
     getBody(&player1,STARTX,STARTY);
     printInMatriz(STARTX,STARTY,SNAKE_COLOR_1);
     char c;
     char lost_flag=1;
+    putPrize();
     while(lost_flag){
         c= getKeyMove();
 
@@ -103,6 +110,10 @@ void start_snake(int players){
         else if(c== RIGHT_1){
             lost_flag = move(&player1,1,0);
         }
+        if(gotPrize(&player1)){
+            player1.size+=1;
+            putPrize();
+        }
     }
 }
 
@@ -115,12 +126,10 @@ void getBody(snake_t * player,int posx, int posy){
 
     if(player->size==1){
         player->head= aux;
-        player->tail = aux;
         return;
     }
-
-    player->tail->next= aux;
-    player->tail= aux;
+    aux->next= player->head-> next;
+    player->head->next= aux;
 }
 
 char move(snake_t * player,int direcX,int direcY){
@@ -131,19 +140,32 @@ char move(snake_t * player,int direcX,int direcY){
     if(! in_board(aux->posx + direcX, aux->posy + direcY)){
         return 0;
     }
-    
+
+    if(player->prize_flag){
+        getBody(player,aux->posx,aux->posy);
+
+        aux->posx += direcX;
+        aux->posy += direcY;
+        printInMatriz(aux->posx,aux->posy,SNAKE_COLOR_1);
+        player->prize_flag=0;
+        return 1;
+    }
     while(aux != NULL){
         aux->posx += direcX;
         aux->posy += direcY;
-
-        if(aux->next != NULL){
-            direcX = aux->posx - aux->next->posx;
-            direcY = aux->posy - aux->next->posy;
+        if(aux->next == NULL){
+            printInMatriz(aux->posx- direcX,aux->posy -direcY,matriz[aux->posy - direcY][aux->posx - direcX] ? SNAKE_DARK_COLOR: SNAKE_LIGHT_COLOR);
+        }
+        else{
+            direcX = aux->posx - aux->next->posx - direcX;
+            direcY = aux->posy - aux->next->posy - direcY;
         }
         printInMatriz(aux->posx,aux->posy,SNAKE_COLOR_1);
         aux= aux->next;
     }
-    return 1;
+
+    
+    return getsHit();
 }
 
 char in_board(int posx,int posy){
@@ -156,6 +178,37 @@ char in_board(int posx,int posy){
     return 1;
 }
 
+char getsHit_aux(body_t * aux,int posx, int posy){
+    while(aux != NULL){
+        if(aux->posx == posx && aux->posy== posy){
+            return 0;
+        }
+        aux= aux->next;
+    }
+    return 1;
+}
+
+char getsHit(){
+    body_t * aux= player1.head;
+    if(aux== NULL){
+        return 1;
+    }
+
+    char ret = getsHit_aux(aux->next,aux->posx,aux->posy);
+    if(! ret){
+        return 0;
+    }
+
+    if(cant_players== 2){
+        if(aux== NULL){
+            return 1;
+        }
+        aux= player2.head;
+        ret= getsHit_aux(aux->next,aux->posx,aux->posy);
+    }
+    return ret;
+}
+
 char getKeyMove(){
     char move_flag=0;
     while(! move_flag){
@@ -164,6 +217,27 @@ char getKeyMove(){
             return c;
             move_flag=1;
         }
+    }
+    return 0;
+}
+
+void putPrize(){
+    prizex= rand() % MATRIZ_WIDTH;
+    prizey= rand() % MATRIZ_HEIGHT;
+    drawPrize();   
+}
+
+void drawPrize(){
+    printInMatriz(prizex,prizey,SHELL_POSID);
+}
+
+char gotPrize(snake_t * player){
+    if(player->head == NULL){
+        return 0;
+    }
+    if(player->head->posx == prizex && player->head->posy == prizey){
+        player->prize_flag=1;
+        return 1;
     }
     return 0;
 }
