@@ -350,7 +350,7 @@ do_sys_set_border:		 ; do_sys_set_border(color_t color, int container_id)
 
 	mov rdx, rsi        ; rdx -> container_id
 	mov rsi, rdi        ; rsi -> color
-	mov rdi, 15
+	mov rdi, 14
 	int 80h
 
 	pop rsi
@@ -369,7 +369,7 @@ do_sys_was_redraw:		 ; do_sys_was_redrawed(int container_id)
 	push rsi
 
 	mov rsi, rdi        ; rsi -> container_id
-	mov rdi, 14
+	mov rdi, 15
 	int 80h
 
 	pop rsi

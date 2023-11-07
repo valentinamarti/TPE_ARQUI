@@ -102,6 +102,9 @@ void start_snake(char players){
 
     putPrize();
     while(lost_flag){
+        if(do_sys_was_redraw(container_id)){
+            redrawSnake();
+        }
         sleep(TICK);
         putDirections(direc1,direc2);
         lost_flag = move(&player1, direc1[0],direc1[1]);
@@ -192,7 +195,7 @@ char move(snake_t * player,int direcX,int direcY){
             direcX = aux->posx - aux->next->posx - direcX;
             direcY = aux->posy - aux->next->posy - direcY;
         }
-        printInMatriz(aux->posx,aux->posy,player->color);
+        drawBody(aux,player->color);
         aux= aux->next;
     }
 
@@ -266,6 +269,22 @@ void drawPrize(){
     printInMatriz(prizex,prizey,SHELL_POSID);
 }
 
+void drawBody(body_t * body,color_t color){
+    printInMatriz(body->posx,body->posy,color);
+}
+
+void drawSnake(snake_t * snake){
+    if(snake== NULL){
+        return;
+    }
+    
+    body_t * body= snake->head;
+
+    while(body != NULL){
+        drawBody(body,snake->color);
+        body= body->next;
+    }
+}
 char gotPrize(snake_t * player){
     if(player->head == NULL){
         return 0;
@@ -293,3 +312,9 @@ void exitSnake(){
     }
 }
 
+void redrawSnake(){
+    drawBoard();
+    drawPrize();
+    drawSnake(&player1);
+    drawSnake(&player2);
+}
