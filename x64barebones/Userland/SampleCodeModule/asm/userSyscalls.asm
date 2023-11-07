@@ -360,4 +360,25 @@ do_sys_set_border:		 ; do_sys_set_border(color_t color, int container_id)
     ret
 
 
+do_sys_was_redrawed:		 ; do_sys_was_redrawed(int container_id)
+	push rbp
+    mov rbp, rsp
+
+	push rdi
+	push rsi
+
+	mov rsi, rdi        ; rsi -> container_id
+	mov rdi, 14
+	int 80h
+
+	pop rsi
+	pop rdi
+
+    mov rsp, rbp
+    pop rbp
+    ret
+
+
+
+
 

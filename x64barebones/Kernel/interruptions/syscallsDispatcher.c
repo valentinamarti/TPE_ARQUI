@@ -25,7 +25,7 @@ static void sys_clear_sb(uint64_t container_id);
 static uint64_t sys_new_container(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, uint16_t height);
 static void sys_set_background(uint64_t color, uint64_t container_id);
 static void sys_set_border(uint64_t color, uint64_t container_id);
-
+static uint64_t sys_was_redrawed(uint64_t container_id);
 
 uint64_t syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9, uint64_t aux){
 	switch (rdi) {
@@ -79,6 +79,9 @@ uint64_t syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
 			break;
 		case 14:
 			sys_set_border(rsi,rdx);
+			break;	
+		case 15:
+			return sys_was_redrawed(uint64_t rsi);
 			break;	
 	}
 	return;
@@ -177,3 +180,6 @@ void sys_set_border(uint64_t color, uint64_t container_id){
 	changeBorderColor(container_id, aux);
 }
 
+uint64_t sys_was_redrawed(uint64_t container_id){
+
+}
