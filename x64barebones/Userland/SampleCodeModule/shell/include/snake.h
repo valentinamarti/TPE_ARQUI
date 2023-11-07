@@ -70,3 +70,7 @@ void putPrize();
 char getsHit(snake_t * player);
 
 void putDirections(char * direc1,char * direc2);
+
+void exitSnake();
+
+void printPoints();
