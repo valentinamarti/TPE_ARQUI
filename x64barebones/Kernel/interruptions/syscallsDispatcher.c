@@ -38,7 +38,7 @@ uint64_t syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
 												// en r9 -> container_id
 			break;		
 		case 1:
-			sys_read(rsi, rdx, rcx);		    // idem que el write
+			sys_read(rsi, rdx, rcx);		   
 			break;
 		case 2:
 			sys_clear(rsi);
