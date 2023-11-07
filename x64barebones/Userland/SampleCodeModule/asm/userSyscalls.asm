@@ -381,5 +381,3 @@ do_sys_was_redraw:		 ; do_sys_was_redrawed(int container_id)
 
 
 
-
-

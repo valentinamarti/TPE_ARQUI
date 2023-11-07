@@ -1,5 +1,7 @@
 #include <sounds.h>
 
+extern void  do_sys_play_beep(int frec,int millisec);
+
 void playWinnerSound(){
     do_sys_play_beep(390,3);
     do_sys_play_beep(520,3);

@@ -9,6 +9,11 @@
 #define BUFFER_USERSPACE 1
 
 
+#define UP_1 1
+#define DOWN_1 4
+#define LEFT_1 2
+#define RIGHT_1 3
+
 
 #define isupper(c) ((c >= 'A') && (c <= 'Z'))
 #define islower(c) ((c >= 'a') && (c <= 'z'))
@@ -262,26 +267,26 @@ int scanf(char* fmt, color_t color, ...){
     va_start(v, color);
 
     char c;
-    char buffer[MAX_CHARS];             // este va a ser el buffer auxiliar; aca guardo todo lo que obtengo 
-    int i = 0;                          // este va a ser mi indice
+    char buffer[MAX_CHARS];            
+    int i = 0;                         
 
     while ((c = getCharFromKernel()) != '\n' && i < BUFFER_SHELL_SIZE - 1){
-        if(c == '\b' && i > 0){
-            buffer[i--] = ' ';
-            printChar(c, color);
-        }else if(c != '\b' && c != 0){
-            buffer[i++] = c; 
-            printChar(c, color);
+        if(c != UP_1 && c != DOWN_1 && c != LEFT_1 && c != RIGHT_1){
+            if(c == '\b' && i > 0){
+                buffer[i--] = ' ';
+                printChar(c, color);
+            }else if(c != '\b' && c != 0){
+                    buffer[i++] = c; 
+                    printChar(c, color);
+            }
         }
     }
     newLine();
-    // en esta parte se analiza que lo ingresado cumpla con el formato, 
-    // y se van guardando los datos ingresados
 
-    buffer[i] = 0;          // marco el final de lo recolectado
+    buffer[i] = 0;          
     int params = 0; 
-    i = 0;                     // reinicializo el indice  
-    int j = 0;                 // inicializo el indice para recorrer el formato
+    i = 0;                     
+    int j = 0;                 
 
     while(fmt[j] != 0 && buffer[i] != 0 && i < MAX_CHARS){
         if(fmt[j] == '%'){
