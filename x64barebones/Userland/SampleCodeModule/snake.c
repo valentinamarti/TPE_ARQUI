@@ -27,6 +27,7 @@ void load_snake(){
     char players=load_snake_menu();
     sleep(1000);
     setBackground(BLACK);
+    setBorder(SNAKE_DARK_COLOR);
     drawBoard();
     start_snake(players);
     exitContainer(container_id);
@@ -53,8 +54,8 @@ int load_snake_menu(){
                 current_player=2;
             }
             puts("Jugadores:",BLACK);
-            puts("1 Jugador",(current_player==1)?GREEN:BLACK);
-            puts("2 jugadores",(current_player==2)?GREEN:BLACK);
+            puts("1 Jugador",(current_player==1)?SNAKE_MENU_SELEC:SNAKE_MENU_LETTERS);
+            puts("2 jugadores",(current_player==2)?SNAKE_MENU_SELEC:SNAKE_MENU_LETTERS);
         }
         c = getCharFromKernel();
     }
@@ -266,7 +267,7 @@ void putPrize(){
 }
 
 void drawPrize(){
-    printInMatriz(prizex,prizey,SHELL_POSID);
+    printInMatriz(prizex,prizey,SNAKE_PRICE);
 }
 
 void drawBody(body_t * body,color_t color){

@@ -15,10 +15,15 @@
 #define TIME_BORDER ((color_t){61, 35, 82})
 #define SHELL_BACKGROUND ((color_t){69,69,69})
 #define SHELL_BACKGROUND ((color_t){69,69,69})
-#define SNAKE_LIGHT_COLOR ((color_t){255, 194, 179})
-#define SNAKE_DARK_COLOR ((color_t){230, 46, 0})
-#define SNAKE_COLOR_1 GREEN
-#define SNAKE_COLOR_2 BLACK
+
+#define SNAKE_LIGHT_COLOR ((color_t){101, 173, 88})
+#define SNAKE_DARK_COLOR ((color_t){92, 143, 83})
+#define SNAKE_COLOR_1 ((color_t){194, 85, 2})
+#define SNAKE_COLOR_2 ((color_t){44, 2, 82})
+#define SNAKE_PRICE ((color_t){252, 205, 35})  
+#define SNAKE_MENU ((color_t){101, 163, 110}) 
+#define SNAKE_MENU_LETTERS ((color_t){245, 245, 171})
+#define SNAKE_MENU_SELEC ((color_t){168, 95, 245})
 
 #define REGISTERS_DUMP_BACKGROUND ((color_t){33, 7, 54})
 #define REGISTERS_DUMP_LETTER ((color_t){221, 204, 235})
