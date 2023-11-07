@@ -64,15 +64,20 @@ void load_shell(){
 void run_shell(){
     load_shell();
     while(1){
-        argument[0] = 0;           // asi la puedo volver a usar
+        argument[0] = 0;           
         command[0] = 0; 
-        print(P_OS_ID, SHELL_POSID);      // le hize tipo bigotes de pantera
+        print(P_OS_ID, SHELL_POSID);      
         scanf("%s %s", SHELL_LETTER, command, argument); 
        
+        int found = 0; 
         for(int i = 0; i < commands[i].name != NULL ; i++){
             if(strcmp((commands[i].name), command) == 0){
-                (*commands[i].func)(argument);       
+                (*commands[i].func)(argument);   
+                found = 1;    
             }
+        }
+        if(found == 0){
+            printf("    Error command %s not found\n", SHELL_LETTER, command);
         }
     }
 }
