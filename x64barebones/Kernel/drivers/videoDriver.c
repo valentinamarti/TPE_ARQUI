@@ -81,7 +81,10 @@ void emptyScreen(){
 }
 
 void emptyBuffer(int container_id){
-    getContainerByID(container_id)->buffer_idx=0;
+    container_t * c=getContainerByID(container_id);
+    c->buffer_idx=0;
+    c->ACTUAL_X= c->X0;
+    c->ACTUAL_Y= c->Y0;
 }
 
 void putPixel(color_t color, uint64_t x, uint64_t y) {
@@ -154,6 +157,7 @@ uint16_t getContainer(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, u
     node->container.ID= c_list.last_index++;
     node->container.name= name;
     node->container.SIZE = DEFAULT_SIZE;
+    node->container.redraw_flag=0;
     node->container.X0=X0+ BORDER_SIZE;
     node->container.ACTUAL_X= X0;
     node->container.Y0=Y0 + BORDER_SIZE;
@@ -194,11 +198,7 @@ void drawContainerBorder(container_t * c){
 
 }
 void emptyContainer(container_t * c){
-    for(int y=c->Y0; y< (c->Y0+c->height); y++){
-        for(int x=c->X0; x<(c->X0+c->width); x++){
-            putPixel(c->background_color,x,y);
-        }
-    }
+    drawRectangle(&(c->background_color),c->X0,c->Y0,c->width,c->height);
     c->ACTUAL_X=c->X0;
     c->ACTUAL_Y=c->Y0;
     return;
@@ -309,6 +309,7 @@ void redrawCList(){
     while(node != NULL){
         drawContainerBorder(&(node->container));
         redrawContainerBuffer(&(node->container),0);
+        node->container.redraw_flag=1;
         node= node->next;
     }
     return;
@@ -324,6 +325,13 @@ void changeBorderColor(int ID, color_t* color){
     container_t * c= getContainerByID(ID);
     c->border_color= *color;
     redrawContainerBuffer(c,0);
+}
+
+char wasRedraw(int ID){
+    container_t * c= getContainerByID(ID);
+    char ret= c->redraw_flag;
+    c->redraw_flag=0;
+    return ret;
 }
 
 //---------------------CHARACTER FUNCTIONS----------------------------
