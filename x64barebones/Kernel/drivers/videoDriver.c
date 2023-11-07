@@ -334,6 +334,10 @@ char wasRedraw(int ID){
     return ret;
 }
 
+int getCurrentID(){
+    return c_list.last->container.ID;
+}
+
 //---------------------CHARACTER FUNCTIONS----------------------------
 
 void drawChar(container_t * c, char_t character){
