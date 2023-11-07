@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <lib.h>
 #include <sounds.h>
+#include <snake.h>
 #include <timeuser.h>
        
 #define P_OS_ID ">^< "
@@ -63,6 +64,7 @@ void load_shell(){
 
 void run_shell(){
     load_shell();
+    playWinnerSound();
     while(1){
         argument[0] = 0;           
         command[0] = 0; 

@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <time.h> 
 #include <lib.h>
+#include <videoDriver.h>
 #include <soundDriver.h>
 
 extern void outb(uint16_t port, uint8_t val);
@@ -19,6 +20,7 @@ void play_sound(int frequency) {
   	if (tmp != (tmp | 3)) {
  		outb(0x61, tmp | 3);
  	}
+
 }
  
 void nosound(){
