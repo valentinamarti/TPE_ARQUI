@@ -1,14 +1,12 @@
 GLOBAL cpuVendor
-GLOBAL getKey
 GLOBAL getKeyPressed
 GLOBAL getSeconds
 GLOBAL getMinutes 
 GLOBAL getHours
-GLOBAL getDays
-GLOBAL getMonth
-GLOBAL getYear
 GLOBAL cpuGetTime
 GLOBAL hlt
+GLOBAL outb
+GLOBAL inb
 EXTERN getStackBase
 
 section .text
@@ -92,13 +90,32 @@ hlt:
 	hlt
 	ret
 
+inb:
+	push rbp
+	mov rbp, rsp
+
+	mov rdx, rdi
+	mov rax, 0
+    in al, dx
+    
+	mov rsp, rbp
+	pop rbp
+	ret 
+
+outb:
+  	push rbp
+	mov rbp, rsp
+
+	mov rax, rsi
+	mov rdx, rdi
+	out dx, al
+
+	mov rsp, rbp
+	pop rbp
+	ret
+
 
 section .data 
 section .bss
-
-
-
-
-
 
 

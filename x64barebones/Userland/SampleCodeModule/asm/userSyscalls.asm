@@ -5,7 +5,7 @@ GLOBAL do_sys_get_time
 GLOBAL do_sys_get_registers
 GLOBAL do_sys_set_font_size
 GLOBAL do_sys_draw_rectangle
-GLOBAL do_sys_play_sound
+GLOBAL do_sys_play_beep
 GLOBAL do_sys_sleep
 GLOBAL do_sys_exit_container
 GLOBAL do_sys_new_line
@@ -133,7 +133,9 @@ do_sys_get_registers:
 
     mov rsp, rbp
     pop rbp
-    ret   
+    ret    
+
+
 
 do_sys_set_font_size:		; do_sys_set_font_size(int size)
 	push rbp
@@ -189,12 +191,14 @@ do_sys_draw_rectangle:     ; sys_draw_rectangle(int posx, int posy, int sizex, i
     pop rbp
     ret  
 
-do_sys_play_sound:		; lo hice asi generico, pero de momento no rcibe si devuelve nada
+do_sys_play_beep:		; do_sys_play_beep(int frecuency, int millisec);
  	push rbp
     mov rbp, rsp
 
 	push rdi
 
+	mov rdx, rsi        ; rdx -> millisec
+	mov rsi, rdi        ; rsi -> frecuency
 	mov rdi, 7
 	int 80h
 	
@@ -203,6 +207,7 @@ do_sys_play_sound:		; lo hice asi generico, pero de momento no rcibe si devuelve
     mov rsp, rbp
     pop rbp
     ret  
+
 do_sys_sleep:			; do_sys_sleep(int seconds)
  	push rbp
     mov rbp, rsp
@@ -353,4 +358,6 @@ do_sys_set_border:		 ; do_sys_set_border(color_t color, int container_id)
     mov rsp, rbp
     pop rbp
     ret
+
+
 
