@@ -39,7 +39,7 @@ static command_t commands[] = {  {"help", help, " "},
                             {"snake",snake, "play the snake game"}, 
                             {"lettersize", lettersize, "it changes the size of the letter to the number passed as a paramter (it is advised numbers between 1 and 5)"},    // esta recibe un cahr* que tiene q 
                             {"clear", clear_shell, "clear the shell"}  
-                              };                               // psar a int para invocar a la fun changeLettersize
+                              };                             
 
 
 void load_shell(){
