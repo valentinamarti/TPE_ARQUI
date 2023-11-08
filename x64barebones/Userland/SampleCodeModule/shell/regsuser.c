@@ -35,8 +35,8 @@ void run_regsuser(){
             printf(" %s ", REGISTERS_DUMP_REGS, regsNames[i]);
             printf(" %x \n", REGISTERS_DUMP_LETTER, registers[i]);
         }
-        char c;
-        while(c = getCharFromKernel()!= ESCAPE){}
+        
+        sleep(5000);
         exitContainer(container_id);
     }else{
         container_id = do_sys_new_container(NAMEE,CX0E,CY0E,WIDTHE,HEIGHTE); 

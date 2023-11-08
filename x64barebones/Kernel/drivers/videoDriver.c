@@ -328,7 +328,7 @@ void changeBackgroundColor(int ID, color_t* color){
 void changeBorderColor(int ID, color_t* color){
     container_t * c= getContainerByID(ID);
     c->border_color= *color;
-    drawContainerBorder(c);
+    redrawContainerBuffer(c,0);
 }
 
 char wasRedraw(int ID){
