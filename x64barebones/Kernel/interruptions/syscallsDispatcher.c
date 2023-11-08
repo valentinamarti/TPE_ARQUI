@@ -161,7 +161,7 @@ void sys_new_line(uint64_t container_id){
 
 
 void sys_clear_sb(uint64_t container_id){
-	emptyContainer(container_id);
+	emptyContainerByID(container_id);
 	emptyBuffer(container_id);
 }
 

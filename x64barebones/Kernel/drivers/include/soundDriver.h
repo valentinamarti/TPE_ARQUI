@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 void playSound(int frequency);
-void nosound();
+void stopSound();
 void beep(int frequency, int millisec);
 
 #endif
