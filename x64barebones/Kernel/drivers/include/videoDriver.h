@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <defcolors.h>
 
-#define SCREENBUFER_SIZE 256
+#define SCREENBUFER_SIZE 1024
 #define BORDER_SIZE 2
 
 
