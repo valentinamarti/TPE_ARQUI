@@ -25,7 +25,7 @@ void run_timeuser(){
     do_sys_get_time(&hrs, &min, &sec);
     newLine();
     printf(" %dhrs : %dmin : %dsec \n", HELP_HEADINGS, hrs, min, sec);
-    
-    sleep(5000);
+    char c;
+    while(c = getCharFromKernel()!= ESCAPE){}
     exitContainer(container_id);
 }

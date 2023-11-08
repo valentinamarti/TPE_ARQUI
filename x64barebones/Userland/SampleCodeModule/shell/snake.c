@@ -380,7 +380,7 @@ void printPoints(){
 }
 
 void gameOver(){
-    clear_sb();
+     clear_sb();
     setBackground(SNAKE_GO_BACK);
     setFontSize(GAME_OVER_SIZE);
     puts("GAME OVER", SNAKE_GO_TITLE);
