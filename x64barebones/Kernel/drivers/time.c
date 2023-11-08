@@ -33,7 +33,19 @@ int seconds_elapsed() {
 }
 
 int hours(){
-	int aux = changeFormat(getHours())-3;
+	int aux = changeFormat(getHours());
+	if(aux < 3){
+		if(aux == 0){
+			aux = 21;
+		}else if(aux == 1){
+			aux = 22;
+		}else if(aux == 2){
+			aux = 23;
+		}
+	}else{
+		aux -= 3;
+	}
+	return aux; 
 }
 
 int minutes(){
