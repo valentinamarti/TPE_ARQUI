@@ -70,9 +70,9 @@ sfree:
 section .data
 
 chunk_size_100 dq 100
-cant_chunks_100 dq 100
+cant_chunks_100 dq 150
 
 section .bss
 
-chunk100 resb 10000
-; Puede guardar 100 chunks de 100 bytes
+chunk100 resb 15000
+; Puede guardar 150 chunks de 100 bytes
