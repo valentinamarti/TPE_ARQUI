@@ -1,4 +1,4 @@
-#include <miniDriverKeyboard.h>
+
 #include <videoDriver.h>
 #include <keyboardDriver.h>
 
@@ -14,12 +14,7 @@ extern char getKeyPressed();
 #define CAPS_LOCK_KEY_VALUE 0x3A
 #define BUFFER_SIZE 250
 
-// En video driver deberiamos agregar que si encontramos tal caracter especial 
-// como por ejemplo '\t' tenemos que hacer tal cosa y etc
-
-
 static unsigned char* keyboard[] = {   
-    // Para usar esto, nos falta ver de donde salio; asi ponemos la documentacion necesaria para justificar 
         0, 27, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', '\b', /*del*/ 
         '\t', /*tab*/ 'q', 'w', 'e', 'r',  't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n',    /*enter*/ 
         0,  /*29-control */ 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', '`', 
@@ -111,7 +106,7 @@ int getKeyValue(uint8_t key){
         shiftFlag = 1; 
         return 0;
     }else if(key == CAPS_LOCK_KEY_VALUE){
-        capsLockFlag = ~(capsLockFlag | 0xFE);          // niego el caps, si estaba prendido lo apago y viceversa
+        capsLockFlag = ~(capsLockFlag | 0xFE);          
         return 0; 
     }else if(key == ALT_KEY_PUSH_VALUE){
         altFlag = 1; 
@@ -128,8 +123,7 @@ int getKeyValue(uint8_t key){
                 if(aux != -1){
                     changeSize(getCurrentID(), aux);
                 }else if(c == 'r' || c == 'R'){
-                    flagAux = 1;        // me indica si tengo que capturar los registros 
-                }
+                    flagAux = 1;   
             }
             return flagAux;
         }else{
@@ -146,9 +140,9 @@ int getKeyValue(uint8_t key){
 
 void saveCharToBuffer(char c){
     if (elems == BUFFER_SIZE){
-            return;             // osea llegue al limite no hago nada
+            return;             
         }
-    if(first == BUFFER_SIZE){   // si llego al final, vuelvo al principio
+    if(first == BUFFER_SIZE){   
         first = 0; 
     } 
     if(last == BUFFER_SIZE){
@@ -160,7 +154,7 @@ void saveCharToBuffer(char c){
 
 char getNextCharFromBuffer(){
     if(elems <= 0){
-        return 0;          // if there are no elements, return null?
+        return 0;          
     }
     char aux = buffer[first++];
     elems--; 

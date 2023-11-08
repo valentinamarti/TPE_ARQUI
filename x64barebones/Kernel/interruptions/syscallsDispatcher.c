@@ -1,5 +1,4 @@
 #include <stdint.h>
-#include <naiveConsole.h>
 #include <videoDriver.h>
 #include <soundDriver.h>
 #include <registers.h>
@@ -9,7 +8,7 @@
 #define BUFFER_USERSPACE 1
 
 
-#define STDOUT 1	// para imprimir en pantalla el fd 
+#define STDOUT 1
 
 static void sys_write(uint64_t buffer, uint64_t longitud, uint64_t filedescriptor, uint64_t color, uint64_t container_id);
 static void sys_read(uint64_t buffer, uint64_t longitud, uint64_t filedescriptor);
