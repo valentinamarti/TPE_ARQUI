@@ -1,6 +1,7 @@
 #include <timeuser.h>
 #include <lib.h>
 #include <snake.h>
+#include <sounds.h>
 
 // Container defines
 #define S_NAME "SNAKE"
@@ -36,11 +37,13 @@ void load_snake(){
     container_id = do_sys_new_container(S_NAME,S_CX0,S_CY0,S_WIDTH,S_HEIGHT); 
     container_id_points = do_sys_new_container(P_NAME,P_CX0,P_CY0,P_WIDTH,P_HEIGHT);
     set_container_id(container_id);
+    setBorder(BLACK);
     char players=load_snake_menu();
     sleep(1000);
     setBackground(BLACK);
     drawBoard();
     start_snake(players);
+    gameOver();
     exitSnake();
 }
 
@@ -48,16 +51,14 @@ void load_snake(){
 
 int load_snake_menu(){
     setBackground(WHITE);
-    setFontSize(3);
+    setFontSize(NORMAL_SIZE);
     int current_player= 1;
     char c= UP_1;
     
 
     while(c != '\n'){
-        
         if(c==UP_1 || c== DOWN_1){
             clear_sb();
-            clear();
             if(c== UP_1){
                 current_player=1;
             }
@@ -119,8 +120,14 @@ void start_snake(char players){
         }
         sleep(TICK);
         putDirections(direc1,direc2);
-        lost_flag = move(&player1, direc1[0],direc1[1]);
         
+        if(direc1[0]== ERROR || direc2[0]== ERROR){
+            lost_flag=0;
+        }
+        else{
+            lost_flag = move(&player1, direc1[0],direc1[1]);
+        }
+
         if(gotPrize(&player1)){
             player1.size++;
             putPrize();
@@ -174,7 +181,11 @@ void putDirections_aux(char * direc,char c,char up,char down,char left,char righ
 void putDirections(char * direc1,char * direc2){
     char c1, c2;
     getKeyMove(&c1,&c2);
-
+    if(c1 == ERROR || c2 == ERROR ){
+        direc1[0]= ERROR;
+        direc2[0]= ERROR;
+        return;
+    }
     putDirections_aux(direc1,c1,UP_1,DOWN_1,LEFT_1,RIGHT_1);
     putDirections_aux(direc2,c2,UP_2,DOWN_2,LEFT_2,RIGHT_2);
 }
@@ -263,6 +274,11 @@ char getsHit(snake_t * player){
 void getKeyMove(char * c1, char * c2){
     for(int i=0; i<TICK; i++){
         char c= getCharFromKernel();
+
+        if(c== ESCAPE){
+            *c1= ERROR;
+            *c2= ERROR;
+        }
         if(c == UP_1 || c== DOWN_1 || c== LEFT_1 || c==RIGHT_1){ 
             *c1=c;
         }
@@ -317,6 +333,7 @@ char gotPrize(snake_t * player){
     }
     if(player->head->posx == prizex && player->head->posy == prizey){
         player->prize_flag=1;
+        playEatsSound();
         return 1;
     }
     return 0;
@@ -350,7 +367,6 @@ void redrawSnake(){
 void printPoints(){
     set_container_id(container_id_points);
     clear_sb();
-    clear();
 
     puts("Puntajes:",WHITE);
     printf("P1: %d\n",WHITE,(int) player1.size);
@@ -359,4 +375,17 @@ void printPoints(){
         printf("P2: %d\n",WHITE,(int) player2.size);
     }
     set_container_id(container_id);
+}
+
+void gameOver(){
+    clear_sb();
+    setFontSize(GAME_OVER_SIZE);
+    puts("GAME OVER", RED);
+    puts("Puntajes:",WHITE);
+    printf("P1: %d\n",WHITE,(int) player1.size);
+    printf("P2: %d\n",WHITE,(int) player2.size);
+    playLoserSound();
+    print("\nApreta ESC para salir del juego",WHITE);
+    char c;
+    while(c = getCharFromKernel()!= ESCAPE){}   
 }

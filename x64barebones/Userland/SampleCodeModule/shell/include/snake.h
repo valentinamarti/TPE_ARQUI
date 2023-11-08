@@ -24,6 +24,10 @@
 #define STARTX2 10
 #define STARTY2 10
 
+#define NORMAL_SIZE 3
+#define GAME_OVER_SIZE 5
+#define ERROR -2
+
 #define TICK 250           // Time of each frame move
 
 

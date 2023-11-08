@@ -21,7 +21,7 @@ void playLoserSound(){
 
 }
 
-void playSoundEats(){
+void playEatsSound(){
     do_sys_play_beep(600,100);
     do_sys_play_beep(400,100);
 }

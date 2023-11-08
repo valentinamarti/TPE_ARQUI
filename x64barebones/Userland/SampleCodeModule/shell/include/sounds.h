@@ -3,5 +3,5 @@
 
 void playWinnerSound();
 void playLoserSound();
-
+void playEatsSound();
 #endif

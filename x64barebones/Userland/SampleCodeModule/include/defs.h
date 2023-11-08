@@ -33,6 +33,8 @@
 #define ERROR_REGISTERS_DUMP ((color_t){240, 79, 67})
 
 
+#define ESCAPE 27
+
 typedef struct color {
     uint8_t red;
     uint8_t green;
