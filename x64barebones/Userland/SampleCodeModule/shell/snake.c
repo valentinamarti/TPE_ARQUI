@@ -40,7 +40,7 @@ void load_snake(){
     setBorder(BLACK);
     char players=load_snake_menu();
     sleep(1000);
-    setBackground(BLACK);
+    setBackground(SNAKE_MENU);
     drawBoard();
     start_snake(players);
     gameOver();
@@ -50,7 +50,7 @@ void load_snake(){
 
 
 int load_snake_menu(){
-    setBackground(WHITE);
+    setBackground(SNAKE_MENU);
     setFontSize(NORMAL_SIZE);
     int current_player= 1;
     char c= UP_1;
@@ -65,9 +65,9 @@ int load_snake_menu(){
             else{
                 current_player=2;
             }
-            puts("Jugadores:",BLACK);
-            puts("1 Jugador",(current_player==1)?GREEN:BLACK);
-            puts("2 jugadores",(current_player==2)?GREEN:BLACK);
+            puts("Jugadores:\n",SNAKE_MENU_LETTERS);
+            puts("1 Jugador",(current_player==1)?SNAKE_MENU_SELEC:SNAKE_MENU_LETTERS);
+            puts("2 jugadores",(current_player==2)?SNAKE_MENU_SELEC:SNAKE_MENU_LETTERS);
         }
         c = getCharFromKernel();
     }
@@ -366,26 +366,29 @@ void redrawSnake(){
 
 void printPoints(){
     set_container_id(container_id_points);
+    setBackground(SNAKE_MENU);
+    setBorder(BLACK);
     clear_sb();
 
-    puts("Puntajes:",WHITE);
-    printf("P1: %d\n",WHITE,(int) player1.size);
+    puts("Puntajes:",SNAKE_MENU_LETTERS);
+    printf("P1: %d\n",SNAKE_GO_POINTS,(int) player1.size);
 
     if(cant_players==2){
-        printf("P2: %d\n",WHITE,(int) player2.size);
+        printf("P2: %d\n",SNAKE_GO_POINTS,(int) player2.size);
     }
     set_container_id(container_id);
 }
 
 void gameOver(){
-    clear_sb();
+     clear_sb();
+    setBackground(SNAKE_GO_BACK);
     setFontSize(GAME_OVER_SIZE);
-    puts("GAME OVER", RED);
-    puts("Puntajes:",WHITE);
-    printf("P1: %d\n",WHITE,(int) player1.size);
-    printf("P2: %d\n",WHITE,(int) player2.size);
+    puts("GAME OVER", SNAKE_GO_TITLE);
+    puts("Puntajes:",SHELL_LETTER);
+    printf("P1: %d\n",SNAKE_GO_POINTS,(int) player1.size);
+    printf("P2: %d\n",SNAKE_GO_POINTS,(int) player2.size);
     playLoserSound();
-    print("\nApreta ESC para salir del juego",WHITE);
+    print("\nApreta ESC para salir del juego",SNAKE_GO_ESC);
     char c;
     while(c = getCharFromKernel()!= ESCAPE){}   
 }

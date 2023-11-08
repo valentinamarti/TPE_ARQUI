@@ -1,6 +1,4 @@
 #include <time.h>
-#include <miniDriverVideo.h>
-#include <naiveConsole.h>
 
 
 extern unsigned int getSeconds();
