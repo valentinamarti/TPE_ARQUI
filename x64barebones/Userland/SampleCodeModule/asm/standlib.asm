@@ -75,4 +75,4 @@ cant_chunks_100 dq 150
 section .bss
 
 chunk100 resb 15000
-; Puede guardar 100 chunks de 100 bytes
+; Puede guardar 150 chunks de 100 bytes
