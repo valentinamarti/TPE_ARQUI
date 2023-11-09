@@ -5,12 +5,13 @@
 // Container defines
 #define NAME "REGISTERS_DUMP"
 #define CX0 275 //Constant X0
-#define CY0 100 //Constant Y0
+#define CY0 50 //Constant Y0
 #define WIDTH 450
-#define HEIGHT 580
+#define HEIGHT 700
 
 
-static char *regsNames[] = {"RAX <> ", "RBX <> ", "RCX <> ", "RDX <> " "RSI <> ", "RDI <> ", "RBP <> ", "RSP <> ", "R8  <> ", "R9  <> ", "R10 <> ", "R11 <> ", "R12 <> ", "R13 <> ", "R14 <> ", "R15 <> ", "RIP <> "};
+static char *regsNames[] = {"RAX <> ", "RBX <> ", "RCX <> ", "RDX <> ", "RBP <> ", "RDI <> ", "RSI <> ", "RSP <> ", "R8  <> ", "R9  <> ", "R10 <> ", "R11 <> ", "R12 <> ", "R13 <> ", "R14 <> ", "R15 <> ", "RIP <> "};
+
 static uint64_t *rip;
 static uint64_t *rsp;
 static uint64_t *stack;
@@ -53,20 +54,24 @@ static void genericMemoryDump(char* message, int len){
 
 static void saveRegsInfo(){
 	uint64_t *regs = stack;
-	for (int i = 0; i < 16; i++){		
-		if(i == 7){
+	int flag = 0;
+	int j = 0;			// con este itero el stack
+	for (int i = 0; i < 17; i++){		
+		if(i == 7 && flag == 0){
 			savedRegisters[i] = rsp;
-		}else if(i == 15){
+			flag = 1;
+		}else if(i == 16){
 			savedRegisters[i] = rip;
 		}else{
-			savedRegisters[i] = regs[14 - i];
+			savedRegisters[i] = regs[14 - j];
+			j++;
 		}
 	}
 }
 
 static void printRegisters(){
 	char buff[25];
-	for (int i = 0; i < 16; i++){		
+	for (int i = 0; i < 17; i++){		
 		itoa(savedRegisters[i], buff, 16);
 		drawString(container_id, regsNames[i], 7, &REGISTERS_DUMP_REGS);
 		drawStringNull(container_id, buff, &REGISTERS_DUMP_LETTER);

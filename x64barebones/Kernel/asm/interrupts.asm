@@ -63,9 +63,10 @@ SECTION .text
 %macro irqHandlerMaster 1
 	pushState
 
-	mov [ripaux], rsp		; guarda el rip y el rsp antes de hacer nada
 	push rax
-	lea rax, [rsp + 4 * 8]
+	mov rax, [rsp + 8 * 16]
+	mov [ripaux], rax
+	mov rax, [rsp + 19 * 8]
 	mov [rspaux], rax
 	pop rax
 
@@ -104,7 +105,7 @@ SECTION .text
 	push rax
 	mov rax, [rsp + 8]
 	mov [ripaux], rax
-	mov rax, [rsp + 5 * 8]
+	mov rax, [rsp + 4 * 8]
 	mov [rspaux], rax
 	pop rax
 

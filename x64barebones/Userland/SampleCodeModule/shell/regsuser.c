@@ -31,7 +31,7 @@ void run_regsuser(){
         
         print("Registers dump \n", REGISTERS_DUMP_TITTLE);
 
-        for (int i = 0; i < 16; i++){		
+        for (int i = 0; i < 17; i++){		
             printf(" %s ", REGISTERS_DUMP_REGS, regsNames[i]);
             printf(" %x \n", REGISTERS_DUMP_LETTER, registers[i]);
         }
