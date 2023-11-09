@@ -101,9 +101,10 @@ SECTION .text
 
 %macro exceptionHandler 1
 
-	mov [ripaux], rsp
 	push rax
-	lea rax, [rsp + 4 * 8]
+	mov rax, [rsp + 8]
+	mov [ripaux], rax
+	mov rax, [rsp + 5 * 8]
 	mov [rspaux], rax
 	pop rax
 
