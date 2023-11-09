@@ -123,7 +123,7 @@ uint64_t sys_get_registers(uint64_t *registers) {
 	int flag = 0; 
 	uint64_t *regs = getRegisters(&flag);
 	if(flag == 1){
-		for (int i = 0; i < 16; i++){		
+		for (int i = 0; i < 17; i++){		
 			registers[i] = regs[i];
 		}
 		return flag;

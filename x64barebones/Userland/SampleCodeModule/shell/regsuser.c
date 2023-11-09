@@ -4,9 +4,9 @@
 // Container defines
 #define NAMER "REGISTERS_DUMP"
 #define CX0R 275 //Constant X0
-#define CY0R 100 //Constant Y0
+#define CY0R 50 //Constant Y0
 #define WIDTHR 450
-#define HEIGHTR 580
+#define HEIGHTR 700
 
 // Container defines
 #define NAMEE "ERROR_CONTAINER"
