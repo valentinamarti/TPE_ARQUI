@@ -1,6 +1,8 @@
 #include <registers.h>
 #include <videoDriver.h>
 #include <interrupts.h>
+#include <time.h>
+#include <lib.h>
 
 // Container defines
 #define NAME "REGISTERS_DUMP"
@@ -39,12 +41,12 @@ void genericException(char* message, int len, uint64_t ripaux, uint64_t rspaux, 
 }
 
 void genericMemoryDump(char* message, int len){
-    container_id = getContainer(NAME,CX0,CY0,WIDTH,HEIGHT); 
+    container_id = getContainer((uint8_t *)NAME,CX0,CY0,WIDTH,HEIGHT); 
 	changeSize(container_id,2);
 	changeBackgroundColor(container_id, &REGISTERS_DUMP_BACKGROUND);
 	changeBorderColor(container_id, &REGISTERS_DUMP_BORDER);
 
-	drawString(container_id, message, len, &REGISTERS_DUMP_TITTLE);
+	drawString(container_id,(uint8_t *) message, len, &REGISTERS_DUMP_TITTLE);
 	printRegisters();
 	sleep(5000);
 
@@ -58,10 +60,10 @@ void saveRegsInfo(){
 	int j = 0;			// con este itero el stack
 	for (int i = 0; i < 17; i++){		
 		if(i == 7 && flag == 0){
-			savedRegisters[i] = rsp;
+			savedRegisters[i] =(uint64_t) rsp;
 			flag = 1;
 		}else if(i == 16){
-			savedRegisters[i] = rip;
+			savedRegisters[i] =(uint64_t) rip;
 		}else{
 			savedRegisters[i] = regs[14 - j];
 			j++;
@@ -73,8 +75,8 @@ void printRegisters(){
 	char buff[25];
 	for (int i = 0; i < 17; i++){		
 		itoa(savedRegisters[i], buff, 16);
-		drawString(container_id, regsNames[i], 7, &REGISTERS_DUMP_REGS);
-		drawStringNull(container_id, buff, &REGISTERS_DUMP_LETTER);
+		drawString(container_id, (uint8_t *) regsNames[i], 7, &REGISTERS_DUMP_REGS);
+		drawStringNull(container_id,(uint8_t *) buff, &REGISTERS_DUMP_LETTER);
 		drawCharInContainer(container_id, (char_t){'\n', WHITE});	
 	}
 }

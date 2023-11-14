@@ -72,7 +72,7 @@ uint64_t syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
 			sys_clear_sb(rsi);
 			break;	
 		case 12:
-			flag = sys_new_container(rsi,rdx,rcx,r8,r9);
+			flag = sys_new_container((uint8_t *)rsi,rdx,rcx,r8,r9);
 			return flag;
 			break;
 		case 13:
@@ -89,7 +89,7 @@ uint64_t syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
 }
 
 void sys_write(uint64_t buffer, uint64_t longitud, uint64_t filedescriptor, uint64_t color, uint64_t container_id){
-	char* string = (char *) buffer;
+	uint8_t * string = (uint8_t *) buffer;
 	color_t* aux = (color_t*)color;
 	if(filedescriptor == STDOUT){
 		drawString(container_id, string, longitud, aux);

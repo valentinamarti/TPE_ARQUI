@@ -1,17 +1,14 @@
 #include <time.h>
-#include <miniDriverVideo.h>
-#include <naiveConsole.h>
 #include <stdint.h>
 
 
 extern unsigned int getSeconds();
 extern unsigned int getMinutes();
 extern unsigned int getHours(); 
+extern void hlt();
 
 static unsigned long ticks = 0;
 static unsigned long millis_ellapsed = 0; 
-static uint8_t * currentVideo = (uint8_t*)0xB8000;
-static flag = 0; 
 
 void timer_handler() {
 	ticks++;

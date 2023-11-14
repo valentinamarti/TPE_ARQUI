@@ -2,7 +2,6 @@
 #include <fonts.h>
 #include <stdint.h>
 #include <string.h>
-//#include <stdarg.h>
 #include <videoDriver.h>
 
 #define SCREEN_W VBE_mode_info->width
@@ -149,7 +148,7 @@ uint16_t getContainer(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, u
     }
 
     container_node_t * node= (container_node_t * ) malloc(sizeof(container_node_t));
-    if(node ==-1){
+    if((uint64_t)node == -1){
         drawChar(NULL, (char_t){'e',RED});
     }
     node->next=NULL;

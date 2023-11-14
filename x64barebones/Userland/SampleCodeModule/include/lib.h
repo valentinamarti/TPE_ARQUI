@@ -7,8 +7,8 @@
     void printChar(char c, color_t color);
     char getChar(int fd);
     void puts(char* string, color_t color);
-    void set_container_id();
     int abs(int value);
+    void set_container_id();
     void newLine();
     void print(char* buff, color_t color);
     void strcopy(char* destination, char* string);
