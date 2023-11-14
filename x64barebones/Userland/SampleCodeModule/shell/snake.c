@@ -11,13 +11,14 @@
 #define S_HEIGHT (MATRIZ_WIDTH * BLOCK_SIZE +2 * OWN_BORDER)
 
 // Container Points Board defines
-
 #define P_NAME "POINTS BOARD"
 #define P_CX0 S_CX0 + S_WIDTH       //Constant X0
 #define P_CY0 S_CY0                 //Constant Y0
 #define P_WIDTH 250
 #define P_HEIGHT 300
 
+extern int do_sys_was_redraw(int container_id);
+extern int do_sys_new_container(char * name, int X0, int Y0,int width, int height);
 
 static int container_id;
 static int container_id_points;
@@ -390,5 +391,5 @@ void gameOver(){
     playLoserSound();
     print("\nApreta ESC para salir del juego",SNAKE_GO_ESC);
     char c;
-    while(c = getCharFromKernel()!= ESCAPE){}   
+    while((c = getCharFromKernel())!= ESCAPE){}   
 }

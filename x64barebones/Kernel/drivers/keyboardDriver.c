@@ -18,7 +18,7 @@ extern char getKeyPressed();
 // como por ejemplo '\t' tenemos que hacer tal cosa y etc
 
 
-static unsigned char* keyboard[] = {   
+static unsigned char keyboard[] = {   
     // Para usar esto, nos falta ver de donde salio; asi ponemos la documentacion necesaria para justificar 
         0, 27, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', '\b', /*del*/ 
         '\t', /*tab*/ 'q', 'w', 'e', 'r',  't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n',    /*enter*/ 
@@ -47,7 +47,7 @@ static unsigned char* keyboard[] = {
         0,    /* All other keys are undefined */
 };
 
-static unsigned char* keyboard_shift[] = {
+static unsigned char keyboard_shift[] = {
         0, 27, '!', '\"', '#', '$', '%', '&', '/', '(', ')', '=', '?', '`', '\b', /*del*/
         '\t', /*tab*/ 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '{', '}', '\n', /*enter*/
         0,  /*29-control*/ 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '\'', '>', 

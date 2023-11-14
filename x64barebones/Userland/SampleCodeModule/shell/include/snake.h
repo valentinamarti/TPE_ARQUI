@@ -78,3 +78,11 @@ void putDirections(char * direc1,char * direc2);
 void exitSnake();
 
 void printPoints();
+
+void gameOver();
+
+void redrawSnake();
+
+void drawBody(body_t * body,color_t color);
+
+void drawBoard();

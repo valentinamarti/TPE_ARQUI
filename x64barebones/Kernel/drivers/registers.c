@@ -29,16 +29,16 @@ void saveRegisters(uint64_t rsi, uint64_t rdx, uint64_t rcx){
     genericMemoryDump("Registers dump \n", 16);
 }
 
-void genericException(char* message, int len, uint64_t *ripaux, uint64_t *rspaux, uint64_t *stackaux){
-    rip =  ripaux;
-	rsp =  rspaux;
-	stack = stackaux;
+void genericException(char* message, int len, uint64_t ripaux, uint64_t rspaux, uint64_t stackaux){
+    rip =  (uint64_t*) ripaux;
+	rsp =  (uint64_t*) rspaux;
+	stack =  (uint64_t*) stackaux;
 	saved = 0;
 	saveRegsInfo();
     genericMemoryDump(message, len);
 }
 
-static void genericMemoryDump(char* message, int len){
+void genericMemoryDump(char* message, int len){
     container_id = getContainer(NAME,CX0,CY0,WIDTH,HEIGHT); 
 	changeSize(container_id,2);
 	changeBackgroundColor(container_id, &REGISTERS_DUMP_BACKGROUND);
@@ -52,7 +52,7 @@ static void genericMemoryDump(char* message, int len){
 	return;
 }
 
-static void saveRegsInfo(){
+void saveRegsInfo(){
 	uint64_t *regs = stack;
 	int flag = 0;
 	int j = 0;			// con este itero el stack
@@ -69,7 +69,7 @@ static void saveRegsInfo(){
 	}
 }
 
-static void printRegisters(){
+void printRegisters(){
 	char buff[25];
 	for (int i = 0; i < 17; i++){		
 		itoa(savedRegisters[i], buff, 16);

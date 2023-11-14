@@ -4,6 +4,7 @@
 #include <sounds.h>
 #include <snake.h>
 #include <timeuser.h>
+#include <regsuser.h>
        
 #define P_OS_ID ">^< "
 #define BUFFER_SHELL_SIZE 150
@@ -26,6 +27,11 @@ void snake();
 void lettersize();
 void registers();
 void clear_shell();
+
+extern void wrong_opcode();
+extern void division();
+extern int do_sys_new_container(char * name, int X0, int Y0,int width, int height);
+
 
 static char command[BUFFER_SHELL_SIZE] = {0};
 static char argument[BUFFER_SHELL_SIZE] = {0};
@@ -72,7 +78,7 @@ void run_shell(){
         scanf("%s %s", SHELL_LETTER, command, argument); 
        
         int found = 0; 
-        for(int i = 0; i < commands[i].name != NULL ; i++){
+        for(int i = 0; commands[i].name != NULL ; i++){
             if(strcmp((commands[i].name), command) == 0){
                 (*commands[i].func)(argument);   
                 found = 1;    

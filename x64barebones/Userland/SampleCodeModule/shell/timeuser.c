@@ -8,6 +8,10 @@
 #define WIDTH 600
 #define HEIGHT 150
 
+extern void do_sys_sleep(int seconds);
+extern void do_sys_get_time(int* hrs, int* min, int* sec);
+extern int do_sys_new_container(char * name, int X0, int Y0,int width, int height);
+
 static int container_id;
 
 void sleep(int seconds){
@@ -26,6 +30,6 @@ void run_timeuser(){
     newLine();
     printf(" %dhrs : %dmin : %dsec \n", HELP_HEADINGS, hrs, min, sec);
     char c;
-    while(c = getCharFromKernel()!= ESCAPE){}
+    while((c = getCharFromKernel()) != ESCAPE){}
     exitContainer(container_id);
 }

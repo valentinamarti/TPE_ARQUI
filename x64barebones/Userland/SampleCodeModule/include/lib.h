@@ -31,4 +31,7 @@
     int getID();
     void printRectangle(int posx, int posy, int sizex, int sizey, color_t color);
     unsigned int rand();
+    void clear_sb();
+    void setFontSize(int size);
+    int wordlen(char* s);
 #endif

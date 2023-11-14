@@ -27,6 +27,11 @@ extern void do_sys_read(char* buffer, int longitud, int fd);
 extern int do_sys_new_container(char * name, int X0, int Y0,int width, int height);
 extern void do_sys_draw_rectangle(int posx, int posy, int sizex, int sizey, color_t * color, int container_id);
 extern void do_sys_clear(int container_id);
+extern void do_sys_exit_container(int container_id);
+extern void do_sys_set_background(color_t* color, int container_id);
+extern void do_sys_set_border(color_t* color, int container_id);
+extern void do_sys_clear_sb(int container_id);
+extern void do_sys_set_font_size(int size, int container_id);
 
 static int container_id;
 unsigned int seed = 1234; // Initial seed value
@@ -229,13 +234,14 @@ int strcmp(char* s1, char* s2){         // devuelve 0 si son igulaes, 1 sino
 }
 
 int strcmpMinMay(char* s1, char* s2){
-    char* s1Aux;    // lo hago en auxiliares para no perder el original
-    char* s2Aux;
+    char s1Aux[MAX_CHARS] = {0};
+    char s2Aux[MAX_CHARS] = {0};
     strcopy(s1Aux, s1);    
     strcopy(s2Aux, s2);
     toMin(s1Aux);
     toMin(s2Aux);
-    return strcmp(s1Aux, s2Aux);
+    int aux = strcmp(s1Aux, s2Aux);
+    return aux; 
 }
 
 void toMin(char *str) {

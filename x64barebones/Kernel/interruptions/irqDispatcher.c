@@ -10,6 +10,7 @@ int irqDispatcher(uint64_t irq) {
 	switch (irq) {
 		case 0:		
 			int_20();
+			return -1;
 			break;		
 		case 1:
 			flag = int_21();

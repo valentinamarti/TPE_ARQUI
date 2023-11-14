@@ -15,6 +15,9 @@
 #define WIDTHE 500
 #define HEIGHTE 100
 
+extern int do_sys_new_container(char * name, int X0, int Y0,int width, int height);
+extern int do_sys_get_registers(uint64_t* array);
+
 static char *regsNames[] = {"RAX <> ", "RBX <> ", "RCX <> ", "RDX <> ", "RBP <> ", "RDI <> ", "RSI <> ", "RSP <> ", "R8  <> ", "R9  <> ", "R10 <> ", "R11 <> ", "R12 <> ", "R13 <> ", "R14 <> ", "R15 <> ", "RIP <> "};
 static int container_id;
 
@@ -36,7 +39,7 @@ void run_regsuser(){
             printf(" %x \n", REGISTERS_DUMP_LETTER, registers[i]);
         }
         char c;
-        while(c = getCharFromKernel()!= ESCAPE){}
+        while((c = getCharFromKernel()) != ESCAPE){}
         exitContainer(container_id);
     }else{
         container_id = do_sys_new_container(NAMEE,CX0E,CY0E,WIDTHE,HEIGHTE); 

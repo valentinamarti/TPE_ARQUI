@@ -290,7 +290,7 @@ division:
 wrong_opcode:
 	mov cr6, rax
 
-do_sys_new_container: ; sys_new_container(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, uint16_t height);
+do_sys_new_container: ; do_sys_new_container(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, uint16_t height);
 	push rbp
     mov rbp, rsp
 

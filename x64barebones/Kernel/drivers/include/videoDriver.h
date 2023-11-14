@@ -105,3 +105,5 @@ void changeBorderColor(int ID, color_t *color);
 char wasRedraw(int ID);
 
 int getCurrentID();
+
+void exitContainer(container_id);;

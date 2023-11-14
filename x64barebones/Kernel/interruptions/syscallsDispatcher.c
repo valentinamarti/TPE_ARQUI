@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <videoDriver.h>
 #include <soundDriver.h>
+#include <keyboardDriver.h>
 #include <registers.h>
 #include <time.h>
 
@@ -18,9 +19,10 @@ static void sys_set_font_size(uint64_t size, uint64_t container_id);
 static void sys_draw_rectangle(uint64_t posx, uint64_t posy, uint64_t sizex, uint64_t sizey, uint64_t color, uint64_t container_id);
 void sys_play_beep(uint64_t frec, uint64_t millisec);
 static void sys_sleep(uint64_t seconds);
-static void sys_exit(uint64_t container_id);
+static void sys_exit_container(uint64_t container_id);
 static void sys_new_line(uint64_t container_id);
 static void sys_clear_sb(uint64_t container_id);
+static void sys_clear(uint64_t container_id);
 static uint64_t sys_new_container(uint8_t * name, uint16_t X0, uint16_t Y0,uint16_t width, uint16_t height);
 static void sys_set_background(uint64_t color, uint64_t container_id);
 static void sys_set_border(uint64_t color, uint64_t container_id);
@@ -46,7 +48,7 @@ uint64_t syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
 			sys_get_time(rsi, rdx, rcx);
 			break;
 		case 4:
-			sys_get_registers(rsi);
+			return sys_get_registers(rsi);
 			break;
 		case 5:
 			sys_set_font_size(rsi, rdx);
@@ -83,7 +85,7 @@ uint64_t syscallsDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
 			return sys_was_redraw(rsi);
 			break;	
 	}
-	return;
+	return -1;
 }
 
 void sys_write(uint64_t buffer, uint64_t longitud, uint64_t filedescriptor, uint64_t color, uint64_t container_id){
