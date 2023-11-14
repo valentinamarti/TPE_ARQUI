@@ -64,7 +64,7 @@ SECTION .text
 	pushState
 
 	push rax
-	mov rax, [rsp + 8 * 16]
+	mov rax, [rsp + 8 * 16]	; busca el rip
 	mov [ripaux], rax
 	mov rax, [rsp + 19 * 8]
 	mov [rspaux], rax
